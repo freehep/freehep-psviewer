@@ -1,0 +1,22 @@
+/starside {
+    72 0 lineto
+    currentpoint translate
+    -144 rotate
+} def
+    
+/star {
+    moveto
+    currentpoint translate
+    4 { starside } repeat
+    closepath
+    gsave
+        .5 setgray 
+        fill
+    grestore
+    stroke
+} def
+
+200 200 star
+
+showpage
+        

@@ -1,0 +1,28 @@
+%!PS-Adobe-2.0
+
+%
+% Repeat
+%
+4 { (abc) } repeat
+% -> (abc)(abc)(abc)(abc)
+pstack
+pop pop pop pop
+
+2 {3 {(abc)} repeat} repeat
+% -> (abc)(abc)(abc)(abc)(abc)(abc)
+pstack
+pop pop pop pop pop pop
+
+1 2 3 4 3 {pop} repeat
+% -> 1
+pstack
+pop
+
+4 {} repeat
+% -> (empty)
+pstack
+
+mark 0 {(will not happen)} repeat
+%-> mark
+pstack
+pop

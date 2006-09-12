@@ -1,0 +1,200 @@
+%!PS-Adobe-2.0
+%%Title: Calculate Pi in PostScript
+%%Creator: Frank Martin Siegert [frank@this.net] - http://www.this.net/
+%%Date: 23. November 1996 02:23
+% Updated 2. April 1998 23:40
+%%BoundingBox: 0 0 592 792
+%%DocumentNeededFonts: Courier Courier-Bold
+%%EndComments
+
+% Enter your desired number of digits here, min. 20, max. 262136
+% Be prepared to wait a long time for anything > 1000
+
+/ndigits 1000 def
+
+% If your printer fails with a timeout error try to uncomment the next line
+% this will give you one hour extra time...
+
+% statusdict begin 3600 setjobtimeout end
+
+
+% Some defines for startup
+
+/i 0 def
+/str4 4 string def
+/nblock ndigits 4 idiv 2 sub def
+/t1 nblock 1 add array def
+/t2 nblock 1 add array def
+/t3 nblock 1 add array def
+/tot nblock 1 add  array def
+/base 10000 def
+/resstr 4 string def
+
+% Define the page sizes and margins
+
+/pagemargin 60 def 
+/lineheight 12 def
+/pageheight 500 lineheight sub pagemargin sub def
+/pagewidth 400 pagemargin sub def
+pagemargin pageheight moveto
+/bigfont {
+	/Courier-Bold findfont 36 scalefont setfont
+} bind def
+/smallfont {
+	/Courier findfont 12 scalefont setfont
+} bind def
+
+/scratch 16 string def
+
+% Define bigmath routines - still a bit suboptimal 
+% (direct ported from the C implementation by Roy Williams)
+
+/bigadd {	% increment result
+	/result exch store
+	/increment exch store
+	0 1 nblock 1 sub {
+		nblock exch sub /i exch store
+		result i get
+		increment i get
+		add dup base ge {
+			base sub
+			result exch i exch put
+			result dup i 1 sub get
+			1 add i 1 sub exch put
+		} {
+			result exch i exch put
+		} ifelse
+	} for
+} bind def
+
+/bigsub {	% decrement result
+	/result exch store
+	/decrement exch store
+	0 1 nblock 1 sub {
+		nblock exch sub /i exch store
+		result i get
+		decrement i get
+		sub dup 0 lt {
+			base add
+			result exch i exch put
+			result dup i 1 sub get
+			1 sub i 1 sub exch put
+		} {
+			result exch i exch put
+		} ifelse
+	} for
+} bind def
+
+/bigmult { % factor result
+	/carry 0 store
+	/result exch store
+	/factor exch store
+	0 1 nblock {
+		nblock exch sub /i exch store
+		result i get factor mul
+		carry add
+		dup /carry exch base idiv store
+		base mod 
+		result exch i exch put
+	} for
+} bind def	
+
+
+/bigdiv { % denom result
+	/carry 0 store
+	/result exch store
+	/denom exch store
+	0 1 nblock {
+		/i exch store
+		result i get carry base mul add
+		dup denom mod /carry exch store
+		denom idiv 
+		result exch i exch put
+	} for
+} bind def	
+
+/bigset { % rhs result
+	/result exch store
+	/rhs exch store
+	0 1 nblock {
+		result exch 0 put
+	} for
+	result 0 rhs put
+} bind def
+
+/bigzero { % result
+	/result exch store 1	
+	0 1 nblock {
+		result exch get 0 ne { pop 0 exit } if
+	} for
+} bind def
+
+/bigcopy { % from result
+	copy pop
+} bind def
+	
+/bigprint { % result
+	/result exch store
+	bigfont result 0 get str4 cvs onpage smallfont (.) onpage
+	1 1 nblock {
+		result exch get str4 cvs resstr 0 (0000) putinterval resstr 
+		exch dup length 4 exch sub exch putinterval  resstr onpage
+	} for
+} bind def
+	
+/bigatan { % onestep denom w2 w1 result 
+	/result2 exch store
+	/w1 exch store
+	/w2 exch store
+	/denom exch store
+	/denom2 denom denom mul store
+	/onestep exch store
+	/k 1 def
+	1 result2 bigset
+	denom result2 bigdiv
+	result2 w1 bigcopy
+	{
+		onestep 0 ne {
+			denom2 w1 bigdiv
+		} {
+			denom w1 bigdiv
+ 			denom w1 bigdiv
+		} ifelse
+
+		w1 w2 bigcopy
+		k 2 mul 1 add w2 bigdiv
+		k 2 mod 0 ne {
+			w2 result2 bigsub
+		} {	
+			w2 result2 bigadd
+		} ifelse
+		/k k 1 add store
+		w2 bigzero 1 eq { exit } if
+
+	} loop
+} bind def
+
+% Define output routines 
+
+/didpaint false def
+/onpage {
+	/didpaint true store
+	show
+	currentpoint exch pagewidth ge {
+		pagemargin exch lineheight sub moveto
+		currentpoint exch pop pagemargin le {
+			showpage
+			 pagemargin pageheight moveto
+			/didpaint false store
+		} if
+	} {  pop } ifelse
+} bind def
+
+% Using Machin's formula:  pi/4 = 4 arctan(1/5) - arctan(1/239) 
+
+1 5 t2 t1 tot bigatan 4 tot bigmult 2 239 t2 t1 t3 bigatan 
+t3 tot bigsub 4 tot bigmult tot bigprint
+
+didpaint { showpage } if
+
+%%EOF

@@ -1,0 +1,20 @@
+%!PS-Adobe-2.0
+
+%
+% ForAll
+%
+0 [13 29 3 -8 21]{add}forall
+% -> 58
+pstack
+pop
+
+%
+% ForAll
+% 
+/d 2 dict def
+d /abc 123 put
+d /xyz (test) put
+d {} forall
+% -> /xyz (test) /abc 123 (pairs may be differently ordered)
+pstack
+pop pop pop pop

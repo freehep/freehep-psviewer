@@ -1,0 +1,37 @@
+%
+% ClipPath
+%
+
+/trianglepath {
+    newpath
+    0 0 moveto
+    144 0 lineto
+    72 200 lineto
+    closepath
+} def
+
+/verticals {
+    newpath
+    0 9 144 {
+        0 moveto
+        0 216 rlineto
+    } for
+    stroke
+} def
+
+/horizontals {
+    newpath
+    0 10 200 {
+        0 exch moveto
+        144 0 rlineto
+    } for
+    stroke
+} def
+
+230 300 translate
+trianglepath clip
+verticals
+horizontals
+
+showpage
+

@@ -1,0 +1,71 @@
+%!PS-Adobe-2.0
+%
+% Colored Tiling Pattern (Red Book page 255)
+%
+
+<<  /PatternType    1
+    /PaintType      1
+    /TilingType     1
+    /BBox           [0 0 60 60]
+    /XStep          60
+    /YStep          60
+    
+    /star {
+        gsave
+        0 0 moveto
+        30 0 lineto
+        30 5 lineto
+        0 5 lineto
+        closepath
+        fill
+        0 12 moveto
+        4 {
+            144 rotate
+            0 12 lineto
+        } repeat
+        closepath
+        fill
+        grestore
+    } bind
+    
+    /PaintProc {
+        begin
+        0.3 setgray
+        15 15 translate
+        star
+        30 30 translate
+        star
+        0.7 setgray
+        -30 0 translate
+        star
+        30 -30 translate
+        star
+        end
+    } bind
+>>
+
+1.2 1.2 scale
+10 rotate
+10 20 translate
+
+matrix
+makepattern
+/Star4 exch def
+
+10 rotate
+120 120 184 120 4 copy
+%1.5 1.5 scale
+/Pattern setcolorspace
+Star4 setcolor rectfill
+0.0 setgray rectstroke
+
+/Times-Roman 270 selectfont
+160 100 translate
+2 2 scale
+0.9 setgray
+0 0 moveto
+(A) show
+Star4 setpattern
+0 0 moveto
+(A) show
+

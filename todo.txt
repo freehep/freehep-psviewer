@@ -1,0 +1,4 @@
+- check execute methods for literal behaviour in PSxxx.java, should do a clone()
+- check on decode for imagemask
+- get test ps for DCTDecode (JPEG)
+- check for stoppedcontext in handleerror

@@ -1,0 +1,59 @@
+%!PS-Adobe-2.0
+%%Title: Blue Book Program 7, on page 157
+%%Creator: Adobe Systems Incorporated 
+%%CreationDate: Thu Dec 28 13:23:13 PST 1989
+%%EndComments
+
+/scdict 3 dict def
+/scshow
+	{ scdict begin
+	  
+	  gsave 
+	    currentfont [.9 0 0 findscscale 0 0] makefont
+	    setfont
+	    show
+	    currentpoint
+	  grestore
+	  moveto
+	  end
+	} def
+
+scdict begin
+ 	/findscscale
+ 		{ gsave
+ 		    newpath
+ 		    0 0 moveto
+ 		    (X) true charpath
+ 		    flattenpath
+ 		    pathbbox /capheight exch def pop pop pop
+ 		    newpath
+ 		    0 0 moveto
+ 		    (x) true charpath
+ 		    flattenpath
+ 		    pathbbox /xheight exch def pop pop pop
+ 		  grestore
+ 		  
+ 		  xheight capheight xheight sub 3 div add 
+ 		  capheight div
+ 		} def
+end
+
+/Times-Roman findfont 18 scalefont setfont
+72 500 moveto
+(To read means to obtain meaning from) show
+( words, and) show
+
+72 500 20 sub moveto
+(legibility is ) show
+(THAT QUALITY WHICH) scshow
+( enables words) show
+
+72 500 20 2 mul sub moveto
+(to be read easily, quickly, and accurately.) show
+
+72 500 70 sub moveto
+(JOHN C. TARR) scshow
+
+showpage
+	
+	

@@ -1,0 +1,56 @@
+%
+% Binky
+%
+/TM 550 def
+/BM -12 def
+/LM 10 def
+/RM 570 def
+
+/newline {
+    currentpoint
+    13 sub
+    exch pop LM
+    exch moveto
+} def
+
+/nllfNec {
+    currentpoint
+    pop RM gt {
+        newline
+    } if
+} def
+
+/done? {
+    currentpoint
+    exch pop
+    BM lt
+} def
+
+/fillpage {
+    /strg exch def { {
+            pop pop nllfNec
+        } strg kshow
+        done? {
+            exit
+        } if
+    } loop
+} def
+
+/Times-Bold findfont 10 scalefont setfont
+LM TM moveto
+.5 setgray
+(Binky Inc. ) fillpage
+
+/Times-Roman findfont 30 scalefont setfont
+RM LM sub
+(Binky Inc.) stringwidth pop sub
+2 div
+400 moveto
+
+0 setgray
+(Binky Inc.) show
+
+showpage
+
+    
+        

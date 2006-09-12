@@ -1,0 +1,41 @@
+%!PS-Adobe-2.0
+%%Title: Blue Book Program 6, on page 149
+%%Creator: Adobe Systems Incorporated 
+%%CreationDate: Thu Dec 28 13:20:04 PST 1989
+%%EndComments
+
+/concatprocs
+	{ /proc2 exch cvlit def
+	  /proc1 exch cvlit def
+	  
+	  /newproc proc1 length proc2 length add array def
+	  newproc 0 proc1 putinterval
+	  newproc proc1 length proc2 putinterval
+	  newproc cvx
+	} def
+
+/inch { 72 mul } def
+/picstr 3 string def
+
+/imageturkey
+	{ 24 23 1 [24 0 0 -23 0 23]
+	  { currentfile picstr readhexstring pop }
+	  image
+	} def
+
+gsave
+  3 inch 4 inch translate
+  2 inch dup scale
+  { 1 exch sub } currenttransfer concatprocs
+    settransfer
+  imageturkey
+  003B00 002700 002480 0E4940
+  114920 14B220 3CB650 75FE88
+  17FF8C 175F14 1C07E2 3803C4
+  703182 F8EDFC B2BBC2 BB6F84
+  31BFC2 18EA3C 0E3E00 07FC00
+  03F800 1E1800 1FF800
+
+grestore
+showpage
+

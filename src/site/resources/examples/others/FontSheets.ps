@@ -1,0 +1,831 @@
+%!PS-Adobe-3.0
+%%Title: FontSheets - a print font display utility
+%%Creator: FontSheets.ps
+%%Version: 1.02 0
+%%LanguageLevel: 1
+%%BoundingBox: { 35 35 577 757 }
+%%Orientation: Portrait
+%%DocumentNeededResources: font Helvetica Helvetica-Bold
+%%DocumentSuppliedResources: procset Glyphic-FontSheets-Utilities 1.0 0
+%%EndComments
+%%BeginProlog
+
+% FontSheets.ps
+%		By Mark Lentczner
+%		Glyphic Technology
+%		markl@glyphic.com
+
+% Copyright (c) 2000 Glyphic Technology
+
+% Version 1.02, 2/1/2000
+
+% Things to do:
+%  - Support fonts that crash (why?)
+%  - Support MultipleMaster fonts (does it have to?)
+%  - the 'MT' hack: if at end of fontkey, put at end of first component
+
+
+% /originalContext save def
+
+%BeginResource: procset Glyphic-FontSheets-Utilities 1.02 0
+
+/Glyphic-FontSheets-Utilities 200 dict def
+Glyphic-FontSheets-Utilities begin
+
+%
+% Utilities
+%
+
+/LanguageLevel
+	/languagelevel where { pop languagelevel } { 1 } ifelse def
+
+
+/procdef { bind def } bind def				% key proc --
+
+% (debug.ps) run
+
+
+/getdefaulted {				% obj key default -- value
+	mark 4 2 roll
+	{ get 3 1 roll pop pop }
+		stopped { cleartomark } if
+} procdef
+
+/syswhereandget {			% key -- value true | -- false
+	/statusdict where { pop statusdict } { currentdict } ifelse
+	begin
+		dup where { exch get true } { pop false } ifelse
+	end
+} procdef
+
+/syswhereandexec {			% key defaultproc -- result...result
+	exch syswhereandget { exch pop } if
+	exec
+} procdef
+
+
+%
+% Variable Length Array support
+%
+
+/varray {								% n -- varray
+	[ 0 null ] dup 1 4 -1 roll array put
+} procdef
+
+/vlength { 0 get } procdef				% varray -- length
+
+/vget { 								% varray index -- value
+	1 index 0 get 1 index gt
+		{ exch 1 get exch get }
+		{ stop }
+		ifelse
+} procdef
+
+/vput {									% varray index value --
+	2 index 0 get 2 index gt
+		{ 3 -1 roll 1 get 3 1 roll put }
+		{ stop }
+		ifelse
+} procdef
+
+/vappend {								% varray value --
+	1 index 0 get 2 index 1 get length ge { 
+		1 index 1 get dup length 10 add array
+		exch 1 index copy pop
+		2 index 1 3 -1 roll put
+	} if
+
+	1 index 1 get 2 index 0 get 3 -1 roll put
+	dup 0 get 1 add 0 exch put
+} procdef
+
+/vinclude {								% varray value --
+	false 2 index
+	{
+		2 index eq
+			{ pop true exit } if
+	} vforall
+
+	{ pop pop } { vappend } ifelse
+} procdef
+
+/vforall {					% varray proc --
+	exch
+	dup 1 get exch
+	0 get 0 exch
+	getinterval
+	exch
+	forall
+} procdef
+
+/vsplit {					% varray n -- tailvarray headvarray
+	1 index vlength 2 copy gt { exch } if pop
+	[								% varray n [ --
+	  2 index vlength 2 index sub	% varray n [ tlen --
+	  3 index 1 get 				% varray n [ tlen elem --
+	  3 index 2 index getinterval	% varray n [ tlen telem --
+	] 3 1 roll						% tail varray n --
+	[
+	  1 index						% tail varray n [ hlen --
+	  3 index 1 get					% tail varray n [ hlen elem --
+	  0 2 index getinterval			% tail varray n [ hlen helem --
+	] 3 1 roll
+	pop pop
+} procdef
+
+	
+
+%
+% Dictionary support
+%
+
+/getvarray {				% dict key -- varray
+	2 copy known not
+		{ 2 copy 5 varray put } if
+	get
+} procdef
+	
+/putbag {					% dict key value --
+	3 1 roll
+	getvarray
+	exch vappend
+} procdef
+
+/putset {					% dict key value --
+	3 1 roll
+	getvarray
+	exch vinclude
+} procdef
+	
+
+%
+% QSort (!)
+%
+
+/qsortswap {		% array i j --
+	2 index 1 index get		% array i j a[j]
+	3 index 3 index get		% array i j a[j] a[i]
+	4 index 4 -1 roll 3 -1 roll put		% array i a[j]
+	put
+} procdef
+
+/qsort {			% array exec --
+	dup xcheck not { /lt load } if
+
+	{
+		1 index length 1 le { exit } if
+		1 index 0 get
+		1
+		3 index length 1 sub		% array exec pivot up down
+
+		{
+			{	% decrement down until a[down] <= pivot
+				2 index
+				5 index 2 index get
+				5 index exec not { exit } if
+				1 sub
+			} loop
+			exch					% array exec pivot down up
+
+			{	% increment up until pivot < a[up]
+				2 copy le { exit } if
+				2 index
+				5 index 2 index get
+				5 index exec { exit } if
+				1 add
+			} loop
+			exch					% array exec pivot up down
+
+			2 copy ge { exit } if
+			
+			2 copy 6 index 3 1 roll qsortswap
+		} loop
+		
+		3 1 roll pop pop			% array exec down
+		2 index 0 2 index qsortswap
+
+		dup 1 add 3 index length 1 index sub
+		4 index 3 1 roll getinterval
+		exch						% array exec subA down
+
+		3 index exch 0 exch getinterval		% array exec subB subA
+
+		2 copy length exch length gt { exch } if
+		
+		2 index qsort
+		3 -1 roll pop exch
+	} loop
+
+	pop pop
+} procdef
+
+
+
+%
+% Font Utilities
+%
+
+/FamilyID {					% key font -- familyID
+	/FontInfo null getdefaulted
+	/FamilyName () getdefaulted
+	exch
+	Buffer cvs
+	(-) search { 3 1 roll pop pop } if
+	2 copy length exch length add 1 add string
+	dup 0 3 index putinterval
+	dup 2 index length (:) putinterval
+	dup 2 index length 1 add 4 index putinterval
+	3 1 roll pop pop
+} procdef
+
+/FontID {					% key font -- fontID
+	dup /UniqueID known 
+		{ begin pop UniqueID FontType 10 div add end }
+		{ pop dup type /stringtype eq { cvn } if } ifelse
+} procdef
+
+/FontID2Font	200 dict def			% maps FontID --> Font
+/Family2Fonts	200 dict def			% maps FamilyID --> FontIDs
+/FontID2Keys	200 dict def			% maps FontID --> font keys
+
+/NoteFont {								% key font --
+	2 copy FontID						% key font fontID --
+
+	FontID2Font 1 index known not {
+		FontID2Font 1 index 3 index put
+
+		2 index 2 index FamilyID
+		Family2Fonts exch 2 index putbag
+	} if
+
+	exch pop
+	exch FontID2Keys 3 1 roll
+		dup length string cvs
+		putset
+} procdef
+
+/FamilyPrintString {					% FamilyID -- familystring
+	Buffer cvs (:) search
+		{ exch pop exch dup length 0 gt { exch } if pop } if
+} procdef
+
+/FontPrintString {						% FontID -- fontstring
+	FontID2Font 1 index get
+	/FontInfo null getdefaulted
+	/FullName null getdefaulted
+	dup null eq
+		{ pop FontID2Keys exch get 0 vget }
+		{ exch pop } ifelse
+	dup (-) search {
+		pop pop pop
+		dup length string copy
+		{
+			dup (-) search
+				{ length 3 1 roll pop pop 1 index exch 32 put }
+				{ pop exit } ifelse
+		} loop
+	}
+	{ pop } ifelse
+} procdef
+
+
+/MatchesAll {							% prefix varray -- bool
+	true exch
+	{									% prefix bool string
+		2 index anchorsearch
+			{ pop pop }
+			{ pop not exit } ifelse
+	} vforall
+	exch pop
+} procdef
+
+
+/FamilyPrefix {							% FamilyID fontIDs -- prefixstring
+
+	% convert varray of fontIDs to varray of fontPrintStrings
+	dup vlength varray exch
+	{ FontPrintString 1 index exch vappend } vforall	% familyID strings
+
+	% first see if family name will prefix all strings
+	exch FamilyPrintString				% fontStrings familyString
+	dup 2 index MatchesAll 
+	{
+		dup length string copy
+	}
+	{
+		% otherwise try prefix strings of the font names
+		pop ()
+		0 1 3 index 0 vget length
+		{									% fontStrings max n
+			2 index 0 vget 0 3 -1 roll getinterval
+			dup 3 index MatchesAll
+				{ exch pop }
+				{ pop exit } ifelse
+		} for
+	} ifelse
+
+	exch pop
+} procdef
+
+/RemovePrefix {							% string prefix -- suffix
+	anchorsearch { pop } if
+	{
+		dup length 0 eq { exit } if
+
+		dup 0 get dup 32 eq exch 45 eq or
+			{ 1 1 index length 1 sub getinterval }
+			{ exit }
+			ifelse
+	} loop
+} procdef
+		
+%
+% Layout
+%
+
+/inch { 72 mul } def
+
+/PageWidth			   8.5 inch def
+/PageHeight				11 inch def
+
+/PageEdge			   0.5 inch def
+	% if you change the three above lines, you'll need to change
+	% the DSC comments at the start of the file
+
+
+/BaseFont
+	/Helvetica findfont def
+/BaseFontBold
+	/Helvetica-Bold findfont def
+	% if you change these two fonts, you'll need to change
+	% the DSC comments at the start of the file
+
+/MessageFont			BaseFont 12 scalefont def
+/MessageFontBold		BaseFontBold 12 scalefont def
+/MessageSmallFont		BaseFont 10 scalefont def
+/MessageSmallFontBold	BaseFontBold 10 scalefont def
+
+
+/HeaderHeight				 37 def
+/HeaderWidth			 5 inch def
+/HeaderTop		PageHeight PageEdge sub def
+/HeaderBottom	HeaderTop HeaderHeight sub def
+/HeaderRight	PageWidth PageEdge sub def
+/HeaderLeft		HeaderRight HeaderWidth sub def
+
+/FooterHeight				 37 def
+/FooterWidth			 6 inch def
+/FooterBottom		   PageEdge def
+/FooterTop		FooterBottom FooterHeight add def
+/FooterLeft			   PageEdge def
+/FooterRight	FooterLeft FooterWidth add def
+
+/Spacer				  0.125 inch def
+/SpacerInset		     1 inch def
+/SpacerRadius	   Spacer 2 div def
+
+/BodyTop		HeaderBottom Spacer sub def
+/BodyBottom		FooterTop Spacer add def
+/BodyLeft			   PageEdge def
+/BodyRight		PageWidth PageEdge sub def
+/BodyHeight		BodyTop BodyBottom sub def
+/BodyWidth		BodyRight BodyLeft sub def
+
+/Margin				 0.125 inch def
+
+/AreaTop		BodyTop Margin sub def
+/AreaLeft		BodyLeft Margin add def
+/AreaBottom		BodyBottom Margin add def
+/AreaRight		BodyRight Margin sub def
+/AreaHeight		AreaTop AreaBottom sub def
+/AreaWidth		AreaRight AreaLeft sub def
+
+/CurrentY			   AreaTop def
+/CurrentX			  AreaLeft def
+
+
+/ColumnMargin		0.3125 inch def
+/ColumnCount				  2 def
+/ColumnAdvance
+	AreaRight AreaLeft sub ColumnMargin add ColumnCount div def
+/ColumnWidth
+	ColumnAdvance ColumnMargin sub def
+
+/NameBoxHeight				 24 def
+/NameBoxWidth		ColumnWidth def
+/NameBoxFontY				  7 def
+/NameBoxFontX				  4 def
+/NameBoxFont		BaseFontBold 14 scalefont def
+
+/NameColumnWidth		 1 inch def
+
+/NameColumnStyleX		ColumnWidth NameColumnWidth sub 8 add def
+/NameColumnStyleY			 12 def
+/NameColumnStyleFont	BaseFontBold 7 scalefont def
+
+/NameColumnKeyX
+	NameColumnStyleX def
+/NameColumnKeyY				  5 def
+/NameColumnKeyYSpacing		6.5 def
+/NameColumnKeyFont		BaseFont 5 scalefont def
+
+/SampleHeight				 24 def
+/SampleWidth
+	ColumnWidth NameColumnWidth sub def
+/SampleFontSize				 18 def
+/SampleFontY				  4 def
+/SampleFontX				  0 def
+
+/SampleTextL	(abcDEFGHIJKLMNOPQRSTUVWXYZ) def
+/SampleTextR						  (&123) def
+/SampleTextLAlt	(abcdefghijklmnopqrstuvwxyz) def
+/SampleText2	(ABCDEFGHIJKLMNOPQRSTUVWXYZ) def
+
+
+
+/MaxFontsPerColumn
+	AreaHeight NameBoxHeight sub SampleHeight div cvi def
+
+/FontSpacerY				  9 def
+
+/Buffer				 100 string def
+
+/PageNumber					  0 def
+
+
+/CoolOutline {
+	BodyLeft BodyTop moveto
+	BodyLeft BodyBottom lineto
+	BodyLeft SpacerInset add BodyBottom lineto
+	BodyLeft SpacerInset add BodyBottom SpacerRadius sub
+		SpacerRadius 90 270 arcn
+	FooterLeft FooterTop lineto
+	FooterLeft FooterBottom lineto
+	FooterRight FooterBottom lineto
+	FooterRight FooterTop lineto
+	FooterRight SpacerInset sub FooterTop lineto
+	FooterRight SpacerInset sub FooterTop SpacerRadius add
+		SpacerRadius 270 90 arcn
+	BodyRight BodyBottom lineto
+	BodyRight BodyTop lineto
+	BodyRight SpacerInset sub BodyTop lineto
+	BodyRight SpacerInset sub BodyTop SpacerRadius add
+		SpacerRadius 270 90 arcn
+	HeaderRight HeaderBottom lineto
+	HeaderRight HeaderTop lineto
+	HeaderLeft HeaderTop lineto
+	HeaderLeft HeaderBottom lineto
+	HeaderLeft SpacerInset add HeaderBottom lineto
+	HeaderLeft SpacerInset add HeaderBottom SpacerRadius sub
+		SpacerRadius 90 270 arcn
+	closepath
+} procdef
+
+
+/PrinterName	(FontSheets) def
+	/printername syswhereandget {
+		100 string exch exec
+		dup length 0 gt
+			{ /PrinterName exch store } { pop } ifelse
+	} if
+
+/PrinterProduct		/product null syswhereandexec def
+/PrinterRevision	/revision null syswhereandexec def
+
+
+/DateTimeString
+	() % DATETIMESTRING
+	def
+
+	% To print a date, replace the () string with the date
+	% Under Un*x, you can pipe this file through:
+	%	sed -e "s#(.*).*DATETIMESTRING#(`date "+%b %e, %l:%M %p"`)#"
+	% and then pipe that to your printer (or lpr)
+
+/VersionString	(1.02) def
+
+
+
+%
+% Text Display Routines
+%
+
+/ShowUpTo {									% width string --
+	{
+		2 copy stringwidth pop ge { exit } if
+		0 1 index length 1 sub getinterval
+	} loop
+	show
+	pop
+} procdef
+
+
+/ShowUpToRight {							% width stringL stringR --
+	2 index
+	1 index stringwidth pop
+	sub
+	2 index ShowUpTo
+	show
+	pop pop
+} procdef
+
+
+/TypesetDrawDict
+	5 dict dup begin
+		/stringtype		{ show }			def
+		/nametype		{ glyphshow }		def
+		/dicttype		{ setfont }			def
+		/integertype	{ 0 rmoveto }		def
+		/realtype		{ 0 rmoveto }		def
+	end def
+
+/TypesetMeasureDict
+	4 dict dup begin
+		/stringtype		{ stringwidth pop }	def
+		/dicttype		{ setfont 0 }		def
+		/integertype	{ }					def
+		/realtype		{ }					def
+	end def
+
+/TypesetJustLeft {							% mark elem...elem --
+	counttomark 1 sub -1 0 {
+		index
+		TypesetDrawDict
+		1 index type get
+		exec
+	} for
+	cleartomark
+} procdef
+
+/TypesetJustRight {							% mark elem...elem --
+	gsave
+		0
+		counttomark 1 sub -1 1 {
+			index
+			TypesetMeasureDict
+			1 index type get
+			exec sub
+		} for
+	grestore
+	0 rmoveto
+	gsave
+		TypesetJustLeft
+	grestore
+} procdef
+
+%
+% Layout Routines
+%
+
+/DisplayPage {
+	/PageNumber PageNumber 1 add store
+
+	1 setlinewidth 0 setgray
+	newpath CoolOutline stroke
+
+
+	HeaderLeft HeaderTop 16 sub moveto
+	[ Margin MessageFontBold PrinterName
+		TypesetJustLeft
+
+	HeaderRight HeaderTop 16 sub moveto
+	[ MessageFontBold (Page ) PageNumber Buffer cvs Margin
+		TypesetJustRight
+
+	HeaderLeft HeaderTop 30 sub moveto
+	[ Margin MessageSmallFont
+		PrinterProduct dup null ne
+			{ (, ) } { pop } ifelse
+		PrinterRevision dup null ne
+			{ (rev. ) exch Buffer cvs (, ) } { pop } ifelse
+		TypesetJustLeft
+	[ (interp. ver. ) version Buffer cvs
+		TypesetJustLeft
+
+	HeaderRight HeaderTop 30 sub moveto
+	[ MessageSmallFont DateTimeString Margin
+		TypesetJustRight
+
+	FooterLeft FooterTop 16 sub moveto
+	[ Margin MessageFontBold (FontSheets.ps )
+		MessageSmallFont (\320 v) VersionString		% \320 is an emdash
+		TypesetJustLeft
+
+	FooterRight FooterTop 16 sub moveto
+	[ MessageFontBold (http://web.glyphic.com/) Margin
+		TypesetJustRight
+
+	FooterLeft FooterTop 30 sub moveto
+	[ Margin MessageSmallFont (Copyright )
+		LanguageLevel 2 lt { ((c)) } { /copyright } ifelse
+		( 2000 Glyphic Technology)
+		TypesetJustLeft
+
+	FooterRight FooterTop 30 sub moveto
+	[ MessageSmallFont (Font samples set at )
+		SampleFontSize Buffer cvs ( pt.) Margin
+		TypesetJustRight
+} procdef
+
+
+/FinishPage {
+	DisplayPage
+	showpage
+
+	/CurrentX AreaLeft store
+} procdef
+
+/FinishColumn {
+	/CurrentX CurrentX ColumnAdvance add def
+	CurrentX AreaRight ge { FinishPage } if
+
+	/CurrentY AreaTop store
+} procdef
+
+/NextFontArea {								% height --
+	CurrentY 1 index sub AreaBottom lt { FinishColumn } if
+
+	CurrentX CurrentY translate
+	
+	newpath
+		-5 0 moveto
+		ColumnWidth 10 add 0 rlineto
+		0 1 index 5 add neg rlineto
+		ColumnWidth 10 add neg 0 rlineto
+		closepath
+	clip
+
+	CurrentY exch sub FontSpacerY sub
+	/CurrentY exch store
+} procdef	
+	
+
+%
+% Layout Elements
+%
+
+/DisplayNameBox {							% fontname -- 
+	0 NameBoxHeight neg translate
+
+	newpath
+	0 0 moveto
+	ColumnWidth 0 lineto
+	ColumnWidth NameBoxHeight lineto
+	0 NameBoxHeight lineto
+	closepath
+	0.80 setgray fill
+
+	NameBoxFontX NameBoxFontY moveto
+	NameBoxFont setfont
+	0 setgray Buffer cvs show
+} procdef
+
+
+/DisplaySampleSetup {						% font --
+	0 SampleHeight neg translate
+
+	0 setgray
+	SampleFontX SampleFontY moveto
+
+	SampleFontSize scalefont setfont
+} procdef
+
+/DisplaySampleLine {						% font --
+	DisplaySampleSetup
+	SampleWidth SampleTextL SampleTextR ShowUpToRight
+} procdef
+
+/DisplaySampleLineAlt {						% font --
+	DisplaySampleSetup
+	SampleWidth SampleTextLAlt SampleTextR ShowUpToRight
+} procdef
+
+/DisplaySampleLine2 {						% font --
+	DisplaySampleSetup
+	ColumnWidth SampleText2 ShowUpTo
+} procdef
+
+
+
+/DisplayPSNames {							% FontID --
+	FontID2Keys exch get
+	NameColumnKeyFont setfont
+	NameColumnKeyY exch
+	{
+		NameColumnKeyX 2 index moveto
+		(/) show Buffer cvs show (  ) show
+		NameColumnKeyYSpacing sub
+	} vforall
+	pop
+} procdef
+
+
+/DisplayFamily {							% FamilyID fontvarray singleton --
+	gsave
+	dup { 2 } { 1 index vlength } ifelse
+	SampleHeight mul NameBoxHeight add NextFontArea
+
+	2 index FamilyPrintString 
+% (=== ) print dup print ( ===\n) print
+	DisplayNameBox
+
+	3 1 roll 2 copy FamilyPrefix		% singleton familyID fontvarray prefix
+% (\tprefix: ) print dup print (\n) print
+	3 -1 roll pop exch
+	{									% singleton prefix fontID
+		dup FontPrintString
+% (\tfont: ) print dup print
+		2 index RemovePrefix			% singleton prefix fontID fontName
+% (\tas: ) print dup print (\n) print
+	
+		FontID2Font 2 index get			% singl pref fontID fontName font
+		dup
+		5 index
+			{ DisplaySampleLineAlt }	% if singleton
+			{ DisplaySampleLine }		% if normal
+			ifelse
+
+		NameColumnStyleX NameColumnStyleY moveto
+		NameColumnStyleFont setfont
+		exch show						% singleton prefix fontID font
+
+		exch DisplayPSNames				% singleton prefix font
+
+		2 index { DisplaySampleLine2 } { pop } ifelse
+	} vforall
+	pop pop
+
+	grestore
+} procdef
+
+/DoDisplay {							% FamilyID fontvarray --
+	dup vlength 1 eq {
+		true DisplayFamily
+	}
+	{
+		{
+			dup vlength 0 eq { exit } if
+			MaxFontsPerColumn vsplit
+			2 index exch false DisplayFamily
+		} loop
+		pop pop
+	} ifelse
+} procdef
+
+end	% Glyphic-FontSheets-Utilities
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+
+Glyphic-FontSheets-Utilities begin
+
+%
+% Enumerate all Font resources
+%
+
+/UseFontDir			true def
+/UseResourceForAll	true def
+
+UseFontDir {
+	FontDirectory { NoteFont } forall
+} if
+
+UseResourceForAll LanguageLevel 2 ge and {
+	(*) {
+		dup /Font findresource
+		NoteFont
+	} 100 string /Font resourceforall
+} if
+
+end	% Glyphic-FontSheets-Utilities
+
+%%EndSetup
+
+Glyphic-FontSheets-Utilities begin
+
+Family2Fonts length array 0
+Family2Fonts {
+	pop
+	dup type /stringtype ne { 100 string cvs } if
+	3 copy put
+	pop
+	1 add
+} forall
+pop
+dup qsort
+{
+	dup Family2Fonts exch get
+	DoDisplay
+} forall
+
+FinishPage
+
+end	% Glyphic-FontSheets-Utilities
+
+%%Trailer
+
+% originalContext restore
+
+%%EOF
+

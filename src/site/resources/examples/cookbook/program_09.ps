@@ -1,0 +1,41 @@
+%!PS-Adobe-2.0
+%%Title: Blue Book Program 9, on page 165
+%%Creator: Adobe Systems Incorporated 
+%%CreationDate: Thu Dec 28 13:36:08 PST 1989
+%%EndComments
+
+/vshowdict 4 dict def
+
+/vshow
+	{ vshowdict begin
+	  /thestring exch def
+	  /lineskip exch def
+	  thestring
+		{
+		  /charcode exch def
+		  /thechar ( ) dup 0 charcode put def
+		  0 lineskip neg rmoveto
+		  gsave
+		    thechar stringwidth pop 2 div neg 0 rmoveto
+		    thechar show
+		  grestore
+		} forall
+	  end
+	} def
+	
+/Helvetica findfont 12 scalefont setfont
+
+72 576 moveto
+16 (TEXT POSITIONED VERTICALLY) vshow
+122 576 moveto
+16 (SHOULD BE CENTERED ON) vshow
+172 576 moveto
+16 (A COMMON CENTER LINE.) vshow
+222 576 moveto
+16 (VERTICAL TEXT IN CAPITAL) vshow
+272 576 moveto
+16 (LETTERS HAS MORE EVEN) vshow
+322 576 moveto
+16 (spacing than lower case letters.) vshow
+
+showpage

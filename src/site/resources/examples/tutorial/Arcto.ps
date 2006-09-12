@@ -1,0 +1,18 @@
+/DrawAnX {
+    3 3 rmoveto
+    -6 -6 rlineto
+    0 6 rmoveto
+    6 -6 rlineto
+    stroke
+} def
+
+50 50 moveto DrawAnX
+50 150 moveto DrawAnX
+150 150 moveto DrawAnX
+
+50 50 moveto
+50 150 150 150 36 arcto
+4 {pop} repeat
+stroke
+
+showpage

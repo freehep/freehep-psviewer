@@ -18,12 +18,6 @@
       <url>http://java.freehep.org/maven2</url>
     </repository>
   </repositories>
-  <distributionManagement>
-    <site>
-      <id>freehep-web-deploy</id>
-      <url>scpexe://svn.freehep.org/nfs/slac/g/jas/workspace/freehep/__star__/web/freehep/psviewer</url>
-    </site>
-  </distributionManagement>
   <dependencies>
     <dependency>
       <groupId>org.freehep</groupId>

@@ -1,4 +1,4 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2006, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.*;
@@ -14,7 +14,7 @@ import java.awt.image.*;
  * Some of the state is kept in Graphics2D, some of it in BasicStroke
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSGState.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/PSGState.java 27fae24bde8b 2006/10/11 21:38:57 duns $
  */
 public class PSGState extends PSComposite {
 
@@ -562,7 +562,7 @@ public class PSGState extends PSComposite {
             color[1] = Math.min(1.0f, Math.max(0.0f, m));
             color[2] = Math.min(1.0f, Math.max(0.0f, y));
             color[3] = Math.min(1.0f, Math.max(0.0f, k));
-            return rgb;
+            return color;
         } else {
             return null;
         }

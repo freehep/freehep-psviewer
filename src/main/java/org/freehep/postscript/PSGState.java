@@ -14,7 +14,7 @@ import java.awt.image.*;
  * Some of the state is kept in Graphics2D, some of it in BasicStroke
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSGState.java 27fae24bde8b 2006/10/11 21:38:57 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/PSGState.java d9123a75f4f6 2006/11/17 18:50:26 duns $
  */
 public class PSGState extends PSComposite {
 
@@ -302,7 +302,7 @@ public class PSGState extends PSComposite {
     public void clip(Shape p) {
         clipPath = new GeneralPath(p);
         Shape clip = clipPath.createTransformedShape(ctm);
-        device.getGraphics().clip(clip);
+        device.getGraphics().setClip(clip);
     }
 
     public void clipPath() {

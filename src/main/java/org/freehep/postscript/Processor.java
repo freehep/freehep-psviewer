@@ -11,7 +11,7 @@ import javax.swing.*;
  * PostScript Processor
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/Processor.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/Processor.java 5f3e85e0001c 2006/11/20 08:39:41 duns $
  */
 public class Processor implements DebuggerListener {
         
@@ -72,7 +72,7 @@ public class Processor implements DebuggerListener {
         gstateStack = new GStateStack();
 
         if (data instanceof PSFile) {
-            ((PSFile)data).reset();
+            if (((PSFile)data).markSupported()) ((PSFile)data).reset();
         }
         execStack.push(data);
         currentPageNo = 0;
@@ -86,7 +86,11 @@ public class Processor implements DebuggerListener {
     
     public void setData(PSObject data, int bufferLimit) {
         this.data = data;        
-        if (data instanceof PSFile) ((PSFile)data).mark(bufferLimit);
+        if (data instanceof PSFile) {
+        	if (((PSFile)data).markSupported()) {
+        	    ((PSFile)data).mark(bufferLimit);
+        	}
+        }
         if (data instanceof PSDataSource) {
             if (dsc != null) dsc.removeDSCEventListener(device);
             dsc = ((PSDataSource)data).getDSC();

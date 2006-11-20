@@ -18,7 +18,7 @@ import java.util.zip.ZipException;
  * Objects for PostScript Processor, as defined in 3.3 Data Types and Objects
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSInputFile.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/PSInputFile.java 5f3e85e0001c 2006/11/20 08:39:41 duns $
  */
 public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
     protected InputStream in = null;
@@ -154,6 +154,7 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
     }
     
     public void mark(int readLimit) {
+    	Thread.dumpStack();
         if (in != null) {
             in.mark(readLimit);
         }

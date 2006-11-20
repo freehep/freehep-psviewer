@@ -17,68 +17,35 @@ import java.io.IOException;
  * Font Operators for PostScript Processor
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/FontOperator.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/FontOperator.java 68d526b93849 2006/11/20 07:20:33 duns $
  */
 public class FontOperator extends PSOperator {
 
-    protected static Hashtable fontCache;
+    protected static FontCache fontCache;
 
     static {
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        Font[] font = ge.getAllFonts();
-        fontCache = new Hashtable(font.length);
-        for (int i=0; i<font.length; i++) {
-            // PSNames are like: Times-BoldOblique
-            // getPSName returns the FontName: Times Bold Oblique
-            // some font names return: sansserif
-            // while their name is: Helvetica, Courier
+        fontCache = new FontCache();
 
-            String family = font[i].getFamily();
-            String name = font[i].getName();
-//            System.out.print(family+"***"+name+"***");
-            if (name.startsWith(family)) {
-                String type = name.substring(family.length());
-                if (type.length() == 0) {
-                    name = family;
-                } else {
-                    if (type.indexOf('.') == 0) {
-                        // strip .
-                        type = type.substring(1);
-                    } 
+        // add standard 14 entries (PDF like)
+        // QUESTION: should we point to Lucida Fonts!
+        fontCache.put("Courier",                fontCache.get("Monospaced.plain"));
+        fontCache.put("Courier-Bold",           fontCache.get("Monospaced.bold"));
+        fontCache.put("Courier-Oblique",        fontCache.get("Monospaced.italic"));
+        fontCache.put("Courier-BoldOblique",    fontCache.get("Monospaced.bolditalic"));
+        fontCache.put("Helvetica",              fontCache.get("SansSerif.plain"));
+        fontCache.put("Helvetica-Bold",         fontCache.get("SansSerif.bold"));
+        fontCache.put("Helvetica-Oblique",      fontCache.get("SansSerif.italic"));
+        fontCache.put("Helvetica-BoldOblique",  fontCache.get("SansSerif.bolditalic"));
+        fontCache.put("Times-Roman",            fontCache.get("Serif.plain"));
+        fontCache.put("Times-Bold",             fontCache.get("Serif.bold"));
+        fontCache.put("Times-Italic",           fontCache.get("Serif.italic"));
+        fontCache.put("Times-BoldItalic",       fontCache.get("Serif.bolditalic"));
 
-                    // replace spaces by nothing
-                    int space = type.indexOf(' ');
-                    while (space >= 0) {
-                        type = type.substring(0, space) + type.substring(space+1);
-                        space = type.indexOf(' ');
-                    }
-                    name = family+"-"+type;
-                }
-            }
-//            System.out.println("Adding font: '"+name+"'");
-            fontCache.put(name, font[i]);
-
-        }
-
-        // add standard 14 entries
-        // FIXME: point all to Lucida Fonts!
-        fontCache.put("Courier",                fontCache.get("monospaced"));
-        fontCache.put("Courier-Bold",           fontCache.get("monospaced-bold"));
-        fontCache.put("Courier-Oblique",        fontCache.get("monospaced-italic"));
-        fontCache.put("Courier-BoldOblique",    fontCache.get("monospaced-bolditalic"));
-        fontCache.put("Helvetica",              fontCache.get("Lucida Sans-Regular"));
-        fontCache.put("Helvetica-Bold",         fontCache.get("sansserif-bold"));
-        fontCache.put("Helvetica-Oblique",      fontCache.get("sansserif-italic"));
-        fontCache.put("Helvetica-BoldOblique",  fontCache.get("sansserif-bolditalic"));
-        fontCache.put("Times-Roman",            fontCache.get("serif"));
-        fontCache.put("Times-Bold",             fontCache.get("serif-bold"));
-        fontCache.put("Times-Italic",           fontCache.get("serif-italic"));
-        fontCache.put("Times-BoldItalic",       fontCache.get("serif-bolditalic"));
-
-        // FIXME: windows specific, does not work
+        // FIXME: windows specific, does not work, handled in font selection
 //        fontCache.put("ZapfDingbats",           fontCache.get("Wingdings"));
 //        fontCache.put("Symbol",                 fontCache.get("Symbol"));
 
+/*
         // add extra entries for testing (FIXME: this should all be read from a file)
         fontCache.put("Palatino-Roman",         fontCache.get("Lucida Bright-Regular"));
         fontCache.put("Palatino-Italic",        fontCache.get("Lucida Bright-Italic"));
@@ -93,6 +60,7 @@ public class FontOperator extends PSOperator {
         fontCache.put("Optima-BoldOblique",     fontCache.get("Lucida Sans-Demibold"));
 
         fontCache.put("ZapfChancery-MediumItalic",fontCache.get("Lucida Bright-DemiboldItalic"));
+*/
     }
 
 
@@ -114,16 +82,13 @@ public class FontOperator extends PSOperator {
             String encoding = "STDLatin";
             if (fontName.equals("Symbol")) {
                 encoding = "Symbol";
-                fontName = "Lucida Sans-Regular";   // 31 chars missing, mainly math
+                fontName = "SansSerif.plain";   // 31 chars missing, mainly math
             } else if (fontName.equals("ZapfDingbats")) {
                 encoding = "Zapfdingbats";
-                fontName = "Lucida Sans-Regular";
+                fontName = "SansSerif.plain";
             }
 
-            Font javaFont = (Font)fontCache.get(fontName);
-            if (javaFont == null) {
-                return null;
-            }
+            Font javaFont = fontCache.get(fontName);
             font = new PSFontDictionary(javaFont, encoding);
         }
         return font;

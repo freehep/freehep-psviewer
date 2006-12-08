@@ -1,19 +1,24 @@
 // Copyright 2001-2004, FreeHEP.
 package org.freehep.postscript;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * Debugger for PostScript Processor
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSDebugger.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/PSDebugger.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PSDebugger extends JPanel {
     private static final int NCOLS=3;

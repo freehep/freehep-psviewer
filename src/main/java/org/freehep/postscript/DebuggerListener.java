@@ -1,8 +1,8 @@
 // Copyright 2004, FreeHEP.
 package org.freehep.postscript;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.EventListener;
 
 public interface DebuggerListener extends EventListener {
     /**

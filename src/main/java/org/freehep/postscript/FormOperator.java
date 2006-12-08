@@ -1,9 +1,7 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2006, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.Paint;
-import java.awt.TexturePaint;
-import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
@@ -14,7 +12,7 @@ import java.awt.image.BufferedImage;
  * Form and Pattern Operators for PostScript Processor
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/FormOperator.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/FormOperator.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class FormOperator extends PSOperator {
         

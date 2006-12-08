@@ -1,4 +1,4 @@
-// Copyright 2004, FreeHEP.
+// Copyright 2004-2006, FreeHEP.
 
 import java.awt.Dimension;
 import java.io.File;

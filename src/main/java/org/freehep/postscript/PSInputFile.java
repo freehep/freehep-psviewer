@@ -5,9 +5,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.IOException;
 import java.io.PushbackInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,7 +18,7 @@ import java.util.zip.ZipException;
  * Objects for PostScript Processor, as defined in 3.3 Data Types and Objects
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSInputFile.java 5f3e85e0001c 2006/11/20 08:39:41 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/PSInputFile.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
     protected InputStream in = null;

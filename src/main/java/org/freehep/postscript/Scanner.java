@@ -1,7 +1,10 @@
 // Copyright 2001-2004, FreeHEP.
 package org.freehep.postscript;
 
-import java.io.*;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PushbackInputStream;
 
 import org.freehep.util.io.ASCII85InputStream;
 import org.freehep.util.io.ASCIIHexInputStream;
@@ -11,7 +14,7 @@ import org.freehep.util.io.EncodingException;
  * Scanner for PostScript input
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/Scanner.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/Scanner.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class Scanner {
 

@@ -1,11 +1,6 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2006, FreeHEP.
 package org.freehep.postscript;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Transparency;
-import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
@@ -16,7 +11,7 @@ import java.io.IOException;
  * Painting Operators for PostScript Processor
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PaintingOperator.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/PaintingOperator.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PaintingOperator extends PSOperator {
     

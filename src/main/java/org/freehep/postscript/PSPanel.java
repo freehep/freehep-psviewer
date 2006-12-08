@@ -1,11 +1,8 @@
 // Copyright 2001-2004, FreeHEP.
 package org.freehep.postscript;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
-import java.awt.image.*;
-import java.util.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import org.freehep.graphics2d.BufferedPanel;
 
@@ -13,7 +10,7 @@ import org.freehep.graphics2d.BufferedPanel;
  * PostScript Panel for PostScript Processor,
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSPanel.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/PSPanel.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PSPanel extends BufferedPanel {
     

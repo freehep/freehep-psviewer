@@ -2,22 +2,15 @@
 package org.freehep.postscript;
 
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.font.GlyphMetrics;
-import java.awt.font.GlyphVector;
-import java.util.Hashtable;
-import java.util.StringTokenizer;
 import java.io.IOException;
 
 /**
  * Font Operators for PostScript Processor
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/FontOperator.java 68d526b93849 2006/11/20 07:20:33 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/FontOperator.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class FontOperator extends PSOperator {
 

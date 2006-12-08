@@ -1,11 +1,7 @@
 // Copyright 2001-2004, FreeHEP.
 package org.freehep.postscript;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
@@ -13,7 +9,6 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
 import java.util.Stack;
 import java.util.Vector;
 
@@ -21,7 +16,7 @@ import java.util.Vector;
  * Path Construction Operators for PostScript Processor
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PathOperator.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/PathOperator.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PathOperator extends PSOperator {
         

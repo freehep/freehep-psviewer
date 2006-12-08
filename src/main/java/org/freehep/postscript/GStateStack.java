@@ -1,13 +1,12 @@
 // Copyright 2001, FreeHEP.
 package org.freehep.postscript;
 
-import java.lang.reflect.Field;
 
 /**
  * OperandStack for PostScript Processor
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/GStateStack.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/GStateStack.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class GStateStack extends PostScriptStack {
             

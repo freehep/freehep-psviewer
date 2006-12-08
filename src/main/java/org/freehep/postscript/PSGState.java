@@ -1,11 +1,24 @@
 // Copyright 2001-2006, FreeHEP.
 package org.freehep.postscript;
 
-import java.awt.*;
-import java.awt.color.*;
-import java.awt.font.*;
-import java.awt.geom.*;
-import java.awt.image.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.color.ColorSpace;
+import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
+import java.awt.image.RenderedImage;
 
 /**
  * Graphics State Object for PostScript Processor,
@@ -14,7 +27,7 @@ import java.awt.image.*;
  * Some of the state is kept in Graphics2D, some of it in BasicStroke
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSGState.java d9123a75f4f6 2006/11/17 18:50:26 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/PSGState.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PSGState extends PSComposite {
 

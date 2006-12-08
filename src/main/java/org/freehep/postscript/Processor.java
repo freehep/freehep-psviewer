@@ -1,17 +1,19 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2006, FreeHEP.
 package org.freehep.postscript;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
-import java.io.*;
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.geom.AffineTransform;
+import java.io.IOException;
 
 /**
  * PostScript Processor
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/Processor.java 5f3e85e0001c 2006/11/20 08:39:41 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/Processor.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class Processor implements DebuggerListener {
         
@@ -185,7 +187,7 @@ public class Processor implements DebuggerListener {
         }
 
         if (debugger != null) debugger.update(dictStack, execStack, operandStack);
-        device.refresh();
+//        device.refresh();
     }
         
     public void process() throws IOException {

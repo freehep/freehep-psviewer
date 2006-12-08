@@ -1,20 +1,25 @@
-// Copyright 2004, FreeHEP.
+// Copyright 2004-2006, FreeHEP.
 package org.freehep.postscript;
 
-import java.awt.*;
-import java.io.*;
-import java.math.*;
+import java.awt.Color;
+import java.io.FileNotFoundException;
 import java.util.List;
-import javax.swing.*;
 
-import org.freehep.util.argv.*;
-import org.freehep.graphics2d.BufferedPanel;
+import javax.swing.JFrame;
+
+import org.freehep.util.argv.ArgumentFormatException;
+import org.freehep.util.argv.ArgumentParser;
+import org.freehep.util.argv.BooleanOption;
+import org.freehep.util.argv.DoubleOption;
+import org.freehep.util.argv.IntOption;
+import org.freehep.util.argv.MissingArgumentException;
+import org.freehep.util.argv.StringParameter;
 
 /**
  * PS Viewer
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSViewer.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/PSViewer.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PSViewer {
         
@@ -47,7 +52,7 @@ public class PSViewer {
             }
             
             if (version.getValue()) {
-                System.err.println("$Id: src/main/java/org/freehep/postscript/PSViewer.java 17245790f2a9 2006/09/12 21:44:14 duns $");
+                System.err.println("$Id: src/main/java/org/freehep/postscript/PSViewer.java 829a8d93169a 2006/12/08 09:03:07 duns $");
                 return;
             }
         } catch (MissingArgumentException mae) {

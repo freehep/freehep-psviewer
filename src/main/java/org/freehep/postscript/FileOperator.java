@@ -1,13 +1,19 @@
 // Copyright 2001, FreeHEP.
 package org.freehep.postscript;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import org.freehep.util.io.ASCIIHexInputStream;
-import org.freehep.util.io.ASCIIHexOutputStream;
 import org.freehep.util.io.ASCII85InputStream;
 import org.freehep.util.io.ASCII85OutputStream;
+import org.freehep.util.io.ASCIIHexInputStream;
+import org.freehep.util.io.ASCIIHexOutputStream;
 import org.freehep.util.io.DCTInputStream;
 import org.freehep.util.io.FlateInputStream;
 import org.freehep.util.io.FlateOutputStream;
@@ -19,7 +25,7 @@ import org.freehep.util.io.StandardFileFilter;
  * File Operators for PostScript Processor
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/FileOperator.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/FileOperator.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class FileOperator extends PSOperator {
 

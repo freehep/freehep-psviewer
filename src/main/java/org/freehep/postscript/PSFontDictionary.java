@@ -8,15 +8,15 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.util.Hashtable;
 
-import org.freehep.graphics2d.font.Lookup;
 import org.freehep.graphics2d.font.CharTable;
+import org.freehep.graphics2d.font.Lookup;
 
 /**
  * Quasi Type 1 Font mapping Java Fonts to PostScript ones. 
  * This object is never casted to.
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSFontDictionary.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/PSFontDictionary.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PSFontDictionary extends PSDictionary {
     

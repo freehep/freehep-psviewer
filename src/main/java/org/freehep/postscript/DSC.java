@@ -1,7 +1,11 @@
 // Copyright 2004, FreeHEP.
 package org.freehep.postscript;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * DCS (Document Structuring Conventions) level 3.0 for PostScript Processor
@@ -10,7 +14,7 @@ import java.util.*;
  * Specification, version 3.0, 25 September 1992.
  *
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/DSC.java 17245790f2a9 2006/09/12 21:44:14 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/DSC.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class DSC {
      

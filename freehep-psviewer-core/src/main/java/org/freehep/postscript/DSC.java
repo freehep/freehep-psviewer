@@ -422,7 +422,7 @@ public class DSC {
 	public static class Rectangle implements Arguments {
 		public Object parse(String key, String params, OperandStack os) {
 			try {
-				String[] tokens = params.split("[ \t]", 4);
+				String[] tokens = params.trim().split("[ \t]", 4);
 				if (tokens.length != 4) {
 					return null;
 				}
@@ -433,6 +433,7 @@ public class DSC {
 				return new java.awt.Rectangle(p[0], p[1], p[2] - p[0], p[3]
 						- p[1]);
 			} catch (NumberFormatException e) {
+                System.err.println(e);
 				return null;
 			}
 		}

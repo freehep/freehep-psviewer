@@ -1,0 +1,65 @@
+<project>
+
+  <parent>
+    <artifactId>freehep-psviewer</artifactId>
+    <groupId>org.freehep</groupId>
+    <version>2.0-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.freehep</groupId>
+  <artifactId>freehep-psviewer-standalone</artifactId>
+
+  <name>FreeHEP PostScript Viewer Application</name>
+  <description>PostScript Viewer Application
+  </description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <transformers>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+              <manifestEntries>
+                <Main-Class>org.freehep.postscript.PSViewer</Main-Class>
+              </manifestEntries>
+            </transformer>
+          </transformers>
+          <artifactSet>
+            <excludes>
+              <exclude>junit:junit</exclude>
+            </excludes>
+          </artifactSet>
+          <filters>
+            <filter>
+              <artifact>org.freehep:freehep-graphics-base</artifact>
+              <excludes>
+                <exclude>org/freehep/swing/**</exclude>
+                <exclude>org/freehep/xml/**</exclude>
+              </excludes>
+            </filter>
+          </filters>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.freehep</groupId>
+      <artifactId>freehep-psviewer-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+</project>

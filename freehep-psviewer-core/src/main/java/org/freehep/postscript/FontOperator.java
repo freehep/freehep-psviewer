@@ -94,7 +94,6 @@ public class FontOperator extends PSOperator {
 
 	protected void defineFont(PSDictionary fontDirectory, PSName key,
 			PSDictionary font) {
-        System.err.println("defineFont "+key);
 
 		// FREEHEP-149: no check done on the font
 		font.put("FID", new PSFontID());
@@ -416,13 +415,9 @@ class DefineFont extends FontOperator {
 
 	public boolean execute(OperandStack os) {
 		PSDictionary font = os.popDictionary();
-        System.err.println("Done");
 		PSName name = os.popName();
-        System.err.println("Done");
 		defineFont(os.dictStack().fontDirectory(), name, font);
-        System.err.println("Done");
 		os.push(font);
-		System.err.println("Done");
 		return true;
 	}
 }

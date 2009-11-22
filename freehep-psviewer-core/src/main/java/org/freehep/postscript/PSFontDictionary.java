@@ -45,7 +45,7 @@ public class PSFontDictionary extends PSDictionary {
 		put("FontType", 1);
 		put("FontMatrix", new PSArray(
 				new float[] { 1.0f, 0f, 0f, 1.0f, 0f, 0f }));
-		put("FontName", font.getPSName());
+		put("FontName", new PSName(font.getPSName()));
 		PSArray encoding = new PSArray(256);
 		put("Encoding", encoding);
 		// FIXME: fake

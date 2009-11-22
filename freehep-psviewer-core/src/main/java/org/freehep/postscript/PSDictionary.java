@@ -1,38 +1,39 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
-import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Objects for PostScript Processor, as defined in 3.3 Data Types and Objects
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSDictionary.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class PSDictionary extends PSComposite {
-	protected Hashtable table;
+	protected Map<Object, PSObject> table;
 
-	protected PSDictionary(Hashtable t) {
+	protected PSDictionary(Map<Object, PSObject> t) {
 		super("dictionary", true);
 		table = t;
 	}
 
 	public PSDictionary(int n) {
-		this(new Hashtable(n));
+		this(new HashMap<Object, PSObject>(n));
 	}
 
 	public PSDictionary() {
-		this(new Hashtable());
+		this(new HashMap<Object, PSObject>());
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(this);
 		return true;
 	}
 
+	@Override
 	public String getType() {
 		return "dicttype";
 	}
@@ -80,11 +81,11 @@ public class PSDictionary extends PSComposite {
 	}
 
 	public PSObject get(PSObject key) {
-		return (PSObject) table.get(key);
+		return table.get(key);
 	}
 
 	public PSObject get(String key) {
-		return (PSObject) table.get(new PSName(key));
+		return table.get(new PSName(key));
 	}
 
 	public String getString(String key) {
@@ -116,34 +117,36 @@ public class PSDictionary extends PSComposite {
 	}
 
 	public PSObject remove(PSObject key) {
-		return (PSObject) table.remove(key);
+		return table.remove(key);
 	}
 
 	public PSObject remove(String key) {
-		return (PSObject) table.remove(new PSName(key));
+		return table.remove(new PSName(key));
 	}
 
 	public void copyInto(PSDictionary d) {
-		for (Enumeration e = table.keys(); e.hasMoreElements();) {
-			PSObject key = (PSObject) e.nextElement();
-			PSObject value = (PSObject) table.get(key);
+		for (Iterator<Object> i = table.keySet().iterator(); i.hasNext();) {
+			PSObject key = (PSObject) i.next();
+			PSObject value = table.get(key);
 			d.put(key, value);
 		}
 	}
 
 	public void forAll(PSArray proc, OperandStack os) {
-		for (Enumeration e = table.keys(); e.hasMoreElements();) {
-			PSObject key = (PSObject) e.nextElement();
+		for (Iterator<Object> i = table.keySet().iterator(); i.hasNext();) {
+			PSObject key = (PSObject) i.next();
 			os.push(key);
-			os.push((PSObject) table.get(key));
+			os.push(table.get(key));
 			proc.execute(os);
 		}
 	}
 
+	@Override
 	public int hashCode() {
 		return table.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSDictionary) {
 			return (table == ((PSDictionary) o).table);
@@ -151,13 +154,15 @@ public class PSDictionary extends PSComposite {
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSDictionary(table);
 	}
 
+	@Override
 	public PSObject copy() {
-		Hashtable newTable = new Hashtable();
-		Iterator i = table.keySet().iterator();
+		Hashtable<Object, PSObject> newTable = new Hashtable<Object, PSObject>();
+		Iterator<Object> i = table.keySet().iterator();
 		while (i.hasNext()) {
 			Object key = i.next();
 			newTable.put(key, table.get(key));
@@ -166,10 +171,12 @@ public class PSDictionary extends PSComposite {
 		// throw new RuntimeException("Dictionaries cannot be copied.");
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return "--" + ((isExecutable()) ? "*" : "") + "dictionary (" + size()
 				+ ")--";
@@ -177,8 +184,8 @@ public class PSDictionary extends PSComposite {
 
 	public String dumpKeys() {
 		StringBuffer out = new StringBuffer();
-		for (Enumeration e = table.keys(); e.hasMoreElements();) {
-			out.append(e.nextElement().toString());
+		for (Iterator<Object> i = table.keySet().iterator(); i.hasNext();) {
+			out.append(i.next().toString());
 			out.append(";");
 		}
 		return out.toString();

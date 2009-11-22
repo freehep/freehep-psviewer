@@ -19,6 +19,7 @@ public class PSDSC extends PSSimple {
 		this.dsc = dsc;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (!dsc.parse(getValue(), os)) {
 			System.out.println("DSC unrecognized: " + this);
@@ -27,6 +28,7 @@ public class PSDSC extends PSSimple {
 		return true;
 	}
 
+	@Override
 	public String getType() {
 		return "DSCtype";
 	}
@@ -35,10 +37,12 @@ public class PSDSC extends PSSimple {
 		return comment;
 	}
 
+	@Override
 	public int hashCode() {
 		return comment.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSDSC) {
 			return (comment == ((PSDSC) o).comment);
@@ -46,14 +50,17 @@ public class PSDSC extends PSSimple {
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSDSC(comment, dsc);
 	}
 
+	@Override
 	public String cvs() {
 		return comment;
 	}
 
+	@Override
 	public String toString() {
 		return "%%" + comment;
 	}

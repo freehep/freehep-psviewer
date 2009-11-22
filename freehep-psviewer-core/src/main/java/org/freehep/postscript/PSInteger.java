@@ -24,6 +24,7 @@ public class PSInteger extends PSNumber {
 		value = v;
 	}
 
+	@Override
 	public String getType() {
 		return "integertype";
 	}
@@ -32,10 +33,12 @@ public class PSInteger extends PSNumber {
 		return value;
 	}
 
+	@Override
 	public double getDouble() {
 		return value;
 	}
 
+	@Override
 	public int getInt() throws RangeException {
 		return getValue();
 	}
@@ -51,10 +54,12 @@ public class PSInteger extends PSNumber {
 		}
 	}
 
+	@Override
 	public int hashCode() {
 		return value;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSInteger) {
 			return (value == ((PSInteger) o).getValue());
@@ -62,14 +67,17 @@ public class PSInteger extends PSNumber {
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSInteger(value);
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return "" + value;
 	}

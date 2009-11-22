@@ -1,14 +1,12 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Utilities for PostScript
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSUtils.java 17245790f2a9
- *          2006/09/12 21:44:14 duns $
  */
-public class PSUtils {
+public final class PSUtils {
 	private PSUtils() {
 	}
 

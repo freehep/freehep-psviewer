@@ -1,4 +1,4 @@
-// Copyright 2001-2005, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.Font;
@@ -6,7 +6,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphMetrics;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
-import java.util.Hashtable;
+import java.util.Map;
 
 import org.freehep.graphics2d.font.CharTable;
 import org.freehep.graphics2d.font.Lookup;
@@ -16,13 +16,11 @@ import org.freehep.graphics2d.font.Lookup;
  * casted to.
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSFontDictionary.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PSFontDictionary extends PSDictionary {
 
-	protected PSFontDictionary(Hashtable t) {
-		super(t);
+	protected PSFontDictionary(Map<Object, PSObject> table) {
+		super(table);
 	}
 
 	public PSFontDictionary(Font font, String encodingTable) {
@@ -86,14 +84,17 @@ public class PSFontDictionary extends PSDictionary {
 		}
 	}
 
+	@Override
 	public String getType() {
 		return "javafontdictionary";
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSFontDictionary(table);
 	}
 
+	@Override
 	public String toString() {
 		return "--" + ((isExecutable()) ? "*" : "") + name + " (" + size()
 				+ ")--";

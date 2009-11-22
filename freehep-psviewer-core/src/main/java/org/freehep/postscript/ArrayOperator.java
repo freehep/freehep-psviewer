@@ -1,18 +1,17 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Array Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/ArrayOperator.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class ArrayOperator extends PSOperator {
 
-	public static Class[] operators = { Array.class, ArrayBegin.class,
+	public static Class<?>[] operators = { Array.class, ArrayBegin.class,
 			ArrayEnd.class, AStore.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -23,6 +22,7 @@ class Array extends ArrayOperator {
 		operandTypes = new Class[] { PSInteger.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSInteger n = os.popInteger();
 		if (n.getValue() < 0) {
@@ -36,10 +36,12 @@ class Array extends ArrayOperator {
 
 class ArrayBegin extends ArrayOperator {
 
+	@Override
 	public String getName() {
 		return ("[");
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(new PSMark());
 		return true;
@@ -48,11 +50,13 @@ class ArrayBegin extends ArrayOperator {
 
 class ArrayEnd extends ArrayOperator {
 
+	@Override
 	public String getName() {
 		return ("]");
 	}
 
 	// FREEHEP-139: nothing done about InvalidAccess
+	@Override
 	public boolean execute(OperandStack os) {
 		int n = os.countToMark();
 		if (n < 0) {
@@ -76,6 +80,7 @@ class AStore extends ArrayOperator {
 		operandTypes = new Class[] { PSArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSArray a = os.popArray();
 		int n = a.size();

@@ -1,19 +1,18 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Stack Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/StackOperator.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class StackOperator extends PSOperator {
 
-	public static Class[] operators = { Pop.class, Exch.class, Dup.class,
+	public static Class<?>[] operators = { Pop.class, Exch.class, Dup.class,
 			Index.class, Roll.class, Clear.class, Count.class, Mark.class,
 			ClearToMark.class, CountToMark.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -24,6 +23,7 @@ class Pop extends StackOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.pop();
 		return true;
@@ -35,6 +35,7 @@ class Exch extends StackOperator {
 		operandTypes = new Class[] { PSObject.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.exch();
 		return true;
@@ -46,6 +47,7 @@ class Dup extends StackOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.dup();
 		return true;
@@ -57,6 +59,7 @@ class Index extends StackOperator {
 		operandTypes = new Class[] { PSInteger.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		int n = os.popInteger().getValue();
 		if ((n < 0) || (n > os.size())) {
@@ -73,6 +76,7 @@ class Roll extends StackOperator {
 		operandTypes = new Class[] { PSInteger.class, PSInteger.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSInteger j = os.popInteger();
 		PSInteger n = os.popInteger();
@@ -94,6 +98,7 @@ class Roll extends StackOperator {
 
 class Clear extends StackOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.clear();
 		return true;
@@ -102,6 +107,7 @@ class Clear extends StackOperator {
 
 class Count extends StackOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.size());
 		return true;
@@ -110,6 +116,7 @@ class Count extends StackOperator {
 
 class Mark extends StackOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(new PSMark());
 		return true;
@@ -118,6 +125,7 @@ class Mark extends StackOperator {
 
 class ClearToMark extends StackOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (!os.clearToMark()) {
 			error(os, new UnmatchedMark());
@@ -128,6 +136,7 @@ class ClearToMark extends StackOperator {
 
 class CountToMark extends StackOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		int n = os.countToMark();
 		if (n < 0) {

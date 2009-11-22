@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.io.IOException;
@@ -10,16 +10,15 @@ import org.freehep.util.io.EEXECDecryption;
  * Control Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/ControlOperator.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class ControlOperator extends PSOperator {
 
-	public static Class[] operators = { Exec.class, If.class, IfElse.class,
+	public static Class<?>[] operators = { Exec.class, If.class, IfElse.class,
 			For.class, Repeat.class, Loop.class, Exit.class, Stop.class,
 			Stopped.class, CountExecStack.class, ExecStack.class, Quit.class,
 			Start.class, EExec.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -30,6 +29,7 @@ class Exec extends ControlOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.execStack().pop();
 		os.execStack().push(os.popObject());
@@ -42,6 +42,7 @@ class If extends ControlOperator {
 		operandTypes = new Class[] { PSBoolean.class, PSPackedArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSPackedArray p = os.popPackedArray();
 		PSBoolean b = os.popBoolean();
@@ -60,6 +61,7 @@ class IfElse extends ControlOperator {
 				PSPackedArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSPackedArray p2 = os.popPackedArray();
 		PSPackedArray p1 = os.popPackedArray();
@@ -104,6 +106,7 @@ class For extends ControlOperator implements LoopingContext {
 		real = true;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 
 		if (procedure == null) {
@@ -176,6 +179,7 @@ class Repeat extends ControlOperator implements LoopingContext {
 		i = 0;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 
 		if (procedure == null) {
@@ -215,6 +219,7 @@ class Loop extends ControlOperator implements LoopingContext {
 		procedure = p;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (procedure == null) {
 			if (!os.checkType(PSPackedArray.class)) {
@@ -234,6 +239,7 @@ class Loop extends ControlOperator implements LoopingContext {
 
 class Exit extends ControlOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject o = os.execStack().popObject();
 		while ((o != null) && !(o instanceof LoopingContext)) {
@@ -263,6 +269,7 @@ class Stop extends ControlOperator {
 
 	// Our stop operator will print the error message if not in a stopped
 	// context
+	@Override
 	public boolean execute(OperandStack os) {
 
 		PSObject o = os.execStack().popObject();
@@ -294,6 +301,7 @@ class Stopped extends ControlOperator implements LoopingContext {
 		stopped = state;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (stopped) {
 			if (!os.checkType(PSObject.class)) {
@@ -315,6 +323,7 @@ class Stopped extends ControlOperator implements LoopingContext {
 
 class CountExecStack extends ControlOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.execStack().size());
 		return true;
@@ -326,6 +335,7 @@ class ExecStack extends ControlOperator {
 		operandTypes = new Class[] { PSArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSArray a = os.popArray();
 		os.execStack().copyInto(a);
@@ -336,6 +346,7 @@ class ExecStack extends ControlOperator {
 
 class Quit extends ControlOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// FIXME: look at 637, quit should also be in the userdict
 		// empty the full execution stack
@@ -346,6 +357,7 @@ class Quit extends ControlOperator {
 
 class Start extends ControlOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// ignored
 		return true;
@@ -357,6 +369,7 @@ class EExec extends ControlOperator {
 		operandTypes = new Class[] { PSDataSource.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 
 		if (os.checkType(PSDataSource.class)) {

@@ -1,4 +1,4 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.Shape;
@@ -10,19 +10,18 @@ import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
 
 /**
  * Path Construction Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PathOperator.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PathOperator extends PSOperator {
 
-	public static Class[] operators = { NewPath.class, CurrentPoint.class,
+	public static Class<?>[] operators = { NewPath.class, CurrentPoint.class,
 			MoveTo.class, RMoveTo.class, LineTo.class, RLineTo.class,
 			Arc.class, ArcN.class, ArcT.class, ArcTo.class, CurveTo.class,
 			RCurveTo.class, ClosePath.class, FlattenPath.class,
@@ -34,6 +33,7 @@ public class PathOperator extends PSOperator {
 			HLineTo.class, VLineTo.class, HMoveTo.class, VMoveTo.class,
 			RRCurveTo.class, VHCurveTo.class, HVCurveTo.class, };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -41,6 +41,7 @@ public class PathOperator extends PSOperator {
 
 class NewPath extends PathOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.gstate().newPath();
 		return true;
@@ -49,6 +50,7 @@ class NewPath extends PathOperator {
 
 class CurrentPoint extends PathOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D point = os.gstate().position();
 		if (point == null) {
@@ -66,6 +68,7 @@ class MoveTo extends PathOperator {
 		operandTypes = new Class[] { PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber y = os.popNumber();
 		PSNumber x = os.popNumber();
@@ -79,6 +82,7 @@ class RMoveTo extends PathOperator {
 		operandTypes = new Class[] { PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D point = os.gstate().position();
 		if (point == null) {
@@ -98,6 +102,7 @@ class LineTo extends PathOperator {
 		operandTypes = new Class[] { PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D point = os.gstate().position();
 		if (point == null) {
@@ -116,6 +121,7 @@ class RLineTo extends PathOperator {
 		operandTypes = new Class[] { PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D point = os.gstate().position();
 		if (point == null) {
@@ -136,6 +142,7 @@ class Arc extends PathOperator {
 				PSNumber.class, PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		double a2 = os.popNumber().getDouble();
 		double a1 = os.popNumber().getDouble();
@@ -161,6 +168,7 @@ class ArcN extends PathOperator {
 				PSNumber.class, PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		double a2 = os.popNumber().getDouble();
 		double a1 = os.popNumber().getDouble();
@@ -187,6 +195,7 @@ class ArcT extends PathOperator {
 				PSNumber.class, PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D p0 = os.gstate().position();
 		if (p0 == null) {
@@ -213,6 +222,7 @@ class ArcTo extends PathOperator {
 				PSNumber.class, PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D p0 = os.gstate().position();
 		if (p0 == null) {
@@ -245,6 +255,7 @@ class CurveTo extends PathOperator {
 				PSNumber.class, PSNumber.class, PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D p0 = os.gstate().position();
 		if (p0 == null) {
@@ -269,6 +280,7 @@ class RCurveTo extends PathOperator {
 				PSNumber.class, PSNumber.class, PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D p0 = os.gstate().position();
 		if (p0 == null) {
@@ -290,6 +302,7 @@ class RCurveTo extends PathOperator {
 }
 
 class ClosePath extends PathOperator {
+	@Override
 	public boolean execute(OperandStack os) {
 		os.gstate().path().closePath();
 		return true;
@@ -298,6 +311,7 @@ class ClosePath extends PathOperator {
 
 class FlattenPath extends PathOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.gstate().flattenPath();
 		return true;
@@ -306,7 +320,7 @@ class FlattenPath extends PathOperator {
 
 class ReversePath extends PathOperator {
 	private float coord[] = new float[6];
-	private Stack stack;
+	private Stack<Object> stack;
 
 	private void createSubPath(GeneralPath reverse) {
 		while (!stack.empty()) {
@@ -331,8 +345,9 @@ class ReversePath extends PathOperator {
 		}
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
-		stack = new Stack();
+		stack = new Stack<Object>();
 		GeneralPath path = (GeneralPath) os.gstate().path().clone();
 		PathIterator iterator = path.getPathIterator(new AffineTransform());
 		GeneralPath reverse = os.gstate().newPath();
@@ -379,6 +394,7 @@ class ReversePath extends PathOperator {
 
 class StrokePath extends PathOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.gstate().strokePath();
 		return true;
@@ -397,6 +413,7 @@ class UStrokePath extends PathOperator {
 	public UStrokePath() {
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (!done) {
 			if (!os.checkType(PSPackedArray.class)) {
@@ -452,6 +469,7 @@ class CharPath extends PathOperator {
 		operandTypes = new Class[] { PSString.class, PSBoolean.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		boolean strokePath = os.popBoolean().getValue();
 		String text = os.popString().getValue();
@@ -490,6 +508,7 @@ class UAppend extends PathOperator {
 	public UAppend() {
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (!done) {
 			if (!os.checkType(PSPackedArray.class)) {
@@ -518,6 +537,7 @@ class UAppend extends PathOperator {
 
 class ClipPath extends PathOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.gstate().clipPath();
 		return true;
@@ -530,6 +550,7 @@ class SetBBox extends PathOperator {
 				PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		double ury = ((PSNumber) os.pop()).getDouble();
 		double urx = ((PSNumber) os.pop()).getDouble();
@@ -543,6 +564,7 @@ class SetBBox extends PathOperator {
 
 class PathBBox extends PathOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D p0 = os.gstate().position();
 		if (p0 == null) {
@@ -583,6 +605,7 @@ class PathForAll extends PathOperator implements LoopingContext {
 	public PathForAll() {
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 
 		if (path == null) {
@@ -650,6 +673,7 @@ class UPath extends PathOperator {
 	}
 	private double coord[] = new double[6];
 
+	@Override
 	public boolean execute(OperandStack os) {
 		boolean ucache = os.popBoolean().getValue();
 
@@ -662,7 +686,7 @@ class UPath extends PathOperator {
 		}
 
 		PathIterator iterator = os.gstate().path().getPathIterator(inverse);
-		Vector path = new Vector();
+		List<PSSimple> path = new ArrayList<PSSimple>();
 
 		if (ucache) {
 			path.add(new PSName("ucache", true));
@@ -710,8 +734,7 @@ class UPath extends PathOperator {
 			iterator.next();
 		}
 
-		PSObject[] obj = new PSObject[path.size()];
-		path.copyInto(obj);
+		PSObject[] obj = path.toArray(new PSObject[path.size()]);
 		PSPackedArray upath = new PSPackedArray(obj);
 		upath.setExecutable();
 		os.push(upath);
@@ -722,6 +745,7 @@ class UPath extends PathOperator {
 
 class InitClip extends PathOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.gstate().initClip();
 		return true;
@@ -730,6 +754,7 @@ class InitClip extends PathOperator {
 
 class Clip extends PathOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.gstate().clip(os.gstate().path());
 		return true;
@@ -738,6 +763,7 @@ class Clip extends PathOperator {
 
 class EOClip extends PathOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		GeneralPath eoPath = new GeneralPath(os.gstate().path());
 		eoPath.setWindingRule(Path2D.WIND_EVEN_ODD);
@@ -751,6 +777,7 @@ class RectClip extends PathOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class, PSNumber.class, PSNumber.class,
 				PSNumber.class)) {
@@ -784,6 +811,7 @@ class RectClip extends PathOperator {
 
 class UCache extends PathOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// FIXME: ignored
 		return true;
@@ -799,6 +827,7 @@ class HLineTo extends PathOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D point = os.gstate().position();
 		if (point == null) {
@@ -817,6 +846,7 @@ class VLineTo extends PathOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D point = os.gstate().position();
 		if (point == null) {
@@ -835,6 +865,7 @@ class HMoveTo extends PathOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D point = os.gstate().position();
 		if (point == null) {
@@ -854,6 +885,7 @@ class VMoveTo extends PathOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D point = os.gstate().position();
 		if (point == null) {
@@ -873,6 +905,7 @@ class RRCurveTo extends PathOperator {
 				PSNumber.class, PSNumber.class, PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D p0 = os.gstate().position();
 		if (p0 == null) {
@@ -900,6 +933,7 @@ class HVCurveTo extends PathOperator {
 				PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D p0 = os.gstate().position();
 		if (p0 == null) {
@@ -927,6 +961,7 @@ class VHCurveTo extends PathOperator {
 				PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Point2D p0 = os.gstate().position();
 		if (p0 == null) {

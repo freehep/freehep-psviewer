@@ -159,7 +159,7 @@ public class Scanner {
 			return readComment();
 
 		case '@': // special name we do not handle at this time, normally
-					// associated to PCL commands
+			// associated to PCL commands
 			// FIXME, look up the PCL details somewhere.
 			return readComment();
 

@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.io.File;
@@ -25,12 +25,10 @@ import org.freehep.util.io.StandardFileFilter;
  * File Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/FileOperator.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class FileOperator extends PSOperator {
 
-	public static Class[] operators = { FileFile.class, Filter.class,
+	public static Class<?>[] operators = { FileFile.class, Filter.class,
 			CloseFile.class, Read.class, Write.class, ReadHexString.class,
 			WriteHexString.class, ReadString.class, WriteString.class,
 			ReadLine.class, BytesAvailable.class, Flush.class, FlushFile.class,
@@ -39,6 +37,7 @@ public class FileOperator extends PSOperator {
 			SetFilePosition.class, FilePosition.class, Print.class,
 			FileEqual.class, FileEqualEqual.class, Stack.class, PStack.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -49,10 +48,12 @@ class FileFile extends FileOperator {
 		operandTypes = new Class[] { PSString.class, PSString.class };
 	}
 
+	@Override
 	public String getName() {
 		return "file";
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		String access = os.popString().getValue();
 		String filename = os.popString().getValue();
@@ -223,6 +224,7 @@ class Filter extends FileOperator {
 		return true;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		String filterName = os.popName().getValue();
 		try {
@@ -244,6 +246,7 @@ class CloseFile extends FileOperator {
 		operandTypes = new Class[] { PSFile.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSFile file = os.popFile();
 		try {
@@ -260,6 +263,7 @@ class Read extends FileOperator {
 		operandTypes = new Class[] { PSFile.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSFile file = os.popFile();
 		try {
@@ -282,6 +286,7 @@ class Write extends FileOperator {
 		operandTypes = new Class[] { PSFile.class, PSInteger.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSInteger b = os.popInteger();
 		PSFile file = os.popFile();
@@ -299,6 +304,7 @@ class ReadHexString extends FileOperator {
 		operandTypes = new Class[] { PSFile.class, PSString.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSString string = os.popString();
 		PSFile file = os.popFile();
@@ -335,6 +341,7 @@ class WriteHexString extends FileOperator {
 		operandTypes = new Class[] { PSFile.class, PSString.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSString string = os.popString();
 		PSFile file = os.popFile();
@@ -361,6 +368,7 @@ class ReadString extends FileOperator {
 		operandTypes = new Class[] { PSFile.class, PSString.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSString string = os.popString();
 		PSFile file = os.popFile();
@@ -393,6 +401,7 @@ class WriteString extends FileOperator {
 		operandTypes = new Class[] { PSFile.class, PSString.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSString string = os.popString();
 		PSFile file = os.popFile();
@@ -412,6 +421,7 @@ class ReadLine extends FileOperator {
 		operandTypes = new Class[] { PSFile.class, PSString.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSString string = os.popString();
 		PSFile file = os.popFile();
@@ -444,6 +454,7 @@ class BytesAvailable extends FileOperator {
 		operandTypes = new Class[] { PSFile.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSFile file = os.popFile();
 		try {
@@ -457,6 +468,7 @@ class BytesAvailable extends FileOperator {
 
 class Flush extends FileOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		System.out.flush();
 		if (System.out.checkError()) {
@@ -471,6 +483,7 @@ class FlushFile extends FileOperator {
 		operandTypes = new Class[] { PSFile.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSFile file = os.popFile();
 		try {
@@ -487,6 +500,7 @@ class ResetFile extends FileOperator {
 		operandTypes = new Class[] { PSFile.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSFile file = os.popFile();
 		try {
@@ -503,6 +517,7 @@ class Status extends FileOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSFile.class)) {
 			PSFile file = os.popFile();
@@ -532,6 +547,7 @@ class Run extends FileOperator implements LoopingContext {
 	}
 
 	// FIXME: does not handle InvalidExit
+	@Override
 	public boolean execute(OperandStack os) {
 		String name = os.popString().getValue();
 		try {
@@ -551,6 +567,7 @@ class Run extends FileOperator implements LoopingContext {
 
 class CurrentFile extends FileOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.execStack().getCurrentFile());
 		return true;
@@ -562,6 +579,7 @@ class DeleteFile extends FileOperator {
 		operandTypes = new Class[] { PSString.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (!os.isSecure()) {
 			error(os, new InvalidFileAccess());
@@ -586,6 +604,7 @@ class RenameFile extends FileOperator {
 		operandTypes = new Class[] { PSString.class, PSString.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (!os.isSecure()) {
 			error(os, new InvalidFileAccess());
@@ -629,6 +648,7 @@ class FilenameForAll extends FileOperator implements LoopingContext {
 	}
 
 	// FREEHEP-128: incomplete
+	@Override
 	public boolean execute(OperandStack os) {
 		if (proc == null) {
 			if (!os.checkType(PSString.class, PSPackedArray.class,
@@ -652,7 +672,7 @@ class FilenameForAll extends FileOperator implements LoopingContext {
 			FileFilter filter = new StandardFileFilter(dir);
 			File[] matchedFiles = directory.listFiles(filter);
 
-			Collection matchedFileNames = new ArrayList();
+			Collection<String> matchedFileNames = new ArrayList<String>();
 			for (int i = 0; i < matchedFiles.length; i++) {
 				matchedFileNames.add(matchedFiles[i].getName());
 			}
@@ -680,6 +700,7 @@ class SetFilePosition extends FileOperator {
 		operandTypes = new Class[] { PSFile.class, PSInteger.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSInteger pos = os.popInteger();
 		PSFile file = os.popFile();
@@ -697,6 +718,7 @@ class FilePosition extends FileOperator {
 		operandTypes = new Class[] { PSFile.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSFile file = os.popFile();
 		try {
@@ -713,6 +735,7 @@ class Print extends FileOperator {
 		operandTypes = new Class[] { PSString.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSString s = os.popString();
 		System.out.print(s.getValue());
@@ -726,10 +749,12 @@ class FileEqual extends FileOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public String getName() {
 		return "=";
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// FIXME: should call CvS
 		// there should maybe be a separate string value for objects
@@ -745,10 +770,12 @@ class FileEqualEqual extends FileOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public String getName() {
 		return "==";
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject o = os.popObject();
 		System.out.println(o.toString());
@@ -758,6 +785,7 @@ class FileEqualEqual extends FileOperator {
 
 class Stack extends FileOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// FIXME: should call = operator
 		os.printStack();
@@ -767,6 +795,7 @@ class Stack extends FileOperator {
 
 class PStack extends FileOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// FIXME: should call == operator
 		os.printStack();

@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.util.Stack;
@@ -7,13 +7,12 @@ import java.util.Stack;
  * PostScript Abstract Stack for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PostScriptStack.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
-public class PostScriptStack extends Stack {
+public class PostScriptStack extends Stack<Object> {
 
 	protected int marker = -1;
 
+	@Override
 	public Object push(Object o) {
 		if (o == null) {
 			throw new IllegalArgumentException(
@@ -44,6 +43,7 @@ public class PostScriptStack extends Stack {
 	}
 
 	// do not remove elements, just lower the top of the stack
+	@Override
 	public Object pop() {
 		if (elementCount == 0) {
 			return null;

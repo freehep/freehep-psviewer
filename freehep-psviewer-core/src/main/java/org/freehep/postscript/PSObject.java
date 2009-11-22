@@ -21,11 +21,14 @@ public abstract class PSObject implements Cloneable {
 		name = s;
 	}
 
+	@Override
 	public abstract int hashCode();
 
+	@Override
 	public abstract boolean equals(Object obj);
 
-	public abstract Object clone();
+	@Override
+	public abstract Object clone() throws CloneNotSupportedException;
 
 	public abstract PSObject copy();
 
@@ -69,6 +72,7 @@ public abstract class PSObject implements Cloneable {
 
 	public abstract String cvs();
 
+	@Override
 	public String toString() {
 		return "--nostringval--";
 	}

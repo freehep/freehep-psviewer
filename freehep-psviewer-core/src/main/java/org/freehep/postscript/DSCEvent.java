@@ -12,36 +12,35 @@ import java.util.EventObject;
  */
 public class DSCEvent extends EventObject {
 
-	public static int PARSED = 0; // comment found and arguments (if any) parsed
-									// ok
-	public static int UNPARSED = 1; // comment not found
-	public static int ERROR = 2; // comment found, but arguments did not parse
-									// ok
+	public enum State {
+		PARSED, UNPARSED, ERROR
+	};
 
 	private String comment;
 	private Object args;
-	private int state;
+	private State state;
 
-	public DSCEvent(Object src, String comment, Object args, int state) {
+	public DSCEvent(Object src, String comment, Object args, State state) {
 		super(src);
 		this.comment = comment;
 		this.args = args;
 		this.state = state;
 	}
 
-	public String getComment() {
+	public final String getComment() {
 		return comment;
 	}
 
-	public Object getArgs() {
+	public final Object getArgs() {
 		return args;
 	}
 
-	public int getState() {
+	public final State getState() {
 		return state;
 	}
 
-	public String toString() {
+	@Override
+	public final String toString() {
 		return "DSCEvent [" + comment + ", " + args + ", " + state + "]";
 	}
 }

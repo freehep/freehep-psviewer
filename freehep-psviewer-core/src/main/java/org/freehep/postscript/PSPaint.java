@@ -18,11 +18,13 @@ public class PSPaint extends PSSimple {
 		value = v;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(this);
 		return true;
 	}
 
+	@Override
 	public String getType() {
 		return "painttype";
 	}
@@ -31,10 +33,12 @@ public class PSPaint extends PSSimple {
 		return value;
 	}
 
+	@Override
 	public int hashCode() {
 		return value.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSPaint) {
 			return value.equals(((PSPaint) o).getValue());
@@ -42,14 +46,17 @@ public class PSPaint extends PSSimple {
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSPaint(value);
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return "paint: " + value;
 	}

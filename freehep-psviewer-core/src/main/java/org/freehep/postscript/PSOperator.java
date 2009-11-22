@@ -1,16 +1,14 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Objects for PostScript Processor, as defined in 3.3 Data Types and Objects
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSOperator.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public abstract class PSOperator extends PSSimple {
 
-	protected Class[] operandTypes = new Class[0];
+	protected Class<?>[] operandTypes = new Class[0];
 
 	public PSOperator() {
 		super("operator", false);
@@ -26,10 +24,11 @@ public abstract class PSOperator extends PSSimple {
 		return name.toLowerCase();
 	}
 
+	@Override
 	public boolean checkAndExecute(OperandStack os) {
 		// set the mark for errors
 		os.mark();
-		
+
 		// Check for StackUnderflow
 		if (operandTypes.length > os.size()) {
 			error(os, new StackUnderflow());
@@ -46,14 +45,17 @@ public abstract class PSOperator extends PSSimple {
 		return execute(os);
 	}
 
+	@Override
 	public String getType() {
 		return "operatortype";
 	}
 
+	@Override
 	public int hashCode() {
 		return getClass().hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSOperator) {
 			return getClass().equals(o.getClass());
@@ -62,19 +64,23 @@ public abstract class PSOperator extends PSSimple {
 	}
 
 	// careful: do not add any instance variables
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return this;
 	}
 
 	// careful: do not add any instance variables
+	@Override
 	public PSObject copy() {
 		return this;
 	}
 
+	@Override
 	public String cvs() {
 		return getName();
 	}
 
+	@Override
 	public String toString() {
 		return "//" + getName();
 	}

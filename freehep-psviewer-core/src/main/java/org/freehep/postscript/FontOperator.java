@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.Font;
@@ -10,8 +10,6 @@ import java.io.IOException;
  * Font Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/FontOperator.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class FontOperator extends PSOperator {
 
@@ -64,7 +62,7 @@ public class FontOperator extends PSOperator {
 		 */
 	}
 
-	public static Class[] operators = { DefineFont.class, ComposeFont.class,
+	public static Class<?>[] operators = { DefineFont.class, ComposeFont.class,
 			UndefineFont.class, FindFont.class, ScaleFont.class,
 			MakeFont.class, SetFont.class, RootFont.class, CurrentFont.class,
 			SelectFont.class, Show.class, AShow.class, WidthShow.class,
@@ -403,6 +401,7 @@ public class FontOperator extends PSOperator {
 		return width;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -413,6 +412,7 @@ class DefineFont extends FontOperator {
 		operandTypes = new Class[] { PSName.class, PSDictionary.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSDictionary font = os.popDictionary();
 		PSName name = os.popName();
@@ -428,6 +428,7 @@ class ComposeFont extends FontOperator {
 				PSPackedArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// Level 3
 		error(os, new Unimplemented());

@@ -11,16 +11,15 @@ import java.io.IOException;
  * Painting Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PaintingOperator.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PaintingOperator extends PSOperator {
 
-	public static Class[] operators = { ErasePage.class, Stroke.class,
+	public static Class<?>[] operators = { ErasePage.class, Stroke.class,
 			Fill.class, EOFill.class, RectStroke.class, RectFill.class,
 			UStroke.class, UFill.class, UEOFill.class, ShFill.class,
 			PaintImage.class, ColorImage.class, ImageMask.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -28,6 +27,7 @@ public class PaintingOperator extends PSOperator {
 
 class ErasePage extends PaintingOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.gstate().erasePage();
 		return true;
@@ -36,6 +36,7 @@ class ErasePage extends PaintingOperator {
 
 class Stroke extends PaintingOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// FREEHEP-156: add special case for degenerate paths
 		os.gstate().stroke();
@@ -46,6 +47,7 @@ class Stroke extends PaintingOperator {
 
 class Fill extends PaintingOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// FREEHEP-156: add special case for degenerate paths
 		os.gstate().fill();
@@ -56,6 +58,7 @@ class Fill extends PaintingOperator {
 
 class EOFill extends PaintingOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// FREEHEP-156: add special case for degenerate paths
 		os.gstate().path().setWindingRule(Path2D.WIND_EVEN_ODD);
@@ -87,6 +90,7 @@ class RectStroke extends PaintingOperator {
 		}
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class, PSNumber.class, PSNumber.class,
 				PSNumber.class)) {
@@ -125,6 +129,7 @@ class RectFill extends PaintingOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class, PSNumber.class, PSNumber.class,
 				PSNumber.class)) {
@@ -164,6 +169,7 @@ class UStroke extends PaintingOperator {
 	public UStroke() {
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (!done) {
 			if (!os.checkType(PSPackedArray.class)) {
@@ -220,6 +226,7 @@ class UFill extends PaintingOperator {
 	public UFill() {
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (!done) {
 			if (!os.checkType(PSPackedArray.class)) {
@@ -260,6 +267,7 @@ class UEOFill extends PaintingOperator {
 	public UEOFill() {
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (!done) {
 			if (!os.checkType(PSPackedArray.class)) {
@@ -296,6 +304,7 @@ class ShFill extends PaintingOperator {
 		operandTypes = new Class[] { PSDictionary.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// Level 3 PostScript
 		error(os, new Unimplemented());
@@ -372,7 +381,9 @@ class ImageOperator extends PaintingOperator {
 		pixelBitStride = bitsPerComponent * components;
 		scanlineStride = (int) Math.ceil(width * pixelBitStride / dataSize);
 		popString = false;
-		x = y = c = 0;
+		x = 0;
+		y = 0; 
+		c = 0;
 	}
 
 	public boolean handleImageParameters(OperandStack os, boolean mask) {
@@ -476,6 +487,7 @@ class ImageOperator extends PaintingOperator {
 		}
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		boolean eod = false;
 
@@ -587,6 +599,8 @@ class ImageOperator extends PaintingOperator {
 			error(os, new IOError());
 		} catch (ClassCastException e) {
 			error(os, new TypeCheck());
+		} catch (CloneNotSupportedException e) {
+			error(os, new Unimplemented());
 		}
 
 		return true;
@@ -595,10 +609,12 @@ class ImageOperator extends PaintingOperator {
 
 class PaintImage extends ImageOperator {
 
+	@Override
 	public String getName() {
 		return "image";
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		return handleImageParameters(os, false);
 	}
@@ -606,6 +622,7 @@ class PaintImage extends ImageOperator {
 
 class ColorImage extends ImageOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (!os.checkType(PSBoolean.class, PSInteger.class)) {
 			error(os, new TypeCheck());
@@ -671,6 +688,7 @@ class ColorImage extends ImageOperator {
 
 class ImageMask extends ImageOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		return handleImageParameters(os, true);
 	}

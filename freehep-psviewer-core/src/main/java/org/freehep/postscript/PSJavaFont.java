@@ -19,11 +19,13 @@ public class PSJavaFont extends PSSimple {
 		font = f;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// no-op
 		return true;
 	}
 
+	@Override
 	public String getType() {
 		return "javafont";
 	}
@@ -32,10 +34,12 @@ public class PSJavaFont extends PSSimple {
 		return font;
 	}
 
+	@Override
 	public int hashCode() {
 		return font.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSJavaFont) {
 			return font.equals(((PSJavaFont) o).font);
@@ -43,14 +47,17 @@ public class PSJavaFont extends PSSimple {
 		return false;
 	}
 
+	@Override
 	public Object clone() {
 		return new PSJavaFont(font);
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return "--" + name + "--" + font + " " + font.getTransform();
 	}

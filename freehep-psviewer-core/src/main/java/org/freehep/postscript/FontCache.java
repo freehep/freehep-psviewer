@@ -18,10 +18,10 @@ import java.util.TreeMap;
  */
 public class FontCache {
 
-	private SortedMap/* <String, FontEntry> */fonts;
+	private SortedMap/* <String, FontEntry> */<String, FontEntry> fonts;
 
 	public FontCache() {
-		this.fonts = new TreeMap();
+		this.fonts = new TreeMap<String, FontEntry>();
 
 		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
 				.getLocalGraphicsEnvironment();
@@ -48,12 +48,11 @@ public class FontCache {
 	}
 
 	public Font get(String name) {
-		FontEntry entry = (FontEntry) fonts.get(name);
+		FontEntry entry = fonts.get(name);
 		if (entry == null) {
 			// FIXME, we could look in lists for replacements
 			replace(name, entry);
-			entry = new FontEntry(name, (FontEntry) fonts
-					.get("SansSerif.plain"));
+			entry = new FontEntry(name, fonts.get("SansSerif.plain"));
 		}
 		return entry.getFont();
 	}

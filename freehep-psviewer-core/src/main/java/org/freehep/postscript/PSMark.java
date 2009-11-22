@@ -13,19 +13,23 @@ public class PSMark extends PSSimple {
 		super("mark", true);
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(this);
 		return true;
 	}
 
+	@Override
 	public String getType() {
 		return "marktype";
 	}
 
+	@Override
 	public int hashCode() {
 		return getClass().hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSMark) {
 			return true;
@@ -33,14 +37,17 @@ public class PSMark extends PSSimple {
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSMark();
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return "--" + name + "--";
 	}

@@ -18,11 +18,13 @@ public class PSGlyph extends PSSimple {
 		super("glyph", true);
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// no-op
 		return true;
 	}
 
+	@Override
 	public String getType() {
 		return "glyph";
 	}
@@ -44,24 +46,29 @@ public class PSGlyph extends PSSimple {
 	}
 
 	// FIXME
+	@Override
 	public int hashCode() {
 		return 0;
 	}
 
 	// FIXME
+	@Override
 	public boolean equals(Object o) {
 		return false;
 	}
 
 	// FIXME
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return null;
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return "--" + name + "--";
 	}

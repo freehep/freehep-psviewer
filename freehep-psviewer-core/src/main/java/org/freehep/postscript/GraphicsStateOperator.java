@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.Color;
@@ -7,12 +7,10 @@ import java.awt.Color;
  * Graphics State Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/GraphicsStateOperator.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class GraphicsStateOperator extends PSOperator {
 
-	public static Class[] operators = { GSave.class, GRestore.class,
+	public static Class<?>[] operators = { GSave.class, GRestore.class,
 			ClipSave.class, ClipRestore.class, GRestoreAll.class,
 			InitGraphics.class, GState.class, SetGState.class,
 			CurrentGState.class, SetLineWidth.class, CurrentLineWidth.class,
@@ -25,6 +23,7 @@ public class GraphicsStateOperator extends PSOperator {
 			SetHSBColor.class, CurrentHSBColor.class, SetRGBColor.class,
 			CurrentRGBColor.class, SetCMYKColor.class, CurrentCMYKColor.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -32,6 +31,7 @@ public class GraphicsStateOperator extends PSOperator {
 
 class GSave extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.gsave();
 		return true;
@@ -40,6 +40,7 @@ class GSave extends GraphicsStateOperator {
 
 class GRestore extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.grestore();
 		return true;
@@ -48,6 +49,7 @@ class GRestore extends GraphicsStateOperator {
 
 class ClipSave extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// Level 3
 		error(os, new Unimplemented());
@@ -57,6 +59,7 @@ class ClipSave extends GraphicsStateOperator {
 
 class ClipRestore extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// Level 3
 		error(os, new Unimplemented());
@@ -66,6 +69,7 @@ class ClipRestore extends GraphicsStateOperator {
 
 class GRestoreAll extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// FREEHEP-132: can only be implemented once we have Save and Restore
 		error(os, new Unimplemented());
@@ -75,6 +79,7 @@ class GRestoreAll extends GraphicsStateOperator {
 
 class InitGraphics extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.gstate().initGraphics();
 		return true;
@@ -83,6 +88,7 @@ class InitGraphics extends GraphicsStateOperator {
 
 class GState extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.gstate().copy());
 		return true;
@@ -94,6 +100,7 @@ class SetGState extends GraphicsStateOperator {
 		operandTypes = new Class[] { PSGState.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSGState gs = os.popGState();
 		gs.copyInto(os.gstate());
@@ -106,6 +113,7 @@ class CurrentGState extends GraphicsStateOperator {
 		operandTypes = new Class[] { PSGState.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSGState gs = os.popGState();
 		os.gstate().copyInto(gs);
@@ -119,6 +127,7 @@ class SetLineWidth extends GraphicsStateOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber width = os.popNumber();
 		os.gstate().setLineWidth(width.getDouble());
@@ -128,6 +137,7 @@ class SetLineWidth extends GraphicsStateOperator {
 
 class CurrentLineWidth extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.gstate().lineWidth());
 		return true;
@@ -139,6 +149,7 @@ class SetLineCap extends GraphicsStateOperator {
 		operandTypes = new Class[] { PSInteger.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSInteger n = os.popInteger();
 		os.gstate().setLineCap(n.getValue());
@@ -148,6 +159,7 @@ class SetLineCap extends GraphicsStateOperator {
 
 class CurrentLineCap extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.gstate().lineCap());
 		return true;
@@ -159,6 +171,7 @@ class SetLineJoin extends GraphicsStateOperator {
 		operandTypes = new Class[] { PSInteger.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSInteger n = os.popInteger();
 		os.gstate().setLineJoin(n.getValue());
@@ -168,6 +181,7 @@ class SetLineJoin extends GraphicsStateOperator {
 
 class CurrentLineJoin extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.gstate().lineJoin());
 		return true;
@@ -179,6 +193,7 @@ class SetMiterLimit extends GraphicsStateOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber n = os.popNumber();
 		os.gstate().setMiterLimit(n.getFloat());
@@ -188,6 +203,7 @@ class SetMiterLimit extends GraphicsStateOperator {
 
 class CurrentMiterLimit extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.gstate().miterLimit());
 		return true;
@@ -199,6 +215,7 @@ class SetStrokeAdjust extends GraphicsStateOperator {
 		operandTypes = new Class[] { PSBoolean.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSBoolean b = os.popBoolean();
 		os.gstate().setStrokeAdjust(b.getValue());
@@ -208,6 +225,7 @@ class SetStrokeAdjust extends GraphicsStateOperator {
 
 class CurrentStrokeAdjust extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.gstate().strokeAdjust());
 		return true;
@@ -219,6 +237,7 @@ class SetDash extends GraphicsStateOperator {
 		operandTypes = new Class[] { PSPackedArray.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber offset = os.popNumber();
 		PSPackedArray array = os.popPackedArray();
@@ -229,6 +248,7 @@ class SetDash extends GraphicsStateOperator {
 
 class CurrentDash extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		float[] dash = os.gstate().dash();
 		PSArray array = new PSArray(dash);
@@ -243,6 +263,7 @@ class SetColorSpace extends GraphicsStateOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		String name;
 		Object[] params;
@@ -267,6 +288,7 @@ class SetColorSpace extends GraphicsStateOperator {
 
 class CurrentColorSpace extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		String space = os.gstate().colorSpace();
 		// FIXME: handle pattern color space parameters
@@ -286,6 +308,7 @@ class SetColor extends GraphicsStateOperator {
 	}
 
 	// FIXME: handles only RGB, GRAY and CMYK
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class)) {
 			String space = os.gstate().colorSpace();
@@ -333,6 +356,7 @@ class SetColor extends GraphicsStateOperator {
 class CurrentColor extends GraphicsStateOperator {
 
 	// FIXME: this call should allow UCR and BG to be processed from DeviceCMYK
+	@Override
 	public boolean execute(OperandStack os) {
 		float[] color = os.gstate().color();
 		// FIXME: handle pattern color space
@@ -348,6 +372,7 @@ class SetGray extends GraphicsStateOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber color = os.popNumber();
 		os.gstate().setColorSpace("DeviceGray");
@@ -358,6 +383,7 @@ class SetGray extends GraphicsStateOperator {
 
 class CurrentGray extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		float[] color = os.gstate().color("DeviceGray");
 
@@ -374,6 +400,7 @@ class SetHSBColor extends GraphicsStateOperator {
 				PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber b = os.popNumber();
 		PSNumber s = os.popNumber();
@@ -388,6 +415,7 @@ class SetHSBColor extends GraphicsStateOperator {
 
 class CurrentHSBColor extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		float[] color = os.gstate().color("DeviceRGB");
 		float[] hsb = Color.RGBtoHSB((int) (color[0] * 255),
@@ -406,6 +434,7 @@ class SetRGBColor extends GraphicsStateOperator {
 				PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber blue = os.popNumber();
 		PSNumber green = os.popNumber();
@@ -421,6 +450,7 @@ class SetRGBColor extends GraphicsStateOperator {
 
 class CurrentRGBColor extends GraphicsStateOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		float[] color = os.gstate().color("DeviceRGB");
 
@@ -437,6 +467,7 @@ class SetCMYKColor extends GraphicsStateOperator {
 				PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		float k = os.popNumber().getFloat();
 		float y = os.popNumber().getFloat();
@@ -464,6 +495,7 @@ class CurrentCMYKColor extends GraphicsStateOperator {
 		ucr = -1.0f;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (cmyk == null) {
 			float[] color = os.gstate().color("DeviceCMYK");

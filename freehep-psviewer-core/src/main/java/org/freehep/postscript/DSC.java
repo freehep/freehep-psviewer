@@ -1,4 +1,4 @@
-// Copyright 2004, FreeHEP.
+// Copyright 2004-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.util.ArrayList;
@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.freehep.postscript.DSCEvent.State;
+
 /**
  * DCS (Document Structuring Conventions) level 3.0 for PostScript Processor
  * 
@@ -14,17 +16,15 @@ import java.util.Map;
  * Specification, version 3.0, 25 September 1992.
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/DSC.java 829a8d93169a
- *          2006/12/08 09:03:07 duns $
  */
 public class DSC {
 
-	private static final String[] mode = { "diablo630", "fx100", "lj2000",
+	private static final String[] MODE = { "diablo630", "fx100", "lj2000",
 			"hpgl", "impress", "hplj", "ti855" };
-	private static final String[] orientation = { "Portrait", "Landscape" };
-	private static final String[] cmyk = { "Cyan", "Magenta", "Yellow", "Black" };
+	private static final String[] ORIENTATION = { "Portrait", "Landscape" };
+	private static final String[] CMYK = { "Cyan", "Magenta", "Yellow", "Black" };
 
-	private final static Object[] keyArgs = {
+	private static final Object[] KEY_ARGS = {
 			//
 			// 5.1 General Header Comments
 			//
@@ -47,7 +47,7 @@ public class DSC {
 			"DocumentData:",
 			new String[] { "Clean7Bit", "Clean8Bit", "Binary" },
 			"Emulation:",
-			mode,
+			MODE,
 			"EndComments",
 			NoArgs.class,
 			"Extensions:",
@@ -57,7 +57,7 @@ public class DSC {
 			"LanguageLevel:",
 			UInt.class,
 			"Orientation:",
-			orientation,
+			ORIENTATION,
 			"Pages:",
 			UInt.class,
 			"PageOrder:",
@@ -85,7 +85,7 @@ public class DSC {
 			"EndDefaults",
 			NoArgs.class,
 			"BeginEmulation:",
-			mode,
+			MODE,
 			"EndEmulation",
 			NoArgs.class,
 			"BeginPreview:",
@@ -117,7 +117,7 @@ public class DSC {
 			"PageBoundingBox:",
 			Rectangle.class,
 			"PageOrientation:",
-			orientation,
+			ORIENTATION,
 
 			//
 			// 5.4 General Trailer Comments
@@ -243,7 +243,7 @@ public class DSC {
 			"EndCustomColor",
 			NoArgs.class,
 			"BeginProcessColor:",
-			cmyk,
+			CMYK,
 			"EndProcesColor",
 			NoArgs.class,
 
@@ -305,18 +305,18 @@ public class DSC {
 			"?BeginExitServer:", Unparsed.class, "?EndExitServer",
 			NoArgs.class, };
 
-	private Collection listeners = new ArrayList();
-	private Map parseTable = new HashMap();
-	private Map dscTable = new HashMap();
+	private Collection<DSCEventListener> listeners = new ArrayList<DSCEventListener>();
+	private Map<String, Object> parseTable = new HashMap<String, Object>();
+	private Map<String, Object> dscTable = new HashMap<String, Object>();
 
 	public DSC() {
 		// fill the parseTable
-		for (int i = 0; i < keyArgs.length; i += 2) {
-			String token = (String) keyArgs[i];
+		for (int i = 0; i < KEY_ARGS.length; i += 2) {
+			String token = (String) KEY_ARGS[i];
 			try {
-				Object obj = keyArgs[i + 1];
-				if (obj instanceof Class) {
-					obj = ((Class) obj).newInstance();
+				Object obj = KEY_ARGS[i + 1];
+				if (obj instanceof Class<?>) {
+					obj = ((Class<?>) obj).newInstance();
 				} else if (obj instanceof String[]) {
 					obj = new Enumeration((String[]) obj);
 				}
@@ -330,23 +330,23 @@ public class DSC {
 		}
 	}
 
-	public Object addDSCComment(String comment, Object parse) {
+	public final Object addDSCComment(String comment, Object parse) {
 		Object obj = parseTable.get(comment);
 		parseTable.put(comment, parse);
 		return obj;
 	}
 
-	public void addDSCEventListener(DSCEventListener listener) {
+	public final void addDSCEventListener(DSCEventListener listener) {
 		listeners.add(listener);
 	}
 
-	public void removeDSCEventListener(DSCEventListener listener) {
+	public final void removeDSCEventListener(DSCEventListener listener) {
 		listeners.remove(listener);
 	}
 
 	// Parses a DCS comment (not pre-pended with the %% signs, but including the
 	// appended colon and arguments).
-	public boolean parse(String line, OperandStack os) {
+	public final boolean parse(String line, OperandStack os) {
 		String[] tokens = line.split("[ \t]", 2);
 		String key = tokens[0];
 		String params = "";
@@ -363,36 +363,36 @@ public class DSC {
 
 		// lookup comment, parse arguments and derive the state
 		Arguments args = (Arguments) parseTable.get(key);
-		int state;
+		State state;
 		if (params.startsWith("(atend)")) {
 			dscTable.put(key, new Boolean(true));
-			state = (args != null) ? DSCEvent.PARSED : DSCEvent.UNPARSED;
+			state = (args != null) ? State.PARSED : State.UNPARSED;
 		} else {
 			if (args != null) {
 				Object parsed = args.parse(key, params, os);
 				if (parsed != null) {
 					dscTable.put(key, parsed);
-					state = DSCEvent.PARSED;
+					state = State.PARSED;
 				} else {
-					state = DSCEvent.ERROR;
+					state = State.ERROR;
 				}
 			} else {
 				dscTable.put(key, params);
-				state = DSCEvent.UNPARSED;
+				state = State.UNPARSED;
 			}
 		}
 
 		// inform the listeners
-		for (Iterator i = listeners.iterator(); i.hasNext();) {
-			DSCEventListener listener = (DSCEventListener) i.next();
+		for (Iterator<DSCEventListener> i = listeners.iterator(); i.hasNext();) {
+			DSCEventListener listener = i.next();
 			listener.dscCommentFound(new DSCEvent(this, key, dscTable.get(key),
 					state));
 		}
 
-		return state != DSCEvent.ERROR;
+		return state != State.ERROR;
 	}
 
-	public Object get(String key) {
+	public final Object get(String key) {
 		return dscTable.get(key);
 	}
 
@@ -408,19 +408,19 @@ public class DSC {
 	}
 
 	public static class NoArgs implements Arguments {
-		public Object parse(String key, String params, OperandStack os) {
+		public final Object parse(String key, String params, OperandStack os) {
 			return new Boolean(true);
 		}
 	}
 
 	public static class TextLine implements Arguments {
-		public Object parse(String key, String params, OperandStack os) {
+		public final Object parse(String key, String params, OperandStack os) {
 			return text(params);
 		}
 	}
 
 	public static class Rectangle implements Arguments {
-		public Object parse(String key, String params, OperandStack os) {
+		public final Object parse(String key, String params, OperandStack os) {
 			try {
 				String[] tokens = params.trim().split("[ \t]", 4);
 				if (tokens.length != 4) {
@@ -440,7 +440,7 @@ public class DSC {
 	}
 
 	public static class UInt implements Arguments {
-		public Object parse(String key, String params, OperandStack os) {
+		public final Object parse(String key, String params, OperandStack os) {
 			try {
 				String[] tokens = params.split("[ \t]", 2);
 				return Long.valueOf(tokens[0]);
@@ -457,7 +457,7 @@ public class DSC {
 			this.enumeration = enumeration;
 		}
 
-		public Object parse(String key, String params, OperandStack os) {
+		public final Object parse(String key, String params, OperandStack os) {
 			String[] tokens = params.split("[ \t]", 2);
 			for (int i = 0; i < enumeration.length; i++) {
 				if (enumeration[i].equals(tokens[0])) {
@@ -469,7 +469,7 @@ public class DSC {
 	}
 
 	public static class Unparsed implements Arguments {
-		public Object parse(String key, String params, OperandStack os) {
+		public final Object parse(String key, String params, OperandStack os) {
 			return params;
 		}
 	}
@@ -489,15 +489,15 @@ public class DSC {
 			revision = r;
 		}
 
-		public double getVersion() {
+		public final double getVersion() {
 			return version;
 		}
 
-		public long getRevision() {
+		public final long getRevision() {
 			return revision;
 		}
 
-		public Object parse(String key, String params, OperandStack os) {
+		public final Object parse(String key, String params, OperandStack os) {
 			try {
 				String[] tokens = params.split("[ \t]", 2);
 				if (tokens.length != 2) {
@@ -513,7 +513,7 @@ public class DSC {
 			}
 		}
 
-		public String toString() {
+		public final String toString() {
 			return "v" + version + "r" + revision;
 		}
 	}
@@ -533,15 +533,15 @@ public class DSC {
 			number = n;
 		}
 
-		public String getLabel() {
+		public final String getLabel() {
 			return label;
 		}
 
-		public long getNumber() {
+		public final long getNumber() {
 			return number;
 		}
 
-		public Object parse(String key, String params, OperandStack os) {
+		public final Object parse(String key, String params, OperandStack os) {
 			try {
 				String[] tokens = params.split("[ \t]", 2);
 				if (tokens.length != 2) {
@@ -556,7 +556,7 @@ public class DSC {
 			}
 		}
 
-		public String toString() {
+		public final String toString() {
 			return label + " " + number;
 		}
 	}

@@ -1,16 +1,14 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Error Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/ErrorOperator.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public abstract class ErrorOperator extends PSOperator {
 
-	public static Class[] operators = { ConfigurationError.class,
+	public static Class<?>[] operators = { ConfigurationError.class,
 			DictFull.class, DictStackOverflow.class, DictStackUnderflow.class,
 			ExecStackOverflow.class, HandleError.class, Interrupt.class,
 			InvalidAccess.class, InvalidExit.class, InvalidFileAccess.class,
@@ -23,6 +21,7 @@ public abstract class ErrorOperator extends PSOperator {
 			VMError.class, Unimplemented.class };
 
 	// default error handler
+	@Override
 	public boolean execute(OperandStack os) {
 		// fill error dict
 		PSDictionary error = os.dictStack().dollarError();
@@ -67,6 +66,7 @@ class ExecStackOverflow extends ErrorOperator {
 class HandleError extends ErrorOperator {
 
 	// FIXME, should print more
+	@Override
 	public boolean execute(OperandStack os) {
 		// report on error
 		PSDictionary error = os.dictStack().dollarError();
@@ -107,6 +107,7 @@ class HandleError extends ErrorOperator {
 }
 
 class Interrupt extends ErrorOperator {
+	@Override
 	public boolean execute(OperandStack os) {
 		os.execStack().pop();
 		os.execStack().push("stop");
@@ -151,6 +152,7 @@ class SyntaxError extends ErrorOperator {
 }
 
 class Timeout extends ErrorOperator {
+	@Override
 	public boolean execute(OperandStack os) {
 		os.execStack().pop();
 		os.execStack().push("stop");
@@ -180,6 +182,7 @@ class Unregistered extends ErrorOperator {
 }
 
 class VMError extends ErrorOperator {
+	@Override
 	public String getName() {
 		return "VMerror";
 	}

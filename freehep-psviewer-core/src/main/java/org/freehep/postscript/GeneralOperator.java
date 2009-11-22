@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.io.IOException;
@@ -7,15 +7,14 @@ import java.io.IOException;
  * General Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/GeneralOperator.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class GeneralOperator extends PSOperator {
 
-	public static Class[] operators = { Length.class, Get.class, Put.class,
+	public static Class<?>[] operators = { Length.class, Get.class, Put.class,
 			GetInterval.class, PutInterval.class, ALoad.class, Copy.class,
 			ForAll.class, Token.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -23,6 +22,7 @@ public class GeneralOperator extends PSOperator {
 
 class Length extends GeneralOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSPackedArray.class)) {
 			PSPackedArray a = os.popPackedArray();
@@ -45,6 +45,7 @@ class Length extends GeneralOperator {
 
 class Get extends GeneralOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSArray.class, PSInteger.class)
 				|| os.checkType(PSPackedArray.class, PSInteger.class)) {
@@ -81,6 +82,7 @@ class Get extends GeneralOperator {
 
 class Put extends GeneralOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSArray.class, PSInteger.class, PSObject.class)) {
 			PSObject o = os.popObject();
@@ -117,6 +119,7 @@ class Put extends GeneralOperator {
 
 class GetInterval extends GeneralOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSArray.class, PSInteger.class, PSInteger.class)) {
 			PSInteger c = os.popInteger();
@@ -159,6 +162,7 @@ class GetInterval extends GeneralOperator {
 
 class PutInterval extends GeneralOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSArray.class, PSInteger.class, PSPackedArray.class)) {
 			PSPackedArray a2 = os.popPackedArray();
@@ -196,6 +200,7 @@ class ALoad extends GeneralOperator {
 	}
 
 	// FIXME nothing done about InvalidAccess
+	@Override
 	public boolean execute(OperandStack os) {
 		PSArray a = os.popArray();
 		for (int i = 0; i < a.size(); i++) {
@@ -209,6 +214,7 @@ class ALoad extends GeneralOperator {
 class Copy extends GeneralOperator {
 
 	// FIXME: access checks not done
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSInteger.class)) {
 			int n = os.popInteger().getValue();
@@ -290,6 +296,7 @@ class ForAll extends GeneralOperator implements LoopingContext {
 	public ForAll() {
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (proc == null) {
 			if (os.checkType(PSPackedArray.class, PSPackedArray.class)) {
@@ -355,6 +362,7 @@ class ForAll extends GeneralOperator implements LoopingContext {
 
 class Token extends GeneralOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		try {
 			if (os.checkType(PSString.class)) {

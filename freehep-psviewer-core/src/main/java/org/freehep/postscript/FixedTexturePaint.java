@@ -30,6 +30,7 @@ public class FixedTexturePaint extends TexturePaint {
 		matrix = m;
 	}
 
+	@Override
 	public PaintContext createContext(ColorModel cm, Rectangle deviceBounds,
 			Rectangle2D userBounds, AffineTransform xform, RenderingHints hints) {
 		AffineTransform mirror;

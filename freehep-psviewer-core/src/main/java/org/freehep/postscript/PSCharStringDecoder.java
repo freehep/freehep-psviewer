@@ -16,7 +16,7 @@ public class PSCharStringDecoder {
 
 	private InputStream decryption;
 
-	private List charProc;
+	private List<PSObject> charProc;
 
 	protected int sbX, sbY, widthX, widthY;
 
@@ -32,8 +32,9 @@ public class PSCharStringDecoder {
 
 		decryption = new EEXECDecryption(charString.getInputStream(),
 				EEXECConstants.CHARSTRING_R, EEXECConstants.N);
-		currentX = currentY = 0;
-		charProc = new LinkedList();
+		currentX = 0;
+		currentY = 0;
+		charProc = new LinkedList<PSObject>();
 
 		boolean end = false;
 		do {
@@ -122,10 +123,10 @@ public class PSCharStringDecoder {
 		} while (!end);
 
 		PSObject[] obj = new PSObject[charProc.size()];
-		Iterator i = charProc.iterator();
+		Iterator<PSObject> i = charProc.iterator();
 		int j = 0;
 		while (i.hasNext()) {
-			obj[j++] = (PSObject) i.next();
+			obj[j++] = i.next();
 		}
 
 		array = new PSPackedArray(obj);

@@ -1,24 +1,23 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Arithmetic Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/ArithmeticOperator.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class ArithmeticOperator extends PSOperator {
 	protected PSRandom random = new PSRandom();
 
-	public static Class[] operators = { Add.class, Div.class, IDiv.class,
+	public static Class<?>[] operators = { Add.class, Div.class, IDiv.class,
 			Mod.class, Mul.class, Sub.class, Abs.class, Neg.class,
 			Ceiling.class, Floor.class, Round.class, Truncate.class,
 			Sqrt.class, Atan.class, Cos.class, Sin.class, Exp.class, Ln.class,
 			Log.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
+		throw new IllegalArgumentException("Cannot execute class: " + getClass());
 	}
 }
 
@@ -27,6 +26,7 @@ class Add extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSInteger.class, PSInteger.class)) {
 			PSInteger n2 = os.popInteger();
@@ -52,6 +52,7 @@ class Div extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber n2 = os.popNumber();
 		PSNumber n1 = os.popNumber();
@@ -70,6 +71,7 @@ class IDiv extends ArithmeticOperator {
 		operandTypes = new Class[] { PSInteger.class, PSInteger.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSInteger i2 = os.popInteger();
 		PSInteger i1 = os.popInteger();
@@ -88,6 +90,7 @@ class Mod extends ArithmeticOperator {
 		operandTypes = new Class[] { PSInteger.class, PSInteger.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSInteger i2 = os.popInteger();
 		PSInteger i1 = os.popInteger();
@@ -106,6 +109,7 @@ class Mul extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSInteger.class, PSInteger.class)) {
 			PSInteger n2 = os.popInteger();
@@ -131,6 +135,7 @@ class Sub extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSInteger.class, PSInteger.class)) {
 			PSInteger n2 = os.popInteger();
@@ -156,6 +161,7 @@ class Abs extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSInteger.class)) {
 			PSInteger n1 = os.popInteger();
@@ -175,6 +181,7 @@ class Neg extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSInteger.class)) {
 			PSInteger n1 = os.popInteger();
@@ -194,6 +201,7 @@ class Ceiling extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber n1 = os.popNumber();
 		double n2 = Math.ceil(n1.getDouble());
@@ -211,6 +219,7 @@ class Floor extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber n1 = os.popNumber();
 		double n2 = Math.floor(n1.getDouble());
@@ -228,6 +237,7 @@ class Round extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber n1 = os.popNumber();
 		long n2 = Math.round(n1.getDouble());
@@ -245,6 +255,7 @@ class Truncate extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber n1 = os.popNumber();
 		double n2 = Math.rint(n1.getDouble());
@@ -262,6 +273,7 @@ class Sqrt extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber n1 = os.popNumber();
 		if (n1.getDouble() < 0.0) {
@@ -279,6 +291,7 @@ class Atan extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber den = os.popNumber();
 		PSNumber num = os.popNumber();
@@ -298,6 +311,7 @@ class Cos extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber angle = os.popNumber();
 		double r = Math.cos(Math.toRadians(angle.getDouble()));
@@ -311,6 +325,7 @@ class Sin extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber angle = os.popNumber();
 		double r = Math.sin(Math.toRadians(angle.getDouble()));
@@ -324,6 +339,7 @@ class Exp extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber exponent = os.popNumber();
 		PSNumber base = os.popNumber();
@@ -342,6 +358,7 @@ class Ln extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber num = os.popNumber();
 		if (num.getDouble() <= 0.0) {
@@ -359,6 +376,7 @@ class Log extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber num = os.popNumber();
 		if (num.getDouble() <= 0.0) {
@@ -372,6 +390,7 @@ class Log extends ArithmeticOperator {
 }
 
 class Rand extends ArithmeticOperator {
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(random.nextInt());
 		return true;
@@ -383,6 +402,7 @@ class SRand extends ArithmeticOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSInteger seed = os.popInteger();
 		random.setSeed(seed.getValue());
@@ -391,6 +411,7 @@ class SRand extends ArithmeticOperator {
 }
 
 class RRand extends ArithmeticOperator {
+	@Override
 	public boolean execute(OperandStack os) {
 		int seed = random.getSeed();
 		os.push(seed);

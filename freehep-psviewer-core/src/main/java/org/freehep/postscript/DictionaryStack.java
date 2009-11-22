@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.lang.reflect.Field;
@@ -7,13 +7,11 @@ import java.lang.reflect.Field;
  * OperandStack for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/DictionaryStack.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class DictionaryStack extends PostScriptStack implements NameLookup {
 
-	private Class[] operators = { GeneralOperator.class, StackOperator.class,
-			ArithmeticOperator.class, ArrayOperator.class,
+	private Class<?>[] operators = { GeneralOperator.class,
+			StackOperator.class, ArithmeticOperator.class, ArrayOperator.class,
 			PackedArrayOperator.class, DictionaryOperator.class,
 			StringOperator.class, RelationalOperator.class,
 			ControlOperator.class, ConversionOperator.class,
@@ -124,7 +122,7 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 		// fill error dictionary
 		PSDictionary error = new PSDictionary();
 		error.setName("errordict");
-		Class[] errorClass = ErrorOperator.operators;
+		Class<?>[] errorClass = ErrorOperator.operators;
 		for (int i = 0; i < errorClass.length; i++) {
 			addOperator(error, errorClass[i]);
 		}
@@ -163,7 +161,7 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 		for (int i = 0; i < operators.length; i++) {
 			try {
 				Field f = operators[i].getField("operators");
-				Class[] opClass = (Class[]) f.get(null);
+				Class<?>[] opClass = (Class[]) f.get(null);
 				for (int j = 0; j < opClass.length; j++) {
 					addOperator(system, opClass[j]);
 				}
@@ -195,7 +193,7 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 		push(user);
 	}
 
-	private void addOperator(PSDictionary dict, Class clazz) {
+	private void addOperator(PSDictionary dict, Class<?> clazz) {
 		try {
 			PSOperator op = (PSOperator) clazz.newInstance();
 			PSName key = new PSName(op.getName());

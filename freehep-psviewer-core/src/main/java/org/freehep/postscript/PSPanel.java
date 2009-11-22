@@ -21,10 +21,12 @@ public class PSPanel extends JPanel {
 		super(false);
 	}
 
+	@Override
 	public Graphics getGraphics() {
 		return mirroredGraphics;
 	}
 
+	@Override
 	public void setBounds(int x, int y, int w, int h) {
 		super.setBounds(x, y, w, h);
 		if (mirroredGraphics != null) {

@@ -1,12 +1,10 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Device Dependent Graphics Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/DeviceOperator.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class DeviceOperator extends PSOperator {
 
@@ -21,7 +19,7 @@ public class DeviceOperator extends PSOperator {
 	}
 	boolean overprint = true;
 
-	public static Class[] operators = { SetHalftone.class,
+	public static Class<?>[] operators = { SetHalftone.class,
 			CurrentHalftone.class, SetScreen.class, CurrentScreen.class,
 			SetColorScreen.class, CurrentColorScreen.class, SetTransfer.class,
 			CurrentTransfer.class, SetColorTransfer.class,
@@ -32,6 +30,7 @@ public class DeviceOperator extends PSOperator {
 			SetOverprint.class, CurrentOverprint.class, SetSmoothness.class,
 			CurrentSmoothness.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -42,6 +41,7 @@ class SetHalftone extends DeviceOperator {
 		operandTypes = new Class[] { PSDictionary.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// FIXME: ignored
 		os.pop();
@@ -51,6 +51,7 @@ class SetHalftone extends DeviceOperator {
 
 class CurrentHalftone extends DeviceOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(halftone);
 		return true;
@@ -59,6 +60,7 @@ class CurrentHalftone extends DeviceOperator {
 
 class SetScreen extends DeviceOperator {
 	// FIXME: ignored
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class, PSNumber.class, PSPackedArray.class)) {
 			os.pop();
@@ -78,6 +80,7 @@ class SetScreen extends DeviceOperator {
 
 class CurrentScreen extends DeviceOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(halftone.get("Frequency"));
 		os.push(halftone.get("Angle"));
@@ -89,6 +92,7 @@ class CurrentScreen extends DeviceOperator {
 class SetColorScreen extends DeviceOperator {
 
 	// FIXME
+	@Override
 	public boolean execute(OperandStack os) {
 		error(os, new Unimplemented());
 		return true;
@@ -98,6 +102,7 @@ class SetColorScreen extends DeviceOperator {
 class CurrentColorScreen extends DeviceOperator {
 
 	// FIXME
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(60);
 		os.push(0);
@@ -124,6 +129,7 @@ class SetTransfer extends DeviceOperator {
 		operandTypes = new Class[] { PSPackedArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSPackedArray p = os.popPackedArray();
 		os.gstate().setTransfer(p);
@@ -133,6 +139,7 @@ class SetTransfer extends DeviceOperator {
 
 class CurrentTransfer extends DeviceOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.gstate().transfer());
 		return true;
@@ -146,6 +153,7 @@ class SetColorTransfer extends DeviceOperator {
 	}
 
 	// FIXME
+	@Override
 	public boolean execute(OperandStack os) {
 		os.pop();
 		os.pop();
@@ -159,6 +167,7 @@ class SetColorTransfer extends DeviceOperator {
 class CurrentColorTransfer extends DeviceOperator {
 
 	// FIXME
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.gstate().transfer());
 		os.push(os.gstate().transfer());
@@ -173,6 +182,7 @@ class SetBlackGeneration extends DeviceOperator {
 		operandTypes = new Class[] { PSPackedArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSPackedArray p = os.popPackedArray();
 
@@ -183,6 +193,7 @@ class SetBlackGeneration extends DeviceOperator {
 
 class CurrentBlackGeneration extends DeviceOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.gstate().blackGeneration());
 		return true;
@@ -194,6 +205,7 @@ class SetUnderColorRemoval extends DeviceOperator {
 		operandTypes = new Class[] { PSPackedArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSPackedArray p = os.popPackedArray();
 
@@ -204,6 +216,7 @@ class SetUnderColorRemoval extends DeviceOperator {
 
 class CurrentUnderColorRemoval extends DeviceOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.gstate().underColorRemoval());
 		return true;
@@ -215,6 +228,7 @@ class SetColorRendering extends DeviceOperator {
 		operandTypes = new Class[] { PSDictionary.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// FIXME
 		os.pop();
@@ -225,6 +239,7 @@ class SetColorRendering extends DeviceOperator {
 class CurrentColorRendering extends DeviceOperator {
 
 	// FIXME
+	@Override
 	public boolean execute(OperandStack os) {
 		error(os, new Unimplemented());
 		return true;
@@ -236,6 +251,7 @@ class SetFlat extends DeviceOperator {
 		operandTypes = new Class[] { PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSNumber n = os.popNumber();
 
@@ -246,6 +262,7 @@ class SetFlat extends DeviceOperator {
 
 class CurrentFlat extends DeviceOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.gstate().flat());
 		return true;
@@ -258,6 +275,7 @@ class SetOverprint extends DeviceOperator {
 	}
 
 	// FIXME
+	@Override
 	public boolean execute(OperandStack os) {
 		overprint = os.popBoolean().getValue();
 		return true;
@@ -267,6 +285,7 @@ class SetOverprint extends DeviceOperator {
 class CurrentOverprint extends DeviceOperator {
 
 	// FIXME
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(overprint);
 		return true;
@@ -279,6 +298,7 @@ class SetSmoothness extends DeviceOperator {
 	}
 
 	// Level 3
+	@Override
 	public boolean execute(OperandStack os) {
 		error(os, new Unimplemented());
 		return true;
@@ -288,6 +308,7 @@ class SetSmoothness extends DeviceOperator {
 class CurrentSmoothness extends DeviceOperator {
 
 	// Level 3
+	@Override
 	public boolean execute(OperandStack os) {
 		error(os, new Unimplemented());
 		return true;

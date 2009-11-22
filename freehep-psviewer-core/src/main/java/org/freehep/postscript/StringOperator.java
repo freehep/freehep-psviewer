@@ -1,18 +1,17 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * String Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/StringOperator.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class StringOperator extends PSOperator {
 
-	public static Class[] operators = { StringString.class, AnchorSearch.class,
-			Search.class };
+	public static Class<?>[] operators = { StringString.class,
+			AnchorSearch.class, Search.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -23,10 +22,12 @@ class StringString extends StringOperator {
 		operandTypes = new Class[] { PSInteger.class };
 	}
 
+	@Override
 	public String getName() {
 		return ("string");
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSInteger n = os.popInteger();
 		if (n.getValue() < 0) {
@@ -43,6 +44,7 @@ class AnchorSearch extends StringOperator {
 		operandTypes = new Class[] { PSString.class, PSString.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSString seek = os.popString();
 		PSString string = os.popString();
@@ -63,6 +65,7 @@ class Search extends StringOperator {
 		operandTypes = new Class[] { PSString.class, PSString.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSString seek = os.popString();
 		PSString string = os.popString();

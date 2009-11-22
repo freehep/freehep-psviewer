@@ -32,17 +32,20 @@ public class PSJavaGlyph extends PSGlyph {
 	}
 
 	// FIXME
+	@Override
 	public int hashCode() {
 		return 0;
 	}
 
 	// FIXME
+	@Override
 	public boolean equals(Object o) {
 		return false;
 	}
 
 	// FIXME
-	public Object clone() {
-		return null;
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		throw new CloneNotSupportedException(getClass()+" not implemented");
 	}
 }

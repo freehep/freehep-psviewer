@@ -1,12 +1,10 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * OperandStack for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/OperandStack.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class OperandStack extends PostScriptStack {
 	private Processor processor;
@@ -148,20 +146,33 @@ public class OperandStack extends PostScriptStack {
 	}
 
 	public void dup() {
-		super.push(((PSObject) elementData[elementCount - 1]).clone());
+		try {
+			super.push(((PSObject) elementData[elementCount - 1]).clone());
+		} catch (CloneNotSupportedException e) {
+			throw new UnsupportedOperationException(e);
+		}
 	}
 
 	public void copy(int n) {
-		int m = elementCount - n;
-		int j = elementCount;
-		for (int i = m; i < j; i++) {
-			super.push(((PSObject) elementData[i]).clone());
+		try {
+			int m = elementCount - n;
+			int j = elementCount;
+			for (int i = m; i < j; i++) {
+				super.push(((PSObject) elementData[i]).clone());
+			}
+		} catch (CloneNotSupportedException e) {
+			throw new UnsupportedOperationException(e);
 		}
 	}
 
 	public void index(int n) {
-		if (n > 0) {
-			super.push(((PSObject) elementData[elementCount - n - 1]).clone());
+		try {
+			if (n > 0) {
+				super.push(((PSObject) elementData[elementCount - n - 1])
+						.clone());
+			}
+		} catch (CloneNotSupportedException e) {
+			throw new UnsupportedOperationException(e);
 		}
 	}
 
@@ -211,7 +222,7 @@ public class OperandStack extends PostScriptStack {
 		return true;
 	}
 
-	public boolean checkType(Class type) {
+	public boolean checkType(Class<?> type) {
 		if (elementCount < 1) {
 			return false;
 		}
@@ -222,7 +233,7 @@ public class OperandStack extends PostScriptStack {
 		return false;
 	}
 
-	public boolean checkType(Class type1, Class type2) {
+	public boolean checkType(Class<?> type1, Class<?> type2) {
 		if (elementCount < 2) {
 			return false;
 		}
@@ -234,7 +245,7 @@ public class OperandStack extends PostScriptStack {
 		return false;
 	}
 
-	public boolean checkType(Class type1, Class type2, Class type3) {
+	public boolean checkType(Class<?> type1, Class<?> type2, Class<?> type3) {
 		if (elementCount < 3) {
 			return false;
 		}
@@ -247,7 +258,8 @@ public class OperandStack extends PostScriptStack {
 		return false;
 	}
 
-	public boolean checkType(Class type1, Class type2, Class type3, Class type4) {
+	public boolean checkType(Class<?> type1, Class<?> type2, Class<?> type3,
+			Class<?> type4) {
 		if (elementCount < 4) {
 			return false;
 		}
@@ -261,8 +273,8 @@ public class OperandStack extends PostScriptStack {
 		return false;
 	}
 
-	public boolean checkType(Class type1, Class type2, Class type3,
-			Class type4, Class type5) {
+	public boolean checkType(Class<?> type1, Class<?> type2, Class<?> type3,
+			Class<?> type4, Class<?> type5) {
 		if (elementCount < 5) {
 			return false;
 		}
@@ -277,7 +289,7 @@ public class OperandStack extends PostScriptStack {
 		return false;
 	}
 
-	public boolean checkType(Class[] types) {
+	public boolean checkType(Class<?>[] types) {
 		if (elementCount < types.length) {
 			System.err.println("Found " + elementCount + " while expecting "
 					+ types.length);
@@ -287,15 +299,15 @@ public class OperandStack extends PostScriptStack {
 		for (int i = 0; i < types.length; i++) {
 			Object obj = elementData[elementCount - types.length + i];
 			if (!types[i].isInstance(obj)) {
-				System.err.println("Found "+obj+" of "
-						+ obj.getClass() + " while expecting "
-						+ types[i]);
+				System.err.println("Found " + obj + " of " + obj.getClass()
+						+ " while expecting " + types[i]);
 				return false;
 			}
 		}
 		return true;
 	}
 
+	@Override
 	public void printStack() {
 		System.out.println();
 		System.out.println("== Top Operand Stack ==");
@@ -303,6 +315,7 @@ public class OperandStack extends PostScriptStack {
 		System.out.println("== Bottom Operand Stack ==");
 	}
 
+	@Override
 	public String toString() {
 		return "OperandStack";
 	}

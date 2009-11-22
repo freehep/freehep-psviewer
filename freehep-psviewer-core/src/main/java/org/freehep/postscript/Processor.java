@@ -45,6 +45,7 @@ public class Processor implements DebuggerListener {
 	public Processor(PSDevice device, boolean secure) {
 		this.device = device;
 		device.addComponentListener(new ComponentAdapter() {
+			@Override
 			public void componentResized(ComponentEvent event) {
 				try {
 					if (debugger == null) {
@@ -203,7 +204,7 @@ public class Processor implements DebuggerListener {
 
 		if (debugger != null) {
 			debugger.update(dictStack, execStack, operandStack);
-		// device.refresh();
+			// device.refresh();
 		}
 	}
 

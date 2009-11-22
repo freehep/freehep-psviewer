@@ -16,11 +16,13 @@ public class PSBoolean extends PSSimple {
 		value = b;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(this);
 		return true;
 	}
 
+	@Override
 	public String getType() {
 		return "booleantype";
 	}
@@ -29,25 +31,31 @@ public class PSBoolean extends PSSimple {
 		return value;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSBoolean(value);
 	}
 
+	@Override
 	public int hashCode() {
 		return value ? 1231 : 1237;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSBoolean) {
-			return (value = ((PSBoolean) o).getValue());
+			value = ((PSBoolean) o).getValue();
+			return value;
 		}
 		return false;
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return (value) ? "true" : "false";
 	}

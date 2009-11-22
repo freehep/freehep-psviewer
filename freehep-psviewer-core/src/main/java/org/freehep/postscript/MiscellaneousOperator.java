@@ -1,19 +1,18 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Miscellaneous Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/MiscellaneousOperator.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class MiscellaneousOperator extends PSOperator {
 
-	public static Class[] operators = { Bind.class, Version.class,
+	public static Class<?>[] operators = { Bind.class, Version.class,
 			RealTime.class, UserTime.class, Product.class, Revision.class,
 			SerialNumber.class, Executive.class, Echo.class, Prompt.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -24,6 +23,7 @@ class Bind extends MiscellaneousOperator {
 		operandTypes = new Class[] { PSPackedArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSPackedArray p = os.popPackedArray();
 		if (p.isLiteral()) {
@@ -64,14 +64,16 @@ class Bind extends MiscellaneousOperator {
 }
 
 class Version extends MiscellaneousOperator {
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(new PSString(2000)); // FIXME: look up what level we really
-										// support
+		// support
 		return true;
 	}
 }
 
 class RealTime extends MiscellaneousOperator {
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(System.currentTimeMillis());
 		return true;
@@ -81,6 +83,7 @@ class RealTime extends MiscellaneousOperator {
 class UserTime extends MiscellaneousOperator {
 
 	// FREEHEP-154: a better time measurement
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(System.currentTimeMillis());
 		return true;
@@ -88,6 +91,7 @@ class UserTime extends MiscellaneousOperator {
 }
 
 class Product extends MiscellaneousOperator {
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(new PSString("FreeHEP Java PostScript Interpreter"));
 		return true;
@@ -95,6 +99,7 @@ class Product extends MiscellaneousOperator {
 }
 
 class Revision extends MiscellaneousOperator {
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(new PSString("1.0.0"));
 		return true;
@@ -102,6 +107,7 @@ class Revision extends MiscellaneousOperator {
 }
 
 class SerialNumber extends MiscellaneousOperator {
+	@Override
 	public boolean execute(OperandStack os) {
 		// any number would do...
 		os.push(9265294);
@@ -110,6 +116,7 @@ class SerialNumber extends MiscellaneousOperator {
 }
 
 class Executive extends MiscellaneousOperator {
+	@Override
 	public boolean execute(OperandStack os) {
 		error(os, new Undefined());
 		return true;
@@ -121,6 +128,7 @@ class Echo extends MiscellaneousOperator {
 		operandTypes = new Class[] { PSBoolean.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		error(os, new Undefined());
 		return true;
@@ -128,6 +136,7 @@ class Echo extends MiscellaneousOperator {
 }
 
 class Prompt extends MiscellaneousOperator {
+	@Override
 	public boolean execute(OperandStack os) {
 		error(os, new Undefined());
 		return true;

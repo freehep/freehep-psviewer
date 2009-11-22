@@ -20,6 +20,7 @@ public class PSName extends PSSimple {
 		value = name;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (isLiteral()) {
 			os.push(this);
@@ -45,6 +46,7 @@ public class PSName extends PSSimple {
 		return value.length();
 	}
 
+	@Override
 	public String getType() {
 		return "nametype";
 	}
@@ -53,10 +55,12 @@ public class PSName extends PSSimple {
 		return value;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSName(value);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSName) {
 			return getValue().equals(((PSName) o).getValue());
@@ -66,14 +70,17 @@ public class PSName extends PSSimple {
 		return false;
 	}
 
+	@Override
 	public int hashCode() {
 		return value.hashCode();
 	}
 
+	@Override
 	public String cvs() {
 		return value;
 	}
 
+	@Override
 	public String toString() {
 		return ((isLiteral()) ? "/" : "") + value;
 	}

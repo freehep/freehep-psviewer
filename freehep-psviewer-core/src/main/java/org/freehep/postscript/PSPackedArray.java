@@ -63,6 +63,7 @@ public class PSPackedArray extends PSComposite {
 
 	private int execIndex = -1;
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (isLiteral()) {
 			os.push(this);
@@ -72,7 +73,13 @@ public class PSPackedArray extends PSComposite {
 		if (execIndex == -1) {
 			// replace yourself with a copy, since the execIndex is a state
 			// variable
-			PSPackedArray copy = (PSPackedArray) clone();
+			PSPackedArray copy;
+			try {
+				copy = (PSPackedArray) clone();
+			} catch (CloneNotSupportedException e) {
+				error(os, new Unimplemented());
+				return true;
+			}
 			copy.setExecutable();
 			copy.execIndex = 0;
 			os.execStack().pop();
@@ -97,6 +104,7 @@ public class PSPackedArray extends PSComposite {
 		}
 	}
 
+	@Override
 	public String getType() {
 		return "packedarraytype";
 	}
@@ -134,10 +142,12 @@ public class PSPackedArray extends PSComposite {
 		return new PSPackedArray(name, array, index, count);
 	}
 
+	@Override
 	public int hashCode() {
 		return array.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSPackedArray) {
 			return (array == ((PSPackedArray) o).array);
@@ -145,7 +155,8 @@ public class PSPackedArray extends PSComposite {
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		PSPackedArray p = new PSPackedArray(name, array, start, length);
 		if (isExecutable()) {
 			p.setExecutable();
@@ -153,6 +164,7 @@ public class PSPackedArray extends PSComposite {
 		return p;
 	}
 
+	@Override
 	public PSObject copy() {
 		PSPackedArray p = new PSPackedArray(toObjects());
 		if (isExecutable()) {
@@ -185,15 +197,18 @@ public class PSPackedArray extends PSComposite {
 		return o;
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return "--" + ((isExecutable()) ? "*" : "") + name + " (" + start
 				+ ".." + (start + length) + ", " + execIndex + ") --";
 	}
 
+	@Override
 	public String toPrint() {
 		StringBuffer s = new StringBuffer();
 		s.append((isExecutable()) ? "{ " : "[ ");

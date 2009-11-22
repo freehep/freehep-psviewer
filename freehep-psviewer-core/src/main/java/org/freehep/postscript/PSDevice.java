@@ -25,7 +25,7 @@ public abstract class PSDevice implements DSCEventListener {
 	private AffineTransform transform = new AffineTransform();
 	private Graphics2D graphics;
 
-	private Collection/* <ComponentListener> */listeners = new ArrayList();
+	private Collection/* <ComponentListener> */<ComponentListener> listeners = new ArrayList<ComponentListener>();
 
 	public void addComponentListener(ComponentListener l) {
 		listeners.add(l);
@@ -38,16 +38,15 @@ public abstract class PSDevice implements DSCEventListener {
 	protected void fireComponentResizedEvent(ComponentEvent e) {
 		valid = false;
 		mirror = new AffineTransform(1, 0, 0, -1, 0, getHeight());
-		for (Iterator i = listeners.iterator(); i.hasNext();) {
-			((ComponentListener) i.next()).componentResized(e);
+		for (Iterator<ComponentListener> i = listeners.iterator(); i.hasNext();) {
+			i.next().componentResized(e);
 		}
 	}
 
 	public void dscCommentFound(DSCEvent event) {
 		if (event.getComment().equals("BoundingBox:")) {
 			Rectangle bb = (Rectangle) event.getArgs();
-			double s = Math.min(getWidth() / bb.width, getHeight()
-					/ bb.height);
+			double s = Math.min(getWidth() / bb.width, getHeight() / bb.height);
 			boundingBox = new AffineTransform(s, 0, 0, s, -bb.x * s, -bb.y * s);
 			pageBoundingBox = null;
 			valid = false;
@@ -55,8 +54,7 @@ public abstract class PSDevice implements DSCEventListener {
 
 		if (event.getComment().equals("PageBoundingBox:")) {
 			Rectangle bb = (Rectangle) event.getArgs();
-			double s = Math.min(getWidth() / bb.width, getHeight()
-					/ bb.height);
+			double s = Math.min(getWidth() / bb.width, getHeight() / bb.height);
 			pageBoundingBox = new AffineTransform(s, 0, 0, s, -bb.x * s, -bb.y
 					* s);
 			valid = false;

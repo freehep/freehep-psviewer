@@ -1,19 +1,18 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Relational, Boolean and Bitwise Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/RelationalOperator.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class RelationalOperator extends PSOperator {
 
-	public static Class[] operators = { EQ.class, NE.class, GE.class, GT.class,
-			LE.class, LT.class, And.class, Not.class, Or.class, Xor.class,
-			True.class, False.class, BitShift.class };
+	public static Class<?>[] operators = { EQ.class, NE.class, GE.class,
+			GT.class, LE.class, LT.class, And.class, Not.class, Or.class,
+			Xor.class, True.class, False.class, BitShift.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -24,6 +23,7 @@ class EQ extends RelationalOperator {
 		operandTypes = new Class[] { PSObject.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject o2 = os.popObject();
 		PSObject o1 = os.popObject();
@@ -37,6 +37,7 @@ class NE extends RelationalOperator {
 		operandTypes = new Class[] { PSObject.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject o2 = os.popObject();
 		PSObject o1 = os.popObject();
@@ -50,6 +51,7 @@ class GE extends RelationalOperator {
 		operandTypes = new Class[] { PSObject.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			PSNumber n2 = os.popNumber();
@@ -71,6 +73,7 @@ class GT extends RelationalOperator {
 		operandTypes = new Class[] { PSObject.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			PSNumber n2 = os.popNumber();
@@ -92,6 +95,7 @@ class LE extends RelationalOperator {
 		operandTypes = new Class[] { PSObject.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			PSNumber n2 = os.popNumber();
@@ -113,6 +117,7 @@ class LT extends RelationalOperator {
 		operandTypes = new Class[] { PSObject.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			PSNumber n2 = os.popNumber();
@@ -134,6 +139,7 @@ class And extends RelationalOperator {
 		operandTypes = new Class[] { PSObject.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSBoolean.class, PSBoolean.class)) {
 			PSBoolean b2 = os.popBoolean();
@@ -155,6 +161,7 @@ class Not extends RelationalOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSBoolean.class)) {
 			PSBoolean b1 = os.popBoolean();
@@ -174,6 +181,7 @@ class Or extends RelationalOperator {
 		operandTypes = new Class[] { PSObject.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSBoolean.class, PSBoolean.class)) {
 			PSBoolean b2 = os.popBoolean();
@@ -195,6 +203,7 @@ class Xor extends RelationalOperator {
 		operandTypes = new Class[] { PSObject.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSBoolean.class, PSBoolean.class)) {
 			PSBoolean b2 = os.popBoolean();
@@ -213,6 +222,7 @@ class Xor extends RelationalOperator {
 
 class True extends RelationalOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(true);
 		return true;
@@ -221,6 +231,7 @@ class True extends RelationalOperator {
 
 class False extends RelationalOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(false);
 		return true;
@@ -232,6 +243,7 @@ class BitShift extends RelationalOperator {
 		operandTypes = new Class[] { PSInteger.class, PSInteger.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		int shift = os.popInteger().getValue();
 		int i = os.popInteger().getValue();

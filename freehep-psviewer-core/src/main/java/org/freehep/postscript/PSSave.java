@@ -16,19 +16,23 @@ public class PSSave extends PSComposite {
 		super("save", true);
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(this);
 		return true;
 	}
 
+	@Override
 	public String getType() {
 		return "savetype";
 	}
 
+	@Override
 	public int hashCode() {
 		return value.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSSave) {
 			return (value == ((PSSave) o).value);
@@ -36,18 +40,22 @@ public class PSSave extends PSComposite {
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSSave();
 	}
 
+	@Override
 	public PSObject copy() {
 		return new PSSave();
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return "--" + name + "--";
 	}

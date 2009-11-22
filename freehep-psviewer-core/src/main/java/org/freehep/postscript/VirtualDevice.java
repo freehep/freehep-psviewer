@@ -26,14 +26,17 @@ public class VirtualDevice extends PSDevice {
 				ComponentEvent.COMPONENT_RESIZED));
 	}
 
+	@Override
 	public double getWidth() {
 		return dimension.width;
 	}
 
+	@Override
 	public double getHeight() {
 		return dimension.height;
 	}
 
+	@Override
 	public BufferedImage convertToImage(int width, int height) {
 		BufferedImage image = new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_ARGB);
@@ -41,6 +44,7 @@ public class VirtualDevice extends PSDevice {
 		return image;
 	}
 
+	@Override
 	public Graphics2D getGraphics() {
 		if (imageGraphics != null) {
 			return imageGraphics;
@@ -48,14 +52,17 @@ public class VirtualDevice extends PSDevice {
 		return super.getGraphics();
 	}
 
+	@Override
 	public AffineTransform getDeviceTransform() {
 		return device;
 	}
 
+	@Override
 	public Graphics getDeviceGraphics() {
 		return graphics;
 	}
 
+	@Override
 	public void refresh() {
 		// ignored
 	}

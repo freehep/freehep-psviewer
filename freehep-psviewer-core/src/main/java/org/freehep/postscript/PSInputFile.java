@@ -1,4 +1,4 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.io.BufferedInputStream;
@@ -18,8 +18,6 @@ import java.util.zip.ZipException;
  * Objects for PostScript Processor, as defined in 3.3 Data Types and Objects
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSInputFile.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 	protected InputStream in = null;
@@ -38,13 +36,11 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 		init(input, dsc);
 	}
 
-	public PSInputFile(String filename) throws FileNotFoundException,
-			IOException {
+	public PSInputFile(String filename) throws IOException {
 		this(filename, new DSC());
 	}
 
-	public PSInputFile(String filename, DSC dsc) throws FileNotFoundException,
-			IOException {
+	public PSInputFile(String filename, DSC dsc) throws IOException {
 		super(filename, false);
 
 		InputStream input;
@@ -74,11 +70,11 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 		this.dsc = dsc;
 	}
 
-	public InputStream getInputStream() {
+	public final InputStream getInputStream() {
 		return in;
 	}
 
-	public DSC getDSC() {
+	public final DSC getDSC() {
 		return dsc;
 	}
 
@@ -91,13 +87,14 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 		}
 	}
 
-	public PSObject token(boolean packingMode, NameLookup lookup)
+	public final PSObject token(boolean packingMode, NameLookup lookup)
 			throws IOException, SyntaxException, NameNotFoundException {
 		getScanner();
 		return scanner.nextToken(packingMode, lookup);
 	}
 
-	public boolean execute(OperandStack os) {
+	@Override
+	public final boolean execute(OperandStack os) {
 		if (in == null) {
 			return true;
 		}
@@ -110,7 +107,8 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 		return Dispatcher.dispatch(os, this);
 	}
 
-	public void close() throws IOException {
+	@Override
+	public final void close() throws IOException {
 		if (in != null) {
 			if (!filter) {
 				in.close();
@@ -120,13 +118,15 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 		}
 	}
 
-	public int read() throws IOException {
+	@Override
+	public final int read() throws IOException {
 		return (in != null) ? in.read() : -1;
 	}
 
 	private BufferedReader reader;
 
-	public String readLine() throws IOException {
+	@Override
+	public final String readLine() throws IOException {
 		try {
 			if (in == null) {
 				return null;
@@ -142,11 +142,13 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 		}
 	}
 
-	public int available() throws IOException {
+	@Override
+	public final int available() throws IOException {
 		return (in != null) ? in.available() : -1;
 	}
 
-	public void flush() throws IOException {
+	@Override
+	public final void flush() throws IOException {
 		if (in != null) {
 			int b;
 			do {
@@ -159,55 +161,63 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 		}
 	}
 
-	public boolean markSupported() {
+	@Override
+	public final boolean markSupported() {
 		return (in != null) ? in.markSupported() : false;
 	}
 
-	public void mark(int readLimit) {
+	@Override
+	public final void mark(int readLimit) {
 		Thread.dumpStack();
 		if (in != null) {
 			in.mark(readLimit);
 		}
 	}
 
-	public void reset() throws IOException {
+	@Override
+	public final void reset() throws IOException {
 		if (in != null) {
 			in.reset();
 		}
 	}
 
-	public boolean isValid() {
+	@Override
+	public final boolean isValid() {
 		return (in != null);
 	}
 
-	public int hashCode() {
+	@Override
+	public final int hashCode() {
 		return in.hashCode();
 	}
 
-	public boolean equals(Object o) {
+	@Override
+	public final boolean equals(Object o) {
 		if (o instanceof PSInputFile) {
 			return (in == ((PSInputFile) o).in);
 		}
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public final Object clone() throws CloneNotSupportedException {
 		return new PSInputFile(filename, filter, in, scanner, dsc);
 	}
 
-	public PSObject copy() {
+	@Override
+	public final PSObject copy() {
 		if (filter) {
-			throw new RuntimeException("Filters cannot be copied");
+			throw new IllegalArgumentException("Filters cannot be copied");
 		}
 
 		try {
 			return new PSInputFile(filename, dsc);
 		} catch (FileNotFoundException e) {
-			throw new RuntimeException("Cannot find file while copying: "
-					+ filename);
+			throw new IllegalArgumentException(
+					"Cannot find file while copying: " + filename);
 		} catch (IOException e) {
-			throw new RuntimeException("IOException for file while copying: "
-					+ filename);
+			throw new IllegalArgumentException(
+					"IOException for file while copying: " + filename);
 		}
 	}
 }

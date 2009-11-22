@@ -17,11 +17,13 @@ public class PSComment extends PSSimple {
 		value = comment;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// ignore comments
 		return true;
 	}
 
+	@Override
 	public String getType() {
 		return "commenttype";
 	}
@@ -30,10 +32,12 @@ public class PSComment extends PSSimple {
 		return value;
 	}
 
+	@Override
 	public int hashCode() {
 		return value.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSComment) {
 			return (value == ((PSComment) o).value);
@@ -41,14 +45,17 @@ public class PSComment extends PSSimple {
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSComment(value);
 	}
 
+	@Override
 	public String cvs() {
 		return value;
 	}
 
+	@Override
 	public String toString() {
 		return "%" + value;
 	}

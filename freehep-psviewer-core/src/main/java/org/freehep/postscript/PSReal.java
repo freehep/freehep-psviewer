@@ -16,6 +16,7 @@ public class PSReal extends PSNumber {
 		value = v;
 	}
 
+	@Override
 	public String getType() {
 		return "realtype";
 	}
@@ -24,10 +25,12 @@ public class PSReal extends PSNumber {
 		return value;
 	}
 
+	@Override
 	public double getDouble() {
 		return value;
 	}
 
+	@Override
 	public int getInt() throws RangeException {
 		if ((value < Integer.MIN_VALUE) || (value > Integer.MAX_VALUE)) {
 			throw new RangeException();
@@ -41,11 +44,13 @@ public class PSReal extends PSNumber {
 		return (d1 > d2) ? +1 : (d1 < d2) ? -1 : 0;
 	}
 
+	@Override
 	public int hashCode() {
 		long bits = Double.doubleToLongBits(value);
 		return (int) (bits ^ (bits >>> 32));
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSReal) {
 			return (value == ((PSReal) o).getValue());
@@ -53,14 +58,17 @@ public class PSReal extends PSNumber {
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSReal(value);
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return "" + value;
 	}

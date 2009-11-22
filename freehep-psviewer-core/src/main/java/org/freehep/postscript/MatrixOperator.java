@@ -1,4 +1,4 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.geom.AffineTransform;
@@ -9,18 +9,17 @@ import java.awt.geom.Point2D;
  * Matrix Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/MatrixOperator.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class MatrixOperator extends PSOperator {
 
-	public static Class[] operators = { Matrix.class, InitMatrix.class,
+	public static Class<?>[] operators = { Matrix.class, InitMatrix.class,
 			IdentMatrix.class, DefaultMatrix.class, CurrentMatrix.class,
 			SetMatrix.class, Translate.class, Scale.class, Rotate.class,
 			Concat.class, ConcatMatrix.class, Transform.class,
 			DTransform.class, ITransform.class, IDTransform.class,
 			InvertMatrix.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -28,6 +27,7 @@ public class MatrixOperator extends PSOperator {
 
 class Matrix extends MatrixOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(new PSArray(new double[] { 1, 0, 0, 1, 0, 0 }));
 		return true;
@@ -36,6 +36,7 @@ class Matrix extends MatrixOperator {
 
 class InitMatrix extends MatrixOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.gstate().setTransform(new AffineTransform());
 
@@ -48,6 +49,7 @@ class IdentMatrix extends MatrixOperator {
 		operandTypes = new Class[] { PSArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSArray a = os.popArray();
 		a.set(new double[] { 1, 0, 0, 1, 0, 0 });
@@ -61,6 +63,7 @@ class DefaultMatrix extends MatrixOperator {
 		operandTypes = new Class[] { PSArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSArray a = os.popArray();
 		double[] d = { 1, 0, 0, 1, 0, 0 };
@@ -75,6 +78,7 @@ class CurrentMatrix extends MatrixOperator {
 		operandTypes = new Class[] { PSArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSArray a = os.popArray();
 		if (a.size() < 6) {
@@ -95,6 +99,7 @@ class SetMatrix extends MatrixOperator {
 		operandTypes = new Class[] { PSPackedArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSPackedArray a = os.popPackedArray();
 		AffineTransform ctm = new AffineTransform(a.toDoubles());
@@ -109,6 +114,7 @@ class Translate extends MatrixOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			double ty = os.popNumber().getDouble();
@@ -141,6 +147,7 @@ class Scale extends MatrixOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			double sy = os.popNumber().getDouble();
@@ -173,6 +180,7 @@ class Rotate extends MatrixOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class)) {
 			double angle = os.popNumber().getDouble();
@@ -205,6 +213,7 @@ class Concat extends MatrixOperator {
 		operandTypes = new Class[] { PSPackedArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		AffineTransform m = new AffineTransform(os.popPackedArray().toDoubles());
 		os.gstate().transform(m);
@@ -218,6 +227,7 @@ class ConcatMatrix extends MatrixOperator {
 				PSArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSArray m3 = os.popArray();
 		PSPackedArray m2 = os.popPackedArray();
@@ -238,6 +248,7 @@ class Transform extends MatrixOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		AffineTransform transform;
 		double dx, dy;
@@ -267,6 +278,7 @@ class DTransform extends MatrixOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		AffineTransform transform;
 		double dx, dy;
@@ -296,6 +308,7 @@ class ITransform extends MatrixOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		AffineTransform transform;
 		double dx, dy;
@@ -330,6 +343,7 @@ class IDTransform extends MatrixOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		AffineTransform transform;
 		double dx, dy;
@@ -365,6 +379,7 @@ class InvertMatrix extends MatrixOperator {
 		operandTypes = new Class[] { PSPackedArray.class, PSArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSArray m2 = os.popArray();
 		PSPackedArray m1 = os.popPackedArray();

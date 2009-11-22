@@ -26,7 +26,7 @@ public class PSDebugger extends JPanel {
 	private static final int NCOLS = 3;
 	private static final int NROWS = 10;
 
-	private List listeners = new ArrayList();
+	private List<DebuggerListener> listeners = new ArrayList<DebuggerListener>();
 	private JButton b[][] = new JButton[NCOLS][NROWS];
 	private JPanel stackPanel;
 	private JPanel buttonPanel;
@@ -58,9 +58,10 @@ public class PSDebugger extends JPanel {
 		buttonPanel.add(step);
 		step.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				for (Iterator i = listeners.iterator(); i.hasNext();) {
+				for (Iterator<DebuggerListener> i = listeners.iterator(); i
+						.hasNext();) {
 					try {
-						((DebuggerListener) i.next()).step();
+						i.next().step();
 					} catch (BreakException be) {
 						// ignored, we are stepping
 					} catch (IOException ioe) {
@@ -74,9 +75,10 @@ public class PSDebugger extends JPanel {
 		buttonPanel.add(go);
 		go.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				for (Iterator i = listeners.iterator(); i.hasNext();) {
+				for (Iterator<DebuggerListener> i = listeners.iterator(); i
+						.hasNext();) {
 					try {
-						((DebuggerListener) i.next()).go();
+						i.next().go();
 					} catch (IOException ioe) {
 						ioe.printStackTrace();
 					}

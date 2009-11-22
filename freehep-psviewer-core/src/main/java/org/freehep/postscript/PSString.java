@@ -1,4 +1,4 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.io.IOException;
@@ -10,11 +10,9 @@ import java.io.PushbackInputStream;
  * Objects for PostScript Processor, as defined in 3.3 Data Types and Objects
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSString.java 829a8d93169a
- *          2006/12/08 09:03:07 duns $
  */
 public class PSString extends PSComposite implements PSTokenizable,
-		PSDataSource, PSDataTarget, Comparable {
+		PSDataSource, PSDataTarget, Comparable<Object> {
 	private char[] value;
 	private int start = 0;
 	private int length = 0;
@@ -98,9 +96,14 @@ public class PSString extends PSComposite implements PSTokenizable,
 		return scanner.nextToken(packingMode, lookup);
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (isLiteral()) {
-			os.push(this.clone());
+			try {
+				os.push(this.clone());
+			} catch (CloneNotSupportedException e) {
+				error(os, new Unimplemented());
+			}
 			return true;
 		}
 
@@ -113,6 +116,7 @@ public class PSString extends PSComposite implements PSTokenizable,
 		return Dispatcher.dispatch(os, this);
 	}
 
+	@Override
 	public String getType() {
 		return "stringtype";
 	}
@@ -168,10 +172,12 @@ public class PSString extends PSComposite implements PSTokenizable,
 		return s1.compareTo(s2);
 	}
 
+	@Override
 	public int hashCode() {
 		return getValue().hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSString) {
 			return getValue().equals(((PSString) o).getValue());
@@ -181,18 +187,22 @@ public class PSString extends PSComposite implements PSTokenizable,
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSString(value, start, length, dsc);
 	}
 
+	@Override
 	public PSObject copy() {
 		return new PSString(new String(value, start, length), dsc);
 	}
 
+	@Override
 	public String cvs() {
 		return getValue();
 	}
 
+	@Override
 	public String toString() {
 		return "(" + getValue() + ")";
 	}
@@ -221,20 +231,25 @@ public class PSString extends PSComposite implements PSTokenizable,
 		}
 
 		// make bytes available one at a time
+		@Override
 		public int available() throws IOException {
 			return (length > 0) ? 1 : 0;
 		}
 
+		@Override
 		public void close() throws IOException {
 		}
 
+		@Override
 		public synchronized void mark(int readLimit) {
 		}
 
+		@Override
 		public boolean markSupported() {
 			return false;
 		}
 
+		@Override
 		public int read() throws IOException {
 			if (length > 0) {
 				int b = value[start] & 0xFF;
@@ -245,13 +260,15 @@ public class PSString extends PSComposite implements PSTokenizable,
 			return -1;
 		}
 
+		@Override
 		public int read(byte[] b) throws IOException {
 			return read(b, 0, b.length);
 		}
 
+		@Override
 		public int read(byte[] b, int off, int len) throws IOException {
 			if (b == null) {
-				throw new NullPointerException();
+				throw new IllegalArgumentException();
 			} else if ((off < 0) || (off > b.length) || (len < 0)
 					|| ((off + len) > b.length) || ((off + len) < 0)) {
 				throw new IndexOutOfBoundsException();
@@ -268,11 +285,13 @@ public class PSString extends PSComposite implements PSTokenizable,
 			return 1;
 		}
 
+		@Override
 		public synchronized void reset() throws IOException {
 			start = initStart;
 			length = initLength;
 		}
 
+		@Override
 		public long skip(long n) throws IOException {
 			if (n <= length) {
 				start += n;
@@ -282,6 +301,7 @@ public class PSString extends PSComposite implements PSTokenizable,
 			return -1;
 		}
 
+		@Override
 		public void unread(int b) throws IOException {
 			if (start > 0) {
 				start--;
@@ -289,10 +309,12 @@ public class PSString extends PSComposite implements PSTokenizable,
 			}
 		}
 
+		@Override
 		public void unread(byte[] b) throws IOException {
 			unread(b, 0, b.length);
 		}
 
+		@Override
 		public void unread(byte[] b, int off, int len) throws IOException {
 			if (len > start) {
 				throw new IOException();
@@ -309,6 +331,7 @@ public class PSString extends PSComposite implements PSTokenizable,
 			super();
 		}
 
+		@Override
 		public void write(int b) throws IOException {
 			if (length >= value.length) {
 				throw new IOException();

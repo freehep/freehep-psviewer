@@ -129,6 +129,7 @@ public class PSGState extends PSComposite {
 		copy.boundingBox = boundingBox;
 	}
 
+	@Override
 	public PSObject copy() {
 		PSGState copy = new PSGState();
 		copyInto(copy);
@@ -397,6 +398,7 @@ public class PSGState extends PSComposite {
 		return (value == RenderingHints.VALUE_STROKE_PURE);
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(this);
 		return true;
@@ -631,16 +633,19 @@ public class PSGState extends PSComposite {
 		return boundingBox;
 	}
 
+	@Override
 	public String getType() {
 		return "gstatetype";
 	}
 
 	// FIXME: maybe not correct
+	@Override
 	public int hashCode() {
 		return device.hashCode();
 	}
 
 	// FIXME: there may be no equal
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSGState) {
 			return (device == ((PSGState) o).device);
@@ -649,14 +654,17 @@ public class PSGState extends PSComposite {
 	}
 
 	// FIXME: not implemented
-	public Object clone() {
-		return null;
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		throw new CloneNotSupportedException(getClass()+" Not implemented");
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return "--" + name + "--";
 	}

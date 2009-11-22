@@ -1,20 +1,19 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Type, Attribute and Conversion Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/ConversionOperator.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class ConversionOperator extends PSOperator {
 
-	public static Class[] operators = { Type.class, CvLit.class, CvX.class,
+	public static Class<?>[] operators = { Type.class, CvLit.class, CvX.class,
 			XCheck.class, ExecuteOnly.class, NoAccess.class, ReadOnly.class,
 			RCheck.class, WCheck.class, CvI.class, CvN.class, CvR.class,
 			CvRS.class, CvS.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -25,6 +24,7 @@ class Type extends ConversionOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject o = os.popObject();
 		os.push(new PSName(o.getType()));
@@ -37,6 +37,7 @@ class CvLit extends ConversionOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject o = os.popObject();
 		o.setLiteral();
@@ -50,6 +51,7 @@ class CvX extends ConversionOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject o = os.popObject();
 		o.setExecutable();
@@ -63,6 +65,7 @@ class XCheck extends ConversionOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject o = os.popObject();
 		os.push(o.isExecutable());
@@ -75,6 +78,7 @@ class ExecuteOnly extends ConversionOperator {
 		operandTypes = new Class[] { PSComposite.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSComposite o = os.popComposite();
 		o.changeAccess(PSComposite.EXECUTE_ONLY);
@@ -88,6 +92,7 @@ class NoAccess extends ConversionOperator {
 		operandTypes = new Class[] { PSComposite.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSComposite o = os.popComposite();
 		// FIXME: handle dictionary case
@@ -103,6 +108,7 @@ class ReadOnly extends ConversionOperator {
 		operandTypes = new Class[] { PSComposite.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSComposite o = os.popComposite();
 		// FIXME: handle dictionary case
@@ -117,6 +123,7 @@ class RCheck extends ConversionOperator {
 		operandTypes = new Class[] { PSComposite.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSComposite o = os.popComposite();
 		os.push(o.accessRead());
@@ -129,6 +136,7 @@ class WCheck extends ConversionOperator {
 		operandTypes = new Class[] { PSComposite.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSComposite o = os.popComposite();
 		os.push(o.accessWrite());
@@ -141,6 +149,7 @@ class CvI extends ConversionOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		try {
 			if (os.checkType(PSNumber.class)) {
@@ -168,6 +177,7 @@ class CvN extends ConversionOperator {
 		operandTypes = new Class[] { PSString.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSString s = os.popString();
 		os.push(new PSName(s.getValue(), s.isLiteral()));
@@ -180,6 +190,7 @@ class CvR extends ConversionOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class)) {
 			PSNumber n = os.popNumber();
@@ -205,6 +216,7 @@ class CvRS extends ConversionOperator {
 				PSString.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		try {
 			PSString s = os.popString();
@@ -237,6 +249,7 @@ class CvS extends ConversionOperator {
 		operandTypes = new Class[] { PSObject.class, PSString.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSString s = os.popString();
 		PSObject o = os.popObject();

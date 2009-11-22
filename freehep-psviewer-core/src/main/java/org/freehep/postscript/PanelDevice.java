@@ -25,28 +25,34 @@ public class PanelDevice extends PSDevice {
 
 		// forward the resize
 		panel.addComponentListener(new ComponentAdapter() {
+			@Override
 			public void componentResized(ComponentEvent event) {
 				fireComponentResizedEvent(event);
 			}
 		});
 	}
 
+	@Override
 	public double getWidth() {
 		return panel.getWidth();
 	}
 
+	@Override
 	public double getHeight() {
 		return panel.getHeight();
 	}
 
+	@Override
 	public AffineTransform getDeviceTransform() {
 		return panel.getGraphicsConfiguration().getDefaultTransform();
 	}
 
+	@Override
 	public Graphics getDeviceGraphics() {
 		return panel.getGraphics();
 	}
 
+	@Override
 	public Graphics2D getGraphics() {
 		if (imageGraphics != null) {
 			return imageGraphics;
@@ -54,10 +60,12 @@ public class PanelDevice extends PSDevice {
 		return super.getGraphics();
 	}
 
+	@Override
 	public void refresh() {
 		panel.repaint();
 	}
 
+	@Override
 	public BufferedImage convertToImage(int width, int height) {
 		BufferedImage image = (BufferedImage) panel.createImage(width, height);
 		imageGraphics = (Graphics2D) image.getGraphics();

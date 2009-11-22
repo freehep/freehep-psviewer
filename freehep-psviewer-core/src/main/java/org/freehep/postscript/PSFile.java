@@ -20,11 +20,13 @@ public abstract class PSFile extends PSComposite {
 		filename = name;
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		error(os, new IOError());
 		return true;
 	}
 
+	@Override
 	public String getType() {
 		return "filetype";
 	}
@@ -73,10 +75,12 @@ public abstract class PSFile extends PSComposite {
 
 	public abstract boolean isValid();
 
+	@Override
 	public String cvs() {
 		return name;
 	}
 
+	@Override
 	public String toString() {
 		return "--" + ((isExecutable()) ? "*" : "") + name + " (" + filename
 				+ ") --";

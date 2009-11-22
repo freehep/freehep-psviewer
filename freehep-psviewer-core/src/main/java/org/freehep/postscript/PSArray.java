@@ -39,6 +39,7 @@ public class PSArray extends PSPackedArray {
 		super(s);
 	}
 
+	@Override
 	public String getType() {
 		return "arraytype";
 	}
@@ -73,10 +74,12 @@ public class PSArray extends PSPackedArray {
 		return new PSArray(name, array, index, count);
 	}
 
+	@Override
 	public int hashCode() {
 		return array.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSArray) {
 			return (array == ((PSArray) o).array);
@@ -84,14 +87,17 @@ public class PSArray extends PSPackedArray {
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSArray(name, array, start, length);
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return "--" + ((isExecutable()) ? "*" : "") + name + " (" + start
 				+ ".." + (start + length) + ") --";

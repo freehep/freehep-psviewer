@@ -14,6 +14,7 @@ public class GStateStack extends PostScriptStack {
 		super();
 	}
 
+	@Override
 	public Object push(Object o) {
 		throw new IllegalArgumentException("Only PSGState allowed on stack.");
 	}
@@ -26,6 +27,7 @@ public class GStateStack extends PostScriptStack {
 		return (PSGState) pop();
 	}
 
+	@Override
 	public String toString() {
 		return "GStateStack";
 	}

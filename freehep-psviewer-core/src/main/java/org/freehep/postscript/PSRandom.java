@@ -29,6 +29,7 @@ public class PSRandom extends Random {
 		this.seed = (seed ^ multiplier) & mask;
 	}
 
+	@Override
 	synchronized protected int next(int bits) {
 		seed = (seed * multiplier + addend) & mask;
 		return (int) (seed >>> (32 - bits));

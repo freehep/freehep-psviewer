@@ -14,21 +14,25 @@ public class PSFontID extends PSSimple {
 		super("fontid", true);
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(this);
 		return true;
 	}
 
+	@Override
 	public String getType() {
 		return "fonttype";
 	}
 
 	// FIXME
+	@Override
 	public int hashCode() {
 		return 0;
 	}
 
 	// FIXME
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSFontID) {
 			return true;
@@ -36,14 +40,17 @@ public class PSFontID extends PSSimple {
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSFontID();
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return "--" + name + "--";
 	}

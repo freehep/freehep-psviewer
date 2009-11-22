@@ -13,23 +13,28 @@ public class PSNull extends PSSimple {
 		super("null", true);
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(this);
 		return true;
 	}
 
+	@Override
 	public String getType() {
 		return "nulltype";
 	}
 
-	public Object clone() {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new PSNull();
 	}
 
+	@Override
 	public int hashCode() {
 		return getClass().hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PSNull) {
 			return true;
@@ -37,10 +42,12 @@ public class PSNull extends PSSimple {
 		return false;
 	}
 
+	@Override
 	public String cvs() {
 		return toString();
 	}
 
+	@Override
 	public String toString() {
 		return "--" + name + "--";
 	}

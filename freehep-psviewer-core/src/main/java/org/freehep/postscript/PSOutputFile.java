@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.io.BufferedOutputStream;
@@ -12,8 +12,6 @@ import org.freehep.util.io.FinishableOutputStream;
  * Objects for PostScript Processor, as defined in 3.3 Data Types and Objects
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSOutputFile.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class PSOutputFile extends PSFile implements PSDataTarget {
 	protected OutputStream out = null;
@@ -43,11 +41,12 @@ public class PSOutputFile extends PSFile implements PSDataTarget {
 		out = new BufferedOutputStream(output);
 	}
 
-	public OutputStream getOutputStream() {
+	public final OutputStream getOutputStream() {
 		return out;
 	}
 
-	public void close() throws IOException {
+	@Override
+	public final void close() throws IOException {
 		if (out != null) {
 			if (!filter) {
 				out.close();
@@ -60,7 +59,8 @@ public class PSOutputFile extends PSFile implements PSDataTarget {
 		}
 	}
 
-	public void write(int b, boolean secure) throws IOException {
+	@Override
+	public final void write(int b, boolean secure) throws IOException {
 		if (!secure) {
 			throw new IOException();
 		}
@@ -72,40 +72,46 @@ public class PSOutputFile extends PSFile implements PSDataTarget {
 		}
 	}
 
-	public void flush() throws IOException {
+	@Override
+	public final void flush() throws IOException {
 		if (out != null) {
 			out.flush();
 		}
 	}
 
-	public boolean isValid() {
+	@Override
+	public final boolean isValid() {
 		return (out != null);
 	}
 
-	public int hashCode() {
+	@Override
+	public final int hashCode() {
 		return out.hashCode();
 	}
 
-	public boolean equals(Object o) {
+	@Override
+	public final boolean equals(Object o) {
 		if (o instanceof PSOutputFile) {
 			return (out == ((PSOutputFile) o).out);
 		}
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public final Object clone() throws CloneNotSupportedException {
 		return new PSOutputFile(filename, filter, out);
 	}
 
-	public PSObject copy() {
+	@Override
+	public final PSObject copy() {
 		if (filter) {
-			throw new RuntimeException("Filters cannot be copied");
+			throw new IllegalArgumentException("Filters cannot be copied");
 		}
 
 		try {
 			return new PSOutputFile(filename, append, true);
 		} catch (IOException e) {
-			throw new RuntimeException("IOException for file while copying: "
+			throw new IllegalArgumentException("IOException for file while copying: "
 					+ filename);
 		}
 	}

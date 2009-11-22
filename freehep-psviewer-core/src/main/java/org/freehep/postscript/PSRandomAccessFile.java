@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.io.File;
@@ -10,8 +10,6 @@ import java.io.RandomAccessFile;
  * Objects for PostScript Processor, as defined in 3.3 Data Types and Objects
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSRandomAccessFile.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class PSRandomAccessFile extends PSFile {
 	protected RandomAccessFile raf = null;
@@ -24,7 +22,7 @@ public class PSRandomAccessFile extends PSFile {
 	}
 
 	public PSRandomAccessFile(String filename, boolean write, boolean append,
-			boolean secure) throws FileNotFoundException, IOException {
+			boolean secure) throws IOException {
 		super(filename, false);
 
 		if (!secure) {
@@ -46,22 +44,26 @@ public class PSRandomAccessFile extends PSFile {
 		}
 	}
 
-	public void close() throws IOException {
+	@Override
+	public final void close() throws IOException {
 		if (raf != null) {
 			raf.close();
 			raf = null;
 		}
 	}
 
-	public int read() throws IOException {
+	@Override
+	public final int read() throws IOException {
 		return (raf != null) ? raf.read() : -1;
 	}
 
-	public String readLine() throws IOException {
+	@Override
+	public final String readLine() throws IOException {
 		return (raf != null) ? raf.readLine() : null;
 	}
 
-	public void write(int b, boolean secure) throws IOException {
+	@Override
+	public final void write(int b, boolean secure) throws IOException {
 		if (!secure) {
 			throw new IOException();
 		}
@@ -72,7 +74,8 @@ public class PSRandomAccessFile extends PSFile {
 		}
 	}
 
-	public void seek(long pos) throws IOException {
+	@Override
+	public final void seek(long pos) throws IOException {
 		if (raf != null) {
 			raf.seek(pos);
 		} else {
@@ -80,19 +83,23 @@ public class PSRandomAccessFile extends PSFile {
 		}
 	}
 
-	public long getFilePointer() throws IOException {
+	@Override
+	public final long getFilePointer() throws IOException {
 		return (raf != null) ? raf.getFilePointer() : -1;
 	}
 
-	public int available() throws IOException {
+	@Override
+	public final int available() throws IOException {
 		return (raf != null) ? (int) (raf.length() - raf.getFilePointer()) : -1;
 	}
 
+	@Override
 	public void flush() throws IOException {
 		// ignored
 	}
 
-	public void reset() throws IOException {
+	@Override
+	public final void reset() throws IOException {
 		if (raf != null) {
 			raf.seek(0);
 		} else {
@@ -100,38 +107,43 @@ public class PSRandomAccessFile extends PSFile {
 		}
 	}
 
-	public boolean isValid() {
+	@Override
+	public final boolean isValid() {
 		return (raf != null);
 	}
 
-	public int hashCode() {
+	@Override
+	public final int hashCode() {
 		return raf.hashCode();
 	}
 
-	public boolean equals(Object o) {
+	@Override
+	public final boolean equals(Object o) {
 		if (o instanceof PSRandomAccessFile) {
 			return (raf == ((PSRandomAccessFile) o).raf);
 		}
 		return false;
 	}
 
-	public Object clone() {
+	@Override
+	public final Object clone() throws CloneNotSupportedException {
 		return new PSRandomAccessFile(filename, filter, raf);
 	}
 
-	public PSObject copy() {
+	@Override
+	public final PSObject copy() {
 		if (filter) {
-			throw new RuntimeException("Filters cannot be copied");
+			throw new IllegalArgumentException("Filters cannot be copied");
 		}
 
 		try {
 			return new PSRandomAccessFile(filename, write, append, true);
 		} catch (FileNotFoundException e) {
-			throw new RuntimeException("Cannot find file while copying: "
-					+ filename);
+			throw new IllegalArgumentException(
+					"Cannot find file while copying: " + filename);
 		} catch (IOException e) {
-			throw new RuntimeException("IOException for file while copying: "
-					+ filename);
+			throw new IllegalArgumentException(
+					"IOException for file while copying: " + filename);
 		}
 	}
 }

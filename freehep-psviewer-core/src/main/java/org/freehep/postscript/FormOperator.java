@@ -1,4 +1,4 @@
-// Copyright 2001-2006, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.Paint;
@@ -12,14 +12,13 @@ import java.awt.image.BufferedImage;
  * Form and Pattern Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/FormOperator.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class FormOperator extends PSOperator {
 
-	public static Class[] operators = { MakePattern.class, SetPattern.class,
+	public static Class<?>[] operators = { MakePattern.class, SetPattern.class,
 			ExecForm.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -38,6 +37,7 @@ class MakePattern extends FormOperator {
 	public MakePattern() {
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (pattern == null) {
 			if (!os.checkType(PSDictionary.class, PSPackedArray.class)) {
@@ -139,6 +139,7 @@ class SetPattern extends FormOperator {
 		operandTypes = new Class[] { PSDictionary.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSDictionary pattern = os.popDictionary();
 
@@ -181,6 +182,7 @@ class ExecForm extends FormOperator {
 	public ExecForm() {
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (!done) {
 			if (!os.checkType(PSDictionary.class)) {
@@ -216,6 +218,9 @@ class ExecForm extends FormOperator {
 				return false;
 			} catch (ClassCastException e) {
 				error(os, new TypeCheck());
+				return true;
+			} catch (CloneNotSupportedException e) {
+				error(os, new Unimplemented());
 				return true;
 			}
 		}

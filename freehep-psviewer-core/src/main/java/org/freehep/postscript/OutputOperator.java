@@ -1,18 +1,17 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Device Setup and Output Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/OutputOperator.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class OutputOperator extends PSOperator {
 
-	public static Class[] operators = { ShowPage.class, CopyPage.class,
+	public static Class<?>[] operators = { ShowPage.class, CopyPage.class,
 			SetPageDevice.class, CurrentPageDevice.class, NullDevice.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -20,6 +19,7 @@ public class OutputOperator extends PSOperator {
 
 class ShowPage extends OutputOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		Object showPage = os.execStack().pop();
 		os.execStack().push(new InitGraphics());
@@ -31,6 +31,7 @@ class ShowPage extends OutputOperator {
 
 class CopyPage extends OutputOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// no-op
 		return true;
@@ -42,6 +43,7 @@ class SetPageDevice extends OutputOperator {
 		operandTypes = new Class[] { PSDictionary.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// FIXME
 		error(os, new Unimplemented());
@@ -51,6 +53,7 @@ class SetPageDevice extends OutputOperator {
 
 class CurrentPageDevice extends OutputOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// FIXME
 		error(os, new Unimplemented());
@@ -60,6 +63,7 @@ class CurrentPageDevice extends OutputOperator {
 
 class NullDevice extends OutputOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		// no-op
 		return true;

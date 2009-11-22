@@ -14,7 +14,12 @@ public abstract class PSSimple extends PSObject {
 		super(name, literal);
 	}
 
+	@Override
 	public PSObject copy() {
-		return (PSObject) clone();
+		try {
+			return (PSObject) clone();
+		} catch (CloneNotSupportedException e) {
+			throw new UnsupportedOperationException(e);
+		}
 	}
 }

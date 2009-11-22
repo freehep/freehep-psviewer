@@ -1,21 +1,20 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Dictionary Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/DictionaryOperator.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class DictionaryOperator extends PSOperator {
 
-	public static Class[] operators = { Dict.class, StartDictionary.class,
+	public static Class<?>[] operators = { Dict.class, StartDictionary.class,
 			EndDictionary.class, MaxLength.class, Begin.class, End.class,
 			Def.class, Load.class, Store.class, Undef.class, Known.class,
 			Where.class, CurrentDict.class, CountDictStack.class,
 			DictStack.class, ClearDictStack.class };
 
+	@Override
 	public boolean execute(OperandStack os) {
 		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
@@ -26,6 +25,7 @@ class Dict extends DictionaryOperator {
 		operandTypes = new Class[] { PSInteger.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSInteger n = os.popInteger();
 		if (n.getValue() < 0) {
@@ -39,10 +39,12 @@ class Dict extends DictionaryOperator {
 
 class StartDictionary extends DictionaryOperator {
 
+	@Override
 	public String getName() {
 		return "<<";
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(new PSMark());
 		return true;
@@ -51,11 +53,13 @@ class StartDictionary extends DictionaryOperator {
 
 class EndDictionary extends DictionaryOperator {
 
+	@Override
 	public String getName() {
 		return ">>";
 	}
 
 	// FREEHEP-145: nothing done about InvalidAccess
+	@Override
 	public boolean execute(OperandStack os) {
 		int n = os.countToMark();
 		if (n < 0) {
@@ -85,6 +89,7 @@ class MaxLength extends DictionaryOperator {
 		operandTypes = new Class[] { PSDictionary.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSDictionary d = os.popDictionary();
 		os.push(d.capacity());
@@ -97,6 +102,7 @@ class Begin extends DictionaryOperator {
 		operandTypes = new Class[] { PSDictionary.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.dictStack().push(os.popDictionary());
 		return true;
@@ -105,6 +111,7 @@ class Begin extends DictionaryOperator {
 
 class End extends DictionaryOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		if (os.dictStack().pop() == null) {
 			error(os, new DictStackUnderflow());
@@ -118,6 +125,7 @@ class Def extends DictionaryOperator {
 		operandTypes = new Class[] { PSObject.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject value = os.popObject();
 		PSObject key = os.popObject();
@@ -133,6 +141,7 @@ class Load extends DictionaryOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject key = os.popObject();
 		PSObject value = os.dictStack().lookup(key);
@@ -150,6 +159,7 @@ class Store extends DictionaryOperator {
 		operandTypes = new Class[] { PSObject.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject value = os.popObject();
 		PSObject key = os.popObject();
@@ -168,6 +178,7 @@ class Undef extends DictionaryOperator {
 		operandTypes = new Class[] { PSDictionary.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject key = os.popObject();
 		PSDictionary d = os.popDictionary();
@@ -181,6 +192,7 @@ class Known extends DictionaryOperator {
 		operandTypes = new Class[] { PSDictionary.class, PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject key = os.popObject();
 		PSDictionary d = os.popDictionary();
@@ -198,6 +210,7 @@ class Where extends DictionaryOperator {
 		operandTypes = new Class[] { PSObject.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSObject key = os.popObject();
 		PSDictionary d = os.dictStack().get(key);
@@ -213,6 +226,7 @@ class Where extends DictionaryOperator {
 
 class CurrentDict extends DictionaryOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.dictStack().currentDictionary());
 		return true;
@@ -221,6 +235,7 @@ class CurrentDict extends DictionaryOperator {
 
 class CountDictStack extends DictionaryOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.push(os.dictStack().size());
 		return true;
@@ -232,6 +247,7 @@ class DictStack extends DictionaryOperator {
 		operandTypes = new Class[] { PSArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSArray a = os.popArray();
 		if (os.dictStack().size() > a.size()) {
@@ -246,6 +262,7 @@ class DictStack extends DictionaryOperator {
 
 class ClearDictStack extends DictionaryOperator {
 
+	@Override
 	public boolean execute(OperandStack os) {
 		os.dictStack().clear();
 		return true;

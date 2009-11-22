@@ -22,8 +22,11 @@ import org.freehep.util.argv.StringParameter;
  * @version $Id: src/main/java/org/freehep/postscript/PSViewer.java 829a8d93169a
  *          2006/12/08 09:03:07 duns $
  */
-public class PSViewer {
+public final class PSViewer {
 
+	private PSViewer() {
+	}
+	
 	public static void main(String args[]) throws Exception {
 		BooleanOption help = new BooleanOption("-help", "-h",
 				"Show this help page", true);
@@ -53,7 +56,7 @@ public class PSViewer {
 		parser.add(file);
 
 		try {
-			List extra = parser.parse(args);
+			List<?> extra = parser.parse(args);
 
 			if (!extra.isEmpty() || help.getValue()) {
 				parser.printUsage(System.out);

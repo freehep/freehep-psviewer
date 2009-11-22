@@ -4,7 +4,7 @@ package org.freehep.postscript;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import org.freehep.graphics2d.BufferedPanel;
+import javax.swing.JPanel;
 
 /**
  * PostScript Panel for PostScript Processor,
@@ -13,7 +13,7 @@ import org.freehep.graphics2d.BufferedPanel;
  * @version $Id: src/main/java/org/freehep/postscript/PSPanel.java 829a8d93169a
  *          2006/12/08 09:03:07 duns $
  */
-public class PSPanel extends BufferedPanel {
+public class PSPanel extends JPanel {
 
 	private Graphics2D mirroredGraphics;
 

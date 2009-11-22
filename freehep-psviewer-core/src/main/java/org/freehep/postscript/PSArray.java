@@ -73,6 +73,10 @@ public class PSArray extends PSPackedArray {
 		return new PSArray(name, array, index, count);
 	}
 
+	public int hashCode() {
+		return array.hashCode();
+	}
+
 	public boolean equals(Object o) {
 		if (o instanceof PSArray) {
 			return (array == ((PSArray) o).array);

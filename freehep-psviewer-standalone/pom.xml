@@ -45,9 +45,16 @@
             <filter>
               <artifact>org.freehep:freehep-graphics-base</artifact>
               <excludes>
+                <exclude>org/freehep/util/**</exclude>
                 <exclude>org/freehep/swing/**</exclude>
                 <exclude>org/freehep/xml/**</exclude>
               </excludes>
+            </filter>
+            <filter>
+              <artifact>org.freehep:freehep-graphics2d</artifact>
+              <includes>
+                <include>org/freehep/graphics2d/font/**</include>
+              </includes>
             </filter>
           </filters>
         </configuration>

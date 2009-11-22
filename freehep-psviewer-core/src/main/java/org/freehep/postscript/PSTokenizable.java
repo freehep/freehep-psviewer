@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public interface PSTokenizable {
 
-	public PSObject token(boolean packingMode, NameLookup lookup)
-			throws IOException, SyntaxException, NameNotFoundException;
+	PSObject token(boolean packingMode, NameLookup lookup) throws IOException,
+			SyntaxException, NameNotFoundException;
 
 }

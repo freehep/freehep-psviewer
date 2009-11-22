@@ -29,7 +29,7 @@ public abstract class PSOperator extends PSSimple {
 	public boolean checkAndExecute(OperandStack os) {
 		// set the mark for errors
 		os.mark();
-
+		
 		// Check for StackUnderflow
 		if (operandTypes.length > os.size()) {
 			error(os, new StackUnderflow());

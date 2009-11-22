@@ -13,11 +13,11 @@ import java.io.InputStream;
  */
 public interface PSDataSource {
 
-	public InputStream getInputStream();
+	InputStream getInputStream();
 
-	public int read() throws IOException;
+	int read() throws IOException;
 
-	public void reset() throws IOException;
+	void reset() throws IOException;
 
-	public DSC getDSC();
+	DSC getDSC();
 }

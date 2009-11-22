@@ -2,7 +2,7 @@
 package org.freehep.postscript;
 
 /**
- * Class for signalling DSC comments
+ * Class for signaling DSC comments
  * 
  * @author Mark Donszelmann
  * @version $Id: src/main/java/org/freehep/postscript/DSCEventListener.java
@@ -10,5 +10,5 @@ package org.freehep.postscript;
  */
 public interface DSCEventListener {
 
-	public void dscCommentFound(DSCEvent event);
+	void dscCommentFound(DSCEvent event);
 }

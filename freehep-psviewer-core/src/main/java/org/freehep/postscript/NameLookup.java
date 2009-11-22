@@ -10,5 +10,5 @@ package org.freehep.postscript;
  */
 public interface NameLookup {
 
-	public PSObject lookup(PSObject key);
+	PSObject lookup(PSObject key);
 }

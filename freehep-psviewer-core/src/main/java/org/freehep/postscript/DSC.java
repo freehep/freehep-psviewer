@@ -403,8 +403,8 @@ public class DSC {
 		return s;
 	}
 
-	public static interface Arguments {
-		public Object parse(String key, String params, OperandStack os);
+	interface Arguments {
+		Object parse(String key, String params, OperandStack os);
 	}
 
 	public static class NoArgs implements Arguments {
@@ -433,7 +433,7 @@ public class DSC {
 				return new java.awt.Rectangle(p[0], p[1], p[2] - p[0], p[3]
 						- p[1]);
 			} catch (NumberFormatException e) {
-                System.err.println(e);
+				System.err.println(e);
 				return null;
 			}
 		}

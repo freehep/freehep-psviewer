@@ -13,7 +13,7 @@ import java.io.OutputStream;
  */
 public interface PSDataTarget {
 
-	public OutputStream getOutputStream();
+	OutputStream getOutputStream();
 
-	public void write(int b, boolean secure) throws IOException;
+	void write(int b, boolean secure) throws IOException;
 }

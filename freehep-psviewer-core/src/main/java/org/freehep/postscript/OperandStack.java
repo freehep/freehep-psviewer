@@ -279,12 +279,15 @@ public class OperandStack extends PostScriptStack {
 
 	public boolean checkType(Class[] types) {
 		if (elementCount < types.length) {
+		    System.err.println("Found "+elementCount+" while expecting "+types.length);
 			return false;
 		}
 
 		for (int i = 0; i < types.length; i++) {
 			if (!types[i].isInstance(elementData[elementCount - types.length
 					+ i])) {
+	            System.err.println("Found type "+elementData[elementCount - types.length
+	                                                    + i]+" while expecting type "+types[i]);
 				return false;
 			}
 		}

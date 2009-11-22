@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.freehep.util.io.EEXECConstants;
 import org.freehep.util.io.EEXECDecryption;
 
 public class PSCharStringDecoder {
@@ -30,7 +31,7 @@ public class PSCharStringDecoder {
 	public PSGlyph decode(PSString charString) throws IOException {
 
 		decryption = new EEXECDecryption(charString.getInputStream(),
-				EEXECDecryption.CHARSTRING_R, EEXECDecryption.N);
+				EEXECConstants.CHARSTRING_R, EEXECConstants.N);
 		currentX = currentY = 0;
 		charProc = new LinkedList();
 
@@ -185,8 +186,9 @@ public class PSCharStringDecoder {
 	}
 
 	private void addInitialPoint() {
-		if (sbX == 0)
+		if (sbX == 0) {
 			return;
+		}
 		charProc.add(0, dict.get("moveto"));
 		charProc.add(0, new PSInteger(0));
 		charProc.add(0, new PSInteger(sbX));

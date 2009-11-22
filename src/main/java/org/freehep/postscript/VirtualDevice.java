@@ -14,45 +14,49 @@ import java.awt.image.BufferedImage;
  */
 public class VirtualDevice extends PSDevice {
 
-    private Graphics2D imageGraphics = null;
-    private Graphics2D graphics;
-    private Dimension dimension;
-    private AffineTransform device = new AffineTransform();
+	private Graphics2D imageGraphics = null;
+	private Graphics2D graphics;
+	private Dimension dimension;
+	private AffineTransform device = new AffineTransform();
 
-    public VirtualDevice(Graphics2D graphics, Dimension dimension) {
-        this.graphics = graphics;
-        this.dimension = dimension;
-        fireComponentResizedEvent(new ComponentEvent(null, ComponentEvent.COMPONENT_RESIZED));
-    }
+	public VirtualDevice(Graphics2D graphics, Dimension dimension) {
+		this.graphics = graphics;
+		this.dimension = dimension;
+		fireComponentResizedEvent(new ComponentEvent(null,
+				ComponentEvent.COMPONENT_RESIZED));
+	}
 
-    public double getWidth() {
-        return dimension.width;
-    }
-    
-    public double getHeight() {
-        return dimension.height;
-    }
+	public double getWidth() {
+		return dimension.width;
+	}
 
-    public BufferedImage convertToImage(int width, int height) {
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        imageGraphics = (Graphics2D)image.getGraphics();
-        return image;
-    }
+	public double getHeight() {
+		return dimension.height;
+	}
 
-    public Graphics2D getGraphics() {
-        if (imageGraphics != null) return imageGraphics;
-        return super.getGraphics();
-    }
+	public BufferedImage convertToImage(int width, int height) {
+		BufferedImage image = new BufferedImage(width, height,
+				BufferedImage.TYPE_INT_ARGB);
+		imageGraphics = (Graphics2D) image.getGraphics();
+		return image;
+	}
 
-    public AffineTransform getDeviceTransform() {
-        return device;
-    }
+	public Graphics2D getGraphics() {
+		if (imageGraphics != null) {
+			return imageGraphics;
+		}
+		return super.getGraphics();
+	}
 
-    public Graphics getDeviceGraphics() {
-        return graphics;
-    }
+	public AffineTransform getDeviceTransform() {
+		return device;
+	}
 
-    public void refresh() {
-        // ignored
-    }
+	public Graphics getDeviceGraphics() {
+		return graphics;
+	}
+
+	public void refresh() {
+		// ignored
+	}
 }

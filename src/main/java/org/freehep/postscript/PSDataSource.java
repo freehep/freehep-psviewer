@@ -6,14 +6,18 @@ import java.io.InputStream;
 
 /**
  * Objects for PostScript Processor, as defined in 3.3 Data Types and Objects
- *
+ * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSDataSource.java 829a8d93169a 2006/12/08 09:03:07 duns $
+ * @version $Id: src/main/java/org/freehep/postscript/PSDataSource.java
+ *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public interface PSDataSource {
 
-    public InputStream getInputStream();
-    public int read() throws IOException;
-    public void reset() throws IOException;
-    public DSC getDSC();
+	public InputStream getInputStream();
+
+	public int read() throws IOException;
+
+	public void reset() throws IOException;
+
+	public DSC getDSC();
 }

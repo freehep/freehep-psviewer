@@ -2,7 +2,6 @@
 package org.freehep.postscript;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -161,7 +160,7 @@ public class PSDictionary extends PSComposite {
 
 	@Override
 	public PSObject copy() {
-		Hashtable<Object, PSObject> newTable = new Hashtable<Object, PSObject>();
+		Map<Object, PSObject> newTable = new HashMap<Object, PSObject>();
 		Iterator<Object> i = table.keySet().iterator();
 		while (i.hasNext()) {
 			Object key = i.next();

@@ -177,11 +177,12 @@ class UStroke extends PaintingOperator {
 				return true;
 			}
 
-			AffineTransform matrix = null;
+			final int matrixSize = 6;
+			AffineTransform m = null;
 			PSPackedArray proc = os.popPackedArray();
-			if (proc.size() == 6) {
+			if (proc.size() == matrixSize) {
 				try {
-					matrix = new AffineTransform(proc.toDoubles());
+					m = new AffineTransform(proc.toDoubles());
 					if (!os.checkType(PSPackedArray.class)) {
 						error(os, new TypeCheck());
 						return true;
@@ -396,9 +397,9 @@ class ImageOperator extends PaintingOperator {
 					int w = dict.getInteger("Width");
 					int h = dict.getInteger("Height");
 					PSPackedArray m = dict.getPackedArray("ImageMatrix");
-					PSObject multi = dict.get("MultipleDataSources");
+					PSObject multiDataSources = dict.get("MultipleDataSources");
 					PSObject[] ds;
-					if ((multi != null) && ((PSBoolean) multi).getValue()) {
+					if ((multiDataSources != null) && ((PSBoolean) multiDataSources).getValue()) {
 						if (mask) {
 							error(os, new RangeCheck());
 							return true;
@@ -596,7 +597,7 @@ class ImageOperator extends PaintingOperator {
 			// FIXME: ignores interpolate parameter
 			os.gstate().image(image, matrix);
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		} catch (ClassCastException e) {
 			error(os, new TypeCheck());
 		} catch (CloneNotSupportedException e) {

@@ -234,7 +234,7 @@ class Filter extends FileOperator {
 			error(os, new TypeCheck());
 			return true;
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 			return true;
 		}
 	}
@@ -252,7 +252,7 @@ class CloseFile extends FileOperator {
 		try {
 			file.close();
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		}
 		return true;
 	}
@@ -275,7 +275,7 @@ class Read extends FileOperator {
 				os.push(true);
 			}
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		}
 		return true;
 	}
@@ -293,7 +293,7 @@ class Write extends FileOperator {
 		try {
 			file.write(b.getValue() & 0xFF, os.isSecure());
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		}
 		return true;
 	}
@@ -327,7 +327,7 @@ class ReadHexString extends FileOperator {
 				os.push(string.subString(0));
 				os.push(true);
 			} catch (IOException e) {
-				error(os, new IOError());
+				error(os, new IOError(e));
 			} catch (ClassCastException e) {
 				error(os, new InvalidAccess());
 			}
@@ -355,7 +355,7 @@ class WriteHexString extends FileOperator {
 				out.write(string.get(i));
 			}
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		} catch (ClassCastException e) {
 			error(os, new InvalidAccess());
 		}
@@ -389,7 +389,7 @@ class ReadString extends FileOperator {
 				os.push(string.subString(0));
 				os.push(true);
 			} catch (IOException e) {
-				error(os, new IOError());
+				error(os, new IOError(e));
 			}
 		}
 		return true;
@@ -410,7 +410,7 @@ class WriteString extends FileOperator {
 				file.write(string.get(i) & 0xFF, os.isSecure());
 			}
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		}
 		return true;
 	}
@@ -443,7 +443,7 @@ class ReadLine extends FileOperator {
 				os.push(true);
 			}
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		}
 		return true;
 	}
@@ -460,7 +460,7 @@ class BytesAvailable extends FileOperator {
 		try {
 			os.push(file.available());
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		}
 		return true;
 	}
@@ -472,7 +472,7 @@ class Flush extends FileOperator {
 	public boolean execute(OperandStack os) {
 		System.out.flush();
 		if (System.out.checkError()) {
-			error(os, new IOError());
+			error(os, new IOError(new IOException("Cannot flush System.out")));
 		}
 		return true;
 	}
@@ -489,7 +489,7 @@ class FlushFile extends FileOperator {
 		try {
 			file.flush();
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		}
 		return true;
 	}
@@ -506,7 +506,7 @@ class ResetFile extends FileOperator {
 		try {
 			file.reset();
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		}
 		return true;
 	}
@@ -559,7 +559,7 @@ class Run extends FileOperator implements LoopingContext {
 		} catch (FileNotFoundException e) {
 			error(os, new UndefinedFileName());
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		}
 		return true;
 	}
@@ -592,7 +592,7 @@ class DeleteFile extends FileOperator {
 		} else {
 			File file = new File(name.getValue());
 			if (!file.delete()) {
-				error(os, new IOError());
+				error(os, new IOError(new IOException("Cannot delete file "+file)));
 			}
 		}
 		return true;
@@ -622,7 +622,7 @@ class RenameFile extends FileOperator {
 				error(os, new UndefinedFileName());
 			} else {
 				if (!file1.renameTo(file2)) {
-					error(os, new IOError());
+					error(os, new IOError(new IOException("Could not rename "+file1+" to "+file2)));
 				}
 			}
 		}
@@ -668,7 +668,7 @@ class FilenameForAll extends FileOperator implements LoopingContext {
 				return true;
 			}
 
-			File directory = new File((dir.lastIndexOf("/") < 0) ? "./" : dir);
+			File directory = new File((dir.lastIndexOf('/') < 0) ? "./" : dir);
 			FileFilter filter = new StandardFileFilter(dir);
 			File[] matchedFiles = directory.listFiles(filter);
 
@@ -677,7 +677,7 @@ class FilenameForAll extends FileOperator implements LoopingContext {
 				matchedFileNames.add(matchedFiles[i].getName());
 			}
 
-			String[] f = (String[]) matchedFileNames.toArray();
+			String[] f = matchedFileNames.toArray(new String[matchedFileNames.size()]);
 			os.execStack().pop();
 			os.execStack().push(new FilenameForAll(f, p, s));
 			return false;
@@ -707,7 +707,7 @@ class SetFilePosition extends FileOperator {
 		try {
 			file.seek(pos.getValue());
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		}
 		return true;
 	}
@@ -724,7 +724,7 @@ class FilePosition extends FileOperator {
 		try {
 			os.push(file.getFilePointer());
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		}
 		return true;
 	}

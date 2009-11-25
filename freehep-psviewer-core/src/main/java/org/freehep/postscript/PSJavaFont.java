@@ -48,7 +48,7 @@ public class PSJavaFont extends PSSimple {
 	}
 
 	@Override
-	public Object clone() {
+	public Object clone() throws CloneNotSupportedException {
 		return new PSJavaFont(font);
 	}
 

@@ -390,7 +390,7 @@ class Token extends GeneralOperator {
 		} catch (ClassCastException e) {
 			error(os, new InvalidAccess());
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		} catch (SyntaxException e) {
 			error(os, new SyntaxError());
 		} catch (NameNotFoundException e) {

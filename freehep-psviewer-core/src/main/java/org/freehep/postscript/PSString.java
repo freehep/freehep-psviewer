@@ -110,7 +110,7 @@ public class PSString extends PSComposite implements PSTokenizable,
 		try {
 			getScanner();
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 		}
 
 		return Dispatcher.dispatch(os, this);

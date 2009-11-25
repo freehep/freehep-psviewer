@@ -11,19 +11,16 @@ package org.freehep.postscript;
 public class PSArray extends PSPackedArray {
 
 	private PSArray(String n, PSObject[] a, int index, int count) {
-		super(n, a, index, count);
-		access = UNLIMITED;
+		super(n, a, index, count, UNLIMITED);
 	}
 
 	public PSArray(int n) {
-		super(n);
-		access = UNLIMITED;
+		super(n, UNLIMITED);
 		setName("array");
 	}
 
 	public PSArray(PSObject[] a) {
-		super(a);
-		access = UNLIMITED;
+		super(a, UNLIMITED);
 		setName("array");
 	}
 

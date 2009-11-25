@@ -17,13 +17,13 @@ public class PSRandomAccessFile extends PSFile {
 	protected boolean append;
 
 	protected PSRandomAccessFile(String n, boolean f, RandomAccessFile r) {
-		super(n, f);
+		super(n, f, UNLIMITED);
 		raf = r;
 	}
 
 	public PSRandomAccessFile(String filename, boolean write, boolean append,
 			boolean secure) throws IOException {
-		super(filename, false);
+		super(filename, false, UNLIMITED);
 
 		if (!secure) {
 			throw new IOException();

@@ -1,4 +1,4 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.Graphics;
@@ -12,8 +12,6 @@ import javax.swing.JPanel;
 
 /**
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PanelDevice.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PanelDevice extends PSDevice {
 

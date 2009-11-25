@@ -21,6 +21,10 @@ import java.util.Stack;
  */
 public class PathOperator extends PSOperator {
 
+    static final int MATRIX_SIZE = 6;
+    static final int PATH_SIZE = 6;
+	static final int FULL_CIRCLE = 360;
+	
 	public static Class<?>[] operators = { NewPath.class, CurrentPoint.class,
 			MoveTo.class, RMoveTo.class, LineTo.class, RLineTo.class,
 			Arc.class, ArcN.class, ArcT.class, ArcTo.class, CurveTo.class,
@@ -151,7 +155,7 @@ class Arc extends PathOperator {
 		double x = os.popNumber().getDouble();
 
 		while (a2 < a1) {
-			a2 += 360;
+			a2 += FULL_CIRCLE;
 		}
 
 		Arc2D arc = new Arc2D.Double();
@@ -177,7 +181,7 @@ class ArcN extends PathOperator {
 		double x = os.popNumber().getDouble();
 
 		while (a2 > a1) {
-			a2 -= 360;
+			a2 -= FULL_CIRCLE;
 		}
 
 		Arc2D arc = new Arc2D.Double();
@@ -319,7 +323,7 @@ class FlattenPath extends PathOperator {
 }
 
 class ReversePath extends PathOperator {
-	private float coord[] = new float[6];
+	private float coord[] = new float[PATH_SIZE];
 	private Stack<Object> stack;
 
 	private void createSubPath(GeneralPath reverse) {
@@ -421,11 +425,11 @@ class UStrokePath extends PathOperator {
 				return true;
 			}
 
-			AffineTransform matrix = null;
+			AffineTransform m = null;
 			PSPackedArray proc = os.popPackedArray();
-			if (proc.size() == 6) {
+			if (proc.size() == MATRIX_SIZE) {
 				try {
-					matrix = new AffineTransform(proc.toDoubles());
+					m = new AffineTransform(proc.toDoubles());
 					if (!os.checkType(PSPackedArray.class)) {
 						error(os, new TypeCheck());
 						return true;
@@ -443,7 +447,7 @@ class UStrokePath extends PathOperator {
 			upath.setExecutable();
 
 			os.execStack().pop();
-			os.execStack().push(new UStrokePath(true, matrix));
+			os.execStack().push(new UStrokePath(true, m));
 			os.execStack().push(upath);
 			return false;
 		}
@@ -599,7 +603,7 @@ class PathForAll extends PathOperator implements LoopingContext {
 		curveProc = curve;
 		closeProc = close;
 		iterator = path.getPathIterator(new AffineTransform());
-		coord = new double[6];
+		coord = new double[PATH_SIZE];
 	}
 
 	public PathForAll() {
@@ -671,7 +675,7 @@ class UPath extends PathOperator {
 	{
 		operandTypes = new Class[] { PSBoolean.class };
 	}
-	private double coord[] = new double[6];
+	private double coord[] = new double[PATH_SIZE];
 
 	@Override
 	public boolean execute(OperandStack os) {

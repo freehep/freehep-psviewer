@@ -1,4 +1,4 @@
-// Copyright 2004-2006, FreeHEP.
+// Copyright 2004-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.Color;
@@ -19,8 +19,6 @@ import org.freehep.util.argv.StringParameter;
  * PS Viewer
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSViewer.java 829a8d93169a
- *          2006/12/08 09:03:07 duns $
  */
 public final class PSViewer {
 

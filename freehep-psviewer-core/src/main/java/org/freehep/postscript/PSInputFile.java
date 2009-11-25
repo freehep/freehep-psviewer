@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PushbackInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
@@ -20,20 +19,21 @@ import java.util.zip.ZipException;
  * @author Mark Donszelmann
  */
 public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
-	protected InputStream in = null;
-	protected Scanner scanner = null;
-	protected DSC dsc = null;
+	private InputStream in = null;
+	private Scanner scanner = null;
+	private DSC dsc = null;
 
 	protected PSInputFile(String n, boolean f, InputStream i, Scanner s, DSC d) {
-		super(n, f);
+		super(n, f, READ_ONLY);
 		in = i;
 		scanner = s;
 		dsc = d;
 	}
 
 	public PSInputFile(InputStream input, DSC dsc) throws IOException {
-		super("pipe", true);
-		init(input, dsc);
+		super("pipe", true, READ_ONLY);
+		this.dsc = dsc;
+		in = input;
 	}
 
 	public PSInputFile(String filename) throws IOException {
@@ -41,8 +41,12 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 	}
 
 	public PSInputFile(String filename, DSC dsc) throws IOException {
-		super(filename, false);
+		super(filename, false, READ_ONLY);
+		this.dsc = dsc;
+		init();
+	}
 
+	private void init() throws IOException {
 		InputStream input;
 		try {
 			URL url = new URL(filename);
@@ -58,16 +62,12 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 		if (filename.toLowerCase().endsWith(".gz")) {
 			input = new GZIPInputStream(input);
 		}
-		init(input, dsc);
-	}
 
-	private void init(InputStream input, DSC dsc) throws IOException {
-		if (!filter) {
-			input = new BufferedInputStream(input);
-		}
-		in = new PushbackInputStream(input);
-		access = READ_ONLY;
-		this.dsc = dsc;
+		final int bufferSize = 0x800000; // 8 MByte
+		in = new BufferedInputStream(input, bufferSize);
+		in.mark(bufferSize);
+		
+		scanner = null;
 	}
 
 	public final InputStream getInputStream() {
@@ -83,7 +83,7 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 			if (in == null) {
 				throw new IOException();
 			}
-			scanner = new Scanner((PushbackInputStream) in, dsc);
+			scanner = new Scanner(in, dsc);
 		}
 	}
 
@@ -101,7 +101,7 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 		try {
 			getScanner();
 		} catch (IOException e) {
-			error(os, new IOError());
+			error(os, new IOError(e));
 			return true;
 		}
 		return Dispatcher.dispatch(os, this);
@@ -162,23 +162,27 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 	}
 
 	@Override
-	public final boolean markSupported() {
-		return (in != null) ? in.markSupported() : false;
-	}
-
-	@Override
-	public final void mark(int readLimit) {
-		Thread.dumpStack();
-		if (in != null) {
-			in.mark(readLimit);
-		}
-	}
-
-	@Override
 	public final void reset() throws IOException {
-		if (in != null) {
-			in.reset();
+		try {
+			if (in.markSupported()) {
+				in.reset();
+				return;
+			}
+		} catch (IOException e) {
+			// continue to re-open file
 		}
+
+		// re-open file
+		try {
+			if (in != null) {
+				in.close();
+				in = null;
+			}
+		} catch (IOException e) {
+			// ignore
+		}
+
+		init();
 	}
 
 	@Override

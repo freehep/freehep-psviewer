@@ -14,22 +14,22 @@ import org.freehep.util.io.FinishableOutputStream;
  * @author Mark Donszelmann
  */
 public class PSOutputFile extends PSFile implements PSDataTarget {
-	protected OutputStream out = null;
-	protected boolean append;
+	private OutputStream out = null;
+	private boolean append;
 
 	protected PSOutputFile(String n, boolean f, OutputStream o) {
-		super(n, f);
+		super(n, f, UNLIMITED);
 		out = o;
 	}
 
 	public PSOutputFile(OutputStream output) throws IOException {
-		super("pipe", true);
+		super("pipe", true, UNLIMITED);
 		init(output);
 	}
 
 	public PSOutputFile(String filename, boolean append, boolean secure)
 			throws IOException {
-		super(filename, false);
+		super(filename, false, UNLIMITED);
 		if (!secure) {
 			throw new IOException();
 		}

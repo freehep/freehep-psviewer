@@ -44,12 +44,13 @@ public abstract class PSObject implements Cloneable {
 	public static void error(OperandStack os, ErrorOperator error) {
 		// set the stack back to where the operands started
 		os.reset();
-
 		// FIXME, we could report errors by string
-		DictionaryStack ds = os.dictStack();
-		ErrorOperator e = (ErrorOperator) ds.errorDictionary().get(
-				error.getName());
-		os.execStack().push(e);
+		// In the original code we looked up the error by name in the dictStack and reported that one. However, since the errors may contain
+		// extra info (Exceptions), we report them directly
+//		DictionaryStack ds = os.dictStack();
+//		ErrorOperator e = (ErrorOperator) ds.errorDictionary().get(
+//				error.getName());
+		os.execStack().push(error);
 
 		throw new PostScriptError();
 	}

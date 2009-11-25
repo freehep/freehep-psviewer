@@ -1,6 +1,8 @@
 // Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
+import java.io.IOException;
+
 /**
  * Error Operators for PostScript Processor
  * 
@@ -131,8 +133,22 @@ class InvalidRestore extends ErrorOperator {
 }
 
 class IOError extends ErrorOperator {
-}
+	private IOException e;
 
+	IOError() {
+		this.e = null;
+	}
+	
+	IOError(IOException e) {
+		this.e = e;
+	}
+
+	@Override
+	public boolean execute(OperandStack os) {
+		System.err.println(e);
+		return super.execute(os);
+	}
+}
 class LimitCheck extends ErrorOperator {
 }
 

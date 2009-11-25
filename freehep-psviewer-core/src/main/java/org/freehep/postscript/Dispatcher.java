@@ -28,7 +28,7 @@ public final class Dispatcher {
 			}
 			return false;
 		} catch (IOException e) {
-			PSObject.error(os, new IOError());
+			PSObject.error(os, new IOError(e));
 			return true;
 		} catch (SyntaxException e) {
 			PSArray errorInfo = new PSArray(2);

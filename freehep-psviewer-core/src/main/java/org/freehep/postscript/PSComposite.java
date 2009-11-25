@@ -14,10 +14,15 @@ public abstract class PSComposite extends PSObject {
 	public final static int EXECUTE_ONLY = 1;
 	public final static int NONE = 0;
 
-	protected int access = UNLIMITED;
+	private int access;
 
-	public PSComposite(String name, boolean literal) {
+	public PSComposite(String name, boolean literal, int access) {
 		super(name, literal);
+		this.access = access;
+	}
+	
+	public PSComposite(String name, boolean literal) {
+		this(name, literal, UNLIMITED);
 	}
 
 	public boolean accessWrite() {

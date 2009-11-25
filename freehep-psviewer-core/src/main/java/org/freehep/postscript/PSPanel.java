@@ -1,4 +1,4 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.Graphics;
@@ -10,29 +10,33 @@ import javax.swing.JPanel;
  * PostScript Panel for PostScript Processor,
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSPanel.java 829a8d93169a
- *          2006/12/08 09:03:07 duns $
  */
 public class PSPanel extends JPanel {
 
 	private Graphics2D mirroredGraphics;
 
 	public PSPanel() {
-		super(false);
+		super(true);
 	}
 
 	@Override
-	public Graphics getGraphics() {
+	public final Graphics getGraphics() {
+		if (mirroredGraphics == null) mirroredGraphics = (Graphics2D) super.getGraphics().create();
 		return mirroredGraphics;
 	}
-
+	
+/*
 	@Override
-	public void setBounds(int x, int y, int w, int h) {
+	public final void setBounds(int x, int y, int w, int h) {
+		if ((x == getX()) && (y == getY()) && (w == getWidth()) && (h == getHeight())) {
+			return;
+		}
 		super.setBounds(x, y, w, h);
 		if (mirroredGraphics != null) {
 			mirroredGraphics.dispose();
 		}
-		mirroredGraphics = (Graphics2D) super.getGraphics().create();
+		mirroredGraphics = (Graphics2D) super.getGraphics().create();	
+		System.err.println(w+" "+h+" "+((double)w)/h);
 	}
-
+*/
 }

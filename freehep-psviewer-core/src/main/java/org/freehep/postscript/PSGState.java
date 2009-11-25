@@ -156,7 +156,7 @@ public class PSGState extends PSComposite {
 	}
 
 	public Shape charPath(int cc, float x, float y, boolean strokePath) {
-		Shape path;
+		Shape charPath;
 		// FIXME: works only for Java type 1 fonts
 		switch (font.getInteger("FontType")) {
 		case 1:
@@ -164,7 +164,7 @@ public class PSGState extends PSComposite {
 			PSObject obj = font.getDictionary("CharStrings").get(name);
 			// FIXME: obj may be PSPackedArray
 			GlyphVector glyph = ((PSJavaGlyph) obj).getGlyph();
-			path = glyph.getOutline(x, y);
+			charPath = glyph.getOutline(x, y);
 			break;
 
 		default:
@@ -179,10 +179,10 @@ public class PSGState extends PSComposite {
 		}
 
 		if (strokePath) {
-			path = new GeneralPath(device.getGraphics().getStroke()
-					.createStrokedShape(path));
+			charPath = new GeneralPath(device.getGraphics().getStroke()
+					.createStrokedShape(charPath));
 		}
-		return path;
+		return charPath;
 	}
 
 	public void fill(Shape s) {

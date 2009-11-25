@@ -1,4 +1,4 @@
-// Copyright 2001-2006, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.Dimension;
@@ -13,8 +13,6 @@ import java.io.IOException;
  * PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/Processor.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class Processor implements DebuggerListener {
 
@@ -72,15 +70,15 @@ public class Processor implements DebuggerListener {
 
 	public void reset() throws IOException {
 		PSGState gstate = new PSGState(device);
+		System.err.println(gstate);
 		dictStack = new DictionaryStack();
 		execStack = new ExecutableStack();
 		operandStack = new OperandStack(this, gstate, secure);
 		gstateStack = new GStateStack();
 
 		if (data instanceof PSFile) {
-			if (((PSFile) data).markSupported()) {
-				((PSFile) data).reset();
-			}
+			((PSFile) data).reset();
+
 		}
 		execStack.push(data);
 		currentPageNo = 0;
@@ -90,16 +88,10 @@ public class Processor implements DebuggerListener {
 		}
 	}
 
-	public void setData(PSObject data) {
-		setData(data, Integer.MAX_VALUE);
-	}
-
-	public void setData(PSObject data, int bufferLimit) {
+	public void setData(PSObject data) throws IOException {
 		this.data = data;
 		if (data instanceof PSFile) {
-			if (((PSFile) data).markSupported()) {
-				((PSFile) data).mark(bufferLimit);
-			}
+			((PSFile) data).reset();
 		}
 		if (data instanceof PSDataSource) {
 			if (dsc != null) {
@@ -179,12 +171,14 @@ public class Processor implements DebuggerListener {
 		return true;
 	}
 
-	public void go() {
+	public int go() {
+		int i = 0;
 		try {
 			boolean go;
 			do {
 				try {
 					go = step(false);
+					i++;
 				} catch (BreakException e) {
 					if (debugger != null) {
 						System.out.println("BreakPoint Found...");
@@ -198,7 +192,7 @@ public class Processor implements DebuggerListener {
 			} while (go);
 		} catch (ClassCastException cce) {
 			System.out
-					.println("PS processing stopped due to ClassCastException");
+					.println("PS processing stopped due to ClassCastException after "+i+" steps");
 			cce.printStackTrace();
 		}
 
@@ -206,11 +200,14 @@ public class Processor implements DebuggerListener {
 			debugger.update(dictStack, execStack, operandStack);
 			// device.refresh();
 		}
+		return i;
 	}
 
 	public void process() throws IOException {
 		reset();
-		go();
+		System.err.println("Processing...");
+		int steps = go();
+		System.err.println("Processing finished "+steps+" steps.");
 	}
 
 	public void attach(PSDebugger debugger) {

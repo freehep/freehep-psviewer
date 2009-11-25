@@ -20,5 +20,5 @@ public interface DebuggerListener extends EventListener {
 	/**
 	 * Proceeds to end
 	 */
-	void go() throws IOException;
+	int go() throws IOException;
 }

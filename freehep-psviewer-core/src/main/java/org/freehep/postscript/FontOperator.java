@@ -596,11 +596,11 @@ class Show extends FontOperator {
 			double[] cfm = gs.font().getPackedArray("FontMatrix").toDoubles();
 			AffineTransform at = new AffineTransform(cfm[0], cfm[1], cfm[2],
 					cfm[3], x0, y0);
-			double sx = at.getScaleX();
-			double sy = at.getScaleY();
+			double xs = at.getScaleX();
+			double ys = at.getScaleY();
 
 			os.execStack().pop();
-			os.execStack().push(new Show(t, sx, sy));
+			os.execStack().push(new Show(t, xs, ys));
 			os.gsave();
 
 			gs.transform(at);
@@ -809,14 +809,14 @@ class AWidthShow extends FontOperator {
 			float y0 = (float) point.getY();
 
 			String t = os.popString().getValue();
-			double ay = os.popNumber().getDouble();
-			double ax = os.popNumber().getDouble();
+			double ya = os.popNumber().getDouble();
+			double xa = os.popNumber().getDouble();
 			int c = os.popInteger().getValue();
 			double yc = os.popNumber().getDouble();
 			double xc = os.popNumber().getDouble();
 
 			os.execStack().pop();
-			os.execStack().push(new AWidthShow(t, c, xc, yc, ax, ay));
+			os.execStack().push(new AWidthShow(t, c, xc, yc, xa, ya));
 			os.gsave();
 
 			double[] cfm = gs.font().getPackedArray("FontMatrix").toDoubles();

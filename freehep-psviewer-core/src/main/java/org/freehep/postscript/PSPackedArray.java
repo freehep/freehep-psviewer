@@ -14,30 +14,15 @@ public class PSPackedArray extends PSComposite {
 	protected int length = 0;
 
 	protected PSPackedArray(String name, PSObject[] a, int index, int count) {
-		super(name, true);
-		array = a;
-		start = index;
-		length = count;
-		access = READ_ONLY;
+		this(name, a, index, count, READ_ONLY);
 	}
 
 	protected PSPackedArray(int n) {
-		super("packedarray", true);
-		array = new PSObject[n];
-		for (int i = 0; i < array.length; i++) {
-			array[i] = new PSNull();
-		}
-		start = 0;
-		length = n;
-		access = READ_ONLY;
+		this(n, READ_ONLY);
 	}
 
 	public PSPackedArray(PSObject[] a) {
-		super("packedarray", true);
-		array = a;
-		start = 0;
-		length = a.length;
-		access = READ_ONLY;
+		this(a, READ_ONLY);
 	}
 
 	public PSPackedArray(float[] f) {
@@ -59,6 +44,31 @@ public class PSPackedArray extends PSComposite {
 		for (int i = 0; i < s.length; i++) {
 			array[i] = new PSName(s[i], true);
 		}
+	}
+
+	protected PSPackedArray(String n, PSObject[] a, int index, int count,
+			int access) {
+		super(n, true, access);
+		array = a;
+		start = index;
+		length = count;
+	}
+
+	protected PSPackedArray(int n, int access) {
+		super("packedarray", true, access);
+		array = new PSObject[n];
+		for (int i = 0; i < array.length; i++) {
+			array[i] = new PSNull();
+		}
+		start = 0;
+		length = n;
+	}
+
+	protected PSPackedArray(PSObject[] a, int access) {
+		super("packedarray", true, access);
+		array = a;
+		start = 0;
+		length = a.length;
 	}
 
 	private int execIndex = -1;

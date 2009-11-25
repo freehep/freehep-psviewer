@@ -1,6 +1,7 @@
-// Copyright 2004, FreeHEP.
+// Copyright 2004-2009, FreeHEP.
 package org.freehep.postscript;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -14,7 +15,6 @@ import java.util.Iterator;
 
 /*
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSDevice.java 829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public abstract class PSDevice implements DSCEventListener {
 
@@ -105,8 +105,10 @@ public abstract class PSDevice implements DSCEventListener {
 
 	public void erasePage() {
 		graphics = (Graphics2D) getDeviceGraphics();
+		System.err.println("Erase "+Integer.toHexString(graphics.hashCode()));
+		graphics.setBackground(Color.GREEN);
 		graphics.setTransform(getDeviceTransform());
-		graphics.fillRect(0, 0, (int) getWidth(), (int) getHeight());
+		graphics.clearRect(0, 0, (int) getWidth(), (int) getHeight());
 		valid = false;
 	}
 

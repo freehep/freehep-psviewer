@@ -5,13 +5,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /*
  * @author Mark Donszelmann
@@ -25,21 +23,21 @@ public abstract class PSDevice implements DSCEventListener {
 	private AffineTransform transform = new AffineTransform();
 	private Graphics2D graphics;
 
-	private Collection/* <ComponentListener> */<ComponentListener> listeners = new ArrayList<ComponentListener>();
+	private List<RefreshListener> listeners = new ArrayList<RefreshListener>();
 
-	public void addComponentListener(ComponentListener l) {
+	public void addComponentRefreshListener(RefreshListener l) {
 		listeners.add(l);
 	}
 
-	public void removeComponentListener(ComponentListener l) {
+	public void removeComponentRefreshListener(RefreshListener l) {
 		listeners.remove(l);
 	}
 
-	protected void fireComponentResizedEvent(ComponentEvent e) {
+	protected void fireComponentRefreshed() {
 		valid = false;
 		mirror = new AffineTransform(1, 0, 0, -1, 0, getHeight());
-		for (Iterator<ComponentListener> i = listeners.iterator(); i.hasNext();) {
-			i.next().componentResized(e);
+		for (Iterator<RefreshListener> i = listeners.iterator(); i.hasNext();) {
+			i.next().componentRefreshed();
 		}
 	}
 
@@ -94,19 +92,21 @@ public abstract class PSDevice implements DSCEventListener {
 	public Graphics2D getGraphics() {
 		if (!valid) {
 			graphics = (Graphics2D) getDeviceGraphics();
-			graphics.setTransform(getDeviceTransform());
-			graphics.transform(getTransform());
-			graphics.transform(getMirrorTransform());
-			graphics.transform(getBoundingBoxTransform());
-			valid = true;
+			if (graphics != null) {
+				graphics.setTransform(getDeviceTransform());
+				graphics.transform(getTransform());
+				graphics.transform(getMirrorTransform());
+				graphics.transform(getBoundingBoxTransform());
+				valid = true;
+			}			
 		}
+		
 		return graphics;
 	}
 
 	public void erasePage() {
 		graphics = (Graphics2D) getDeviceGraphics();
-		System.err.println("Erase "+Integer.toHexString(graphics.hashCode()));
-		graphics.setBackground(Color.GREEN);
+		graphics.setBackground(Color.WHITE);
 		graphics.setTransform(getDeviceTransform());
 		graphics.clearRect(0, 0, (int) getWidth(), (int) getHeight());
 		valid = false;

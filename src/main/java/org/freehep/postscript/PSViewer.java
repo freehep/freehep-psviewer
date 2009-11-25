@@ -3,6 +3,7 @@ package org.freehep.postscript;
 
 import java.awt.Color;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -22,9 +23,21 @@ import org.freehep.util.argv.StringParameter;
  */
 public final class PSViewer {
 
-	private PSViewer() {
+	public PSViewer(Processor processor, String name, int pageNo, double sx, double sy, double tx, double ty, boolean debug) throws IOException {
+		processor.setData(new PSInputFile(name));
+		processor.setPageNo(pageNo);
+		processor.setScale(sx, sy);
+		processor.setTranslation(tx, ty);
+		if (debug) {
+			PSDebugger debugger = new PSDebugger();
+			processor.attach(debugger);
+			debugger.showInFrame();
+			processor.reset();
+		} else {
+			processor.process();
+		}
 	}
-	
+
 	public static void main(String args[]) throws Exception {
 		BooleanOption help = new BooleanOption("-help", "-h",
 				"Show this help page", true);
@@ -84,21 +97,12 @@ public final class PSViewer {
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setSize(800, 700);
 			frame.setVisible(true);
+
 			Processor processor = new Processor(panel);
-			processor.setData(new PSInputFile(name));
-			processor.setPageNo(page.getValue().intValue());
-			processor.setScale(scale.getValue().doubleValue(), scale.getValue()
-					.doubleValue());
-			processor.setTranslation(tx.getValue().doubleValue(), ty.getValue()
-					.doubleValue());
-			if (debug.getValue()) {
-				PSDebugger debugger = new PSDebugger();
-				processor.attach(debugger);
-				debugger.showInFrame();
-				processor.reset();
-			} else {
-				processor.process();
-			}
+			new PSViewer(processor, name, page.getValue().intValue(), scale
+					.getValue().doubleValue(), scale.getValue().doubleValue(), tx.getValue().doubleValue(), ty.getValue()
+					.doubleValue(), debug.getValue());
+			panel.repaint();
 		} catch (FileNotFoundException fnfe) {
 			System.err.println("File: '" + name + "' cannot be found.");
 			System.exit(1);

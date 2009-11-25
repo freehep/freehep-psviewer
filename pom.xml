@@ -5,7 +5,6 @@
   <groupId>org.freehep</groupId>
   <artifactId>freehep-psviewer</artifactId>
   <version>2.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
 
   <name>FreeHEP PostScript Viewer</name>
   <description>Stand-alone and Embeddable PostScript Viewer
@@ -72,15 +71,6 @@
 
   <build>
     <defaultGoal>install</defaultGoal>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-shade-plugin</artifactId>
-          <version>1.2.1</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -94,6 +84,49 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <version>2.0-beta-9</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <shadedArtifactAttached>true</shadedArtifactAttached>
+          <shadedClassifierName>standalone</shadedClassifierName>
+          <transformers>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+              <manifestEntries>
+                <Main-Class>org.freehep.postscript.PSViewer</Main-Class>
+              </manifestEntries>
+            </transformer>
+          </transformers>
+          <artifactSet>
+            <excludes>
+              <exclude>junit:junit</exclude>
+            </excludes>
+          </artifactSet>
+          <filters>
+            <filter>
+              <artifact>org.freehep:freehep-graphics-base</artifact>
+              <excludes>
+                <exclude>org/freehep/util/**</exclude>
+                <exclude>org/freehep/swing/**</exclude>
+                <exclude>org/freehep/xml/**</exclude>
+              </excludes>
+            </filter>
+            <filter>
+              <artifact>org.freehep:freehep-graphics2d</artifact>
+              <includes>
+                <include>org/freehep/graphics2d/font/**</include>
+              </includes>
+            </filter>
+          </filters>
+        </configuration>
       </plugin>
     </plugins>
   </build>

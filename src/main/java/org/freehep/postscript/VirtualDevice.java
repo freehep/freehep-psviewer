@@ -4,7 +4,6 @@ package org.freehep.postscript;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -21,8 +20,7 @@ public class VirtualDevice extends PSDevice {
 	public VirtualDevice(Graphics2D graphics, Dimension dimension) {
 		this.graphics = graphics;
 		this.dimension = dimension;
-		fireComponentResizedEvent(new ComponentEvent(null,
-				ComponentEvent.COMPONENT_RESIZED));
+		fireComponentRefreshed();
 	}
 
 	@Override

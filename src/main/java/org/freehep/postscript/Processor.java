@@ -1,13 +1,15 @@
 // Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
+import java.applet.Applet;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
+
+import javax.swing.JApplet;
+import javax.swing.JPanel;
 
 /**
  * PostScript Processor
@@ -36,15 +38,22 @@ public class Processor implements DebuggerListener {
 	private ActionListener listener;
 	private long currentPageNo;
 
-	public Processor(PSPanel panel) {
+	public Processor(JPanel panel) {
 		this(new PanelDevice(panel), false);
+	}
+	
+	public Processor(Applet applet) {
+		this(new PanelDevice(applet), false);
+	}
+
+	public Processor(JApplet applet) {
+		this(new PanelDevice(applet), false);
 	}
 
 	public Processor(PSDevice device, boolean secure) {
 		this.device = device;
-		device.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent event) {
+		device.addComponentRefreshListener(new RefreshListener() {
+			public void componentRefreshed() {
 				try {
 					if (debugger == null) {
 						process();
@@ -69,8 +78,9 @@ public class Processor implements DebuggerListener {
 	}
 
 	public void reset() throws IOException {
+		if (device.getGraphics() == null) return;
+		
 		PSGState gstate = new PSGState(device);
-		System.err.println(gstate);
 		dictStack = new DictionaryStack();
 		execStack = new ExecutableStack();
 		operandStack = new OperandStack(this, gstate, secure);
@@ -145,7 +155,7 @@ public class Processor implements DebuggerListener {
 	}
 
 	public boolean step(boolean update) {
-		if (execStack.isEmpty()) {
+		if (execStack == null || execStack.isEmpty()) {
 			return false;
 		}
 
@@ -205,9 +215,9 @@ public class Processor implements DebuggerListener {
 
 	public void process() throws IOException {
 		reset();
-		System.err.println("Processing...");
+//		System.err.println("Processing...");
 		int steps = go();
-		System.err.println("Processing finished "+steps+" steps.");
+//		System.err.println("Processing finished "+steps+" steps.");
 	}
 
 	public void attach(PSDebugger debugger) {

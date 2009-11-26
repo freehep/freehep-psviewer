@@ -9,51 +9,27 @@ NOT RELEASED YET
 
 PS Viewer 2.0 Release Notes
 
-	Release Notes Version: $Revision: 1.2 $.
-
 	The most recent version of this file is available
-{{{http://java.freehep.org/psviewer/ReleaseNotes-2.0.html}here}}.
+{{{http://freehep.github.com/freehep-psviewer/ReleaseNotes-2.0.html}here}}.
 Release notes for all versions of the PS Viewer are available
-{{{http://java.freehep.org/psviewer/AllReleaseNotes.html}here}}.
+{{{http://freehep.github.com/freehep-psviewer/AllReleaseNotes.html}here}}.
 
 	The PS Viewer is a Level 2 PostScript viewer which can either be used 
-stand-alone or is embeddable in a user application.
+stand-alone,  embeddable in a user application or as an applet.
 
 	The Viewer will handle most PostScript commands, but some restrictions apply, 
 see our {{{http://bugs.freehep.org/browse/PSVIEWER}bug database}}.
 
-* Contents
-
-  * {{{#Compliance}PostScript Compliance}}
-  
-  * {{{#Changes}Major changes in the PS Viewer 2.0}}
-  
-  * {{{#Documentation}Documentation}}
-  
-  * {{{#License}License}}
-  
-  * {{{#Installation}Installing the PS Viewer}}
-  
-  * {{{#Compilation}Compiling the PS Viewer}}
-  
-  * {{{#Building}Building an Application with the PS Viewer}}
-  
-  * {{{#Running}Running the PS Viewer}}
-  
-  * {{{#Features}Features/Limitations of the Current Release}}
-  
-  * {{{#BugReporting}Reporting Bugs}}
-  
-  * {{{#Examples}Examples}}
-
-* {Compliance}PostScript Compliance
+* PostScript Compliance
 
 	This viewer implements most of the PostScript Level 2 commands and some of 
 the Level 3 commands. For a description of PostScript see the
 {{{http://partners.adobe.com/asn/developer/pdfs/tn/PLRM.pdf}PostScript 
 Language Reference Manual, Third Edition}} from Adobe Systems Inc.
 
-* {Changes}Major changes in the PS Viewer 1.1.0
+* Major changes in the PS Viewer 2.0
+
+  * PSVIEWER: see {{{http://bugs.freehep.org/secure/ReleaseNote.jspa?projectId=10192&styleName=Html&version=10620}Fixed Bugs}}
 
   * FREEHEP-393: Command Line Argument parsing now uses org.freehep.util.argv 
   package.
@@ -98,7 +74,7 @@ Language Reference Manual, Third Edition}} from Adobe Systems Inc.
   
   * FREEHEP-404: ClassCastException fixed in Copy command when PackedArrays are used.
 
-* {Documentation}Documentation
+* Documentation
 
 	The following documentation is currently available:
 
@@ -116,84 +92,7 @@ Language Reference Manual, Third Edition}} (Red Book)
   * {{{http://java.freehep.org/lib/freehep/api/org/freehep/postscript/package-summary.html}
   PSViewer API documentation}}
 
-* {License}License
-	
-	The PS Viewer is part of the {{{http://java.freehep.org/}FreeHEP Java Library}}, 
-an "Open Source" library distributed under the terms of the
-{{{http://www.gnu.org/copyleft/lesser.html}LGPL}}. If you have 
-questions about the licensing please send a mail to:
-{{{mailto:developers@freehep.org}developers@freehep.org}}.
-
-* {Installation}Installing the PS Viewer
-
-	Download the PS Viewer and unpack.  The distribution 
-creates the following directory structure:
-
-+--
-PSViewer-version            containing license and release notes
-PSViewer-version/bin        containing run scripts
-PSViewer-version/examples   containing examples
-PSViewer-version/lib        containing jar files
-+--
-
-* {Compilation}Compiling the PS Viewer
-
-	The current distribution does not contain source files.  
-	
-	To (re-)build the PS Viewer  you need to get PSViewer-2.0-src.zip or .tar.gz file from 
-the {{{ftp://ftp.slac.stanford.edu/software/freehep/PSViewer/v2.0}ftp://ftp.slac.stanford.edu/software/freehep/PSViewer/v2.0/}} directory. 
-
-	To compile it, follow the general instructions for
-{{{http://java.freehep.org/Build.html}Building the Java FreeHEP Library}} 
-and compile only the psviewer.jar file using the command:
-
-+--
-ant -Djar=psviewer
-+--
-
-	To build the distribution kit:
-
-+--
-cd org/freehep/postscript
-gmake dist
-+--
-
-* {Building}Building an Application with the PS Viewer
-
-	Set the environment variable PSVIEWER_HOME to your unpacked PSViewer 
-distribution.  
-
-	Add the following libraries (all in $PSVIEWER_HOME/lib) to your CLASSPATH:
-
-+--
-freehep-psviewer.jar
-freehep-graphicsio.jar
-freehep-graphics2d.jar
-freehep-base.jar
-+--
-
-	Now you can compile your application using the PS Viewer, and run it.
-
-* {Running}Running the PS Viewer
-
-	Set the environment variable PSVIEWER_HOME to your unpacked PSViewer 
-distribution.  
-
-	Add $PSVIEWER_HOME/bin to your PATH and run:
-
-+--
-psviewer
-+--
-
-	or
-
-+--
-psviewer -h
-+--
-
-	to get a description of the options.
-
-* {Features}Features/Limitations of the Current Release
+* Features/Limitations of the Current Release
 
 	The following limitations exist:
 
@@ -203,23 +102,15 @@ psviewer -h
   
   * All images using 12 bits/component probably will not work.
   
-  * The distribution kits contain some CVS directories and files, please 
-  ignore.
-  
-  * The freehep-base.jar file (and especially its sources) are dependent on 
-  some external jar files which are not strictly needed for the PS Viewer. 
-  Please ignore for now. In a later release we will shrink freehep-base.jar and 
-  get rid of these dependencies.
-
-* {BugReporting}Reporting Bugs
+* Reporting Bugs
 
 	To report bugs or request enhancements you may use the
 {{{http://bugs.freehep.org/browse/PSVIEWER}
 FreeHEP bug database}}.
 
-* {Examples}Examples
+* Examples
 
-	The PSViewer/examples directory contains: 
+	The examples directory contains: 
 
   * <<EmbedPSViewer.java>> which shows how to embed 2 PSViewers in one application
 

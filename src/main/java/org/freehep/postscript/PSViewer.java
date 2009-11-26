@@ -4,6 +4,7 @@ package org.freehep.postscript;
 import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -24,7 +25,15 @@ import org.freehep.util.argv.StringParameter;
 public final class PSViewer {
 
 	public PSViewer(Processor processor, String name, int pageNo, double sx, double sy, double tx, double ty, boolean debug) throws IOException {
-		processor.setData(new PSInputFile(name));
+		this(processor, new PSInputFile(name), pageNo, sx, sy, tx, ty, debug);
+	}
+
+	public PSViewer(Processor processor, URL url, int pageNo, double sx, double sy, double tx, double ty, boolean debug) throws IOException {
+		this(processor, new PSInputFile(url.toExternalForm()), pageNo, sx, sy, tx, ty, debug);
+	}
+
+	public PSViewer(Processor processor, PSInputFile data, int pageNo, double sx, double sy, double tx, double ty, boolean debug) throws IOException {
+		processor.setData(data);
 		processor.setPageNo(pageNo);
 		processor.setScale(sx, sy);
 		processor.setTranslation(tx, ty);
@@ -37,7 +46,7 @@ public final class PSViewer {
 			processor.process();
 		}
 	}
-
+	
 	public static void main(String args[]) throws Exception {
 		BooleanOption help = new BooleanOption("-help", "-h",
 				"Show this help page", true);

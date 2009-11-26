@@ -1,12 +1,20 @@
 // Copyright 2009, FreeHEP.
 package org.freehep.postscript;
 
+import java.awt.AWTEvent;
 import java.awt.Graphics;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * PostScript Applet for PostScript Processor,
@@ -15,7 +23,15 @@ import java.util.List;
  */
 public class PSApplet extends BufferedApplet implements PSContainer {
 
+	private static final String FILE = "file";
+	private static final String PAGE = "page";
+	private static final String SX = "sx";
+	private static final String SY = "sy";
+	private static final String TX = "tx";
+	private static final String TY = "ty";
+
 	private List<RefreshListener> listeners = new ArrayList<RefreshListener>();
+	private PopupMenu menu;
 
 	public PSApplet() {
 		super();
@@ -49,13 +65,6 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 		paint(g);
 	}
 
-	private static final String FILE = "file";
-	private static final String PAGE = "page";
-	private static final String SX = "sx";
-	private static final String SY = "sy";
-	private static final String TX = "tx";
-	private static final String TY = "ty";
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -79,8 +88,28 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 	 */
 	@Override
 	public void init() {
-		Processor processor = new Processor(this);
 		try {
+			String version = "";
+			InputStream is = getClass().getResourceAsStream("/META-INF/maven/org.freehep/freehep-psviewer/pom.properties");
+			if (is != null) {
+				Properties pom = new Properties();
+				pom.load(is);
+				is.close();
+				version = pom.getProperty("version", "");
+			}
+			// Popup Menu
+			final URL aboutURL = new URL("http://freehep.github.com/freehep-psviewer");
+			menu = new PopupMenu();
+			add(menu);		
+			MenuItem aboutMenu = new MenuItem("About the FreeHEP Postscript Viewer "+version+"...");
+			menu.add(aboutMenu);
+			aboutMenu.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getAppletContext().showDocument(aboutURL);
+				}
+			});		
+			enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+
 			String file = getParameter(FILE, "examples/cookbook/program_00.ps");
 			int pageNo = getParameter(PAGE, 1);
 			double sx = getParameter(SX, 1.0);
@@ -88,11 +117,18 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 			double tx = getParameter(TX, 0.0);
 			double ty = getParameter(TY, 0.0);
 			URL url = new URL(getDocumentBase(), file);
+			Processor processor = new Processor(this);
 			new PSViewer(processor, url, pageNo, sx, sy, tx, ty, false);
 		} catch (IOException e) {
 			showStatus(e.getMessage());
 		}
 		repaint();
+	}
+
+	public void processMouseEvent(MouseEvent event) {
+		if (event.isPopupTrigger())
+			menu.show(event.getComponent(), event.getX(), event.getY());
+		super.processMouseEvent(event);
 	}
 
 	private String getParameter(String name, String defaultParameter) {
@@ -121,5 +157,4 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 			return defaultParameter;
 		}
 	}
-
 }

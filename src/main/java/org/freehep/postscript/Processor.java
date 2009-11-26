@@ -79,6 +79,7 @@ public class Processor implements DebuggerListener {
 
 	public void reset() throws IOException {
 		if (device.getGraphics() == null) return;
+		if (data == null) return;
 		
 		PSGState gstate = new PSGState(device);
 		dictStack = new DictionaryStack();

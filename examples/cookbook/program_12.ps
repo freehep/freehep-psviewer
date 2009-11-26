@@ -1,0 +1,79 @@
+%!PS-Adobe-2.0
+%%Title: Blue Book Program 12, on page 179
+%%Creator: Adobe Systems Incorporated 
+%%CreationDate: Thu Dec 28 17:56:06 PST 1989
+%%EndComments
+
+/wordbreak ( ) def
+/BreakIntoLines
+  { /proc exch def
+	/linelength exch def
+	/textstring exch def
+
+	/breakwidth wordbreak stringwidth pop def
+	/curwidth 0 def
+	/lastwordbreak 0 def
+	
+	/startchar 0 def
+	/restoftext textstring def
+	
+	{ restoftext wordbreak search
+	  { /nextword exch def pop
+		/restoftext exch def
+		/wordwidth nextword stringwidth pop def
+		
+		curwidth wordwidth add linelength gt
+		{ textstring startchar
+		  lastwordbreak startchar sub
+		  getinterval proc
+		  /startchar lastwordbreak def
+		  /curwidth wordwidth breakwidth add def }
+		{ /curwidth curwidth wordwidth add
+			breakwidth add def 
+		} ifelse
+
+		/lastwordbreak lastwordbreak
+		  nextword length add 1 add def
+		}
+		{pop exit}
+		ifelse
+	  } loop
+	/lastchar textstring length def
+	textstring startchar lastchar startchar sub 
+	  getinterval proc
+  } def
+
+/Times-Roman findfont 16 scalefont setfont
+/yline 650 def
+
+(In every period there have been better or worse\
+ types employed in better or worse ways. The\
+ better types employed in better ways have been\
+ used by the educated printer acquainted with\
+ standards and history, directed by taste and\
+ a sense of the fitness of things, and facing the\
+ industrial conditions and the needs of his time.\
+ Such men have made of printing an art. The\
+ poorer types and methods have been employed\
+ by printers ignorant of standards and caring\
+ alone for commercial success. To these, printing\
+ has been simply a trade. The typography of a\
+ nation has been good or bad as one or other of\
+ these classes had the supremacy. And to-day\
+ any intelligent printer can educate his taste, so\
+ to choose types for his work and so to use them,\
+ that he will help printing to be an art rather\
+ than a trade. \261Daniel Berkeley Updike.)
+ 
+  300
+  { 72 yline moveto show
+	/yline yline 18 sub def }
+	
+BreakIntoLines
+
+% EXERCISE FOR THE READER:  If the user specifies a short
+% enough line length, it is possible for the typeset width 
+% of a single word to exceed the maximum line length.  
+% Modify this algorithm to handle this event gracefully.
+
+showpage

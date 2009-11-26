@@ -1,0 +1,123 @@
+%!PS-Adobe-2.0
+%%Title: Blue Book Program 20, on page 219
+%%Creator: Adobe Systems Incorporated 
+%%CreationDate: Fri Dec 29 14:05:03 PST 1989
+%%EndComments
+
+10 dict dup begin
+  /FontType 3 def
+  /FontMatrix [.001 0 0 .001 0 0 ] def
+  /FontBBox [50 0 760 700] def
+  /Encoding 256 array def
+  0 1 255 {Encoding exch /.notdef put} for
+  Encoding
+    dup (a) 0 get /smallbullet put
+    dup (b) 0 get /mediumbullet put
+    dup (c) 0 get /largebullet put
+    (d) 0 get /openbox put
+  /Metrics 5 dict def
+  Metrics begin
+    /.notdef 0 def
+    /smallbullet 400 def
+    /mediumbullet 520 def
+    /largebullet 640 def
+    /openbox 820 def
+  end
+  
+  /BBox 5 dict def
+  BBox begin
+    /.notdef
+    [0 0 0 0] def
+    /smallbullet [50 200 350 500] def
+    /mediumbullet [50 150 450 550] def
+    /largebullet [50 100 550 600] def
+    /openbox [60 0 760 700] def
+  end
+  
+  /CharacterDefs 5 dict def
+  CharacterDefs begin
+    /.notdef { } def
+    /smallbullet 
+      { newpath
+          200 350 150 0 360 arc
+        closepath
+        fill } def
+    /mediumbullet
+      { newpath
+          200 350 200 0 360 arc
+        closepath
+        fill } def
+    /largebullet
+      { newpath
+          200 350 250 0 360 arc
+        closepath
+        fill } def
+    /openbox
+      { newpath
+          90 30 moveto  90 670 lineto
+          730 670 lineto  730 30 lineto
+        closepath
+        60 setlinewidth
+        stroke } def
+  end
+
+  /BuildChar
+    { 0 begin
+        /char exch def
+        /fontdict exch def
+        /charname fontdict /Encoding get char get def
+        fontdict begin
+          Metrics charname get 0
+          BBox charname get aload pop
+            
+            setcachedevice
+            
+          CharacterDefs charname get exec
+        end
+      end
+    } def
+    
+  /BuildChar load 0 3 dict put
+  /UniqueID 1 def
+end
+
+/BoxesAndBullets exch definefont pop
+/bbfont /BoxesAndBullets findfont 16 scalefont def
+/textfont /Times-Roman findfont 16 scalefont def
+
+/ss { 72 yline moveto show
+      /yline yline 16 sub def } def
+
+/showbullettext
+  { /bulletchar exch def
+    bbfont setfont bulletchar ss
+    textfont setfont
+    (Every bullet has its billet. \261William III) show
+    bbfont setfont bulletchar ss
+    textfont setfont
+    (The bullet that will kill me is not yet cast.) show
+    (\261Napoleon I) show
+    bbfont setfont bulletchar ss
+    textfont setfont
+    (The ballot is stronger than the bullet.) show
+    (\261Abraham Lincoln) show
+  } def
+
+/yline 650 def (a) showbullettext
+/yline 550 def (b) showbullettext
+/yline 450 def (c) showbullettext
+
+/yline 300 def
+textfont setfont
+(Hieroglyphics are the root of letters. All) ss
+(characters were orignally signs and all) ss
+(signs were once images. Human society,) ss
+(the world, man in his entirety is in the) ss
+(alphabet.) ss
+bbfont setfont
+(d) show
+
+showpage
+      
+    
+   

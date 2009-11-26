@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>freehep-psviewer - FreeHEP PostScript Viewer - Release Notes 1.0.0</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+      </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="" id="bannerLeft">
+    
+            FreeHEP PostScript Viewer
+    
+            </a>
+                        <a href="http://java.freehep.org/" id="bannerRight">
+    
+                                    <img src="http://java.freehep.org/images/sm-freehep.gif" alt="" />
+    
+            </a>
+            <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        Last Published: 2009-11-26
+                      </div>
+            <div class="xright">            <a href="http://java.freehep.org/" class="externalLink">FreeHEP</a>
+            
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                   <h5>General</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="index.html">Introduction</a>
+          </li>
+              
+    <li class="none">
+                    <a href="license.html">License</a>
+          </li>
+              
+    <li class="none">
+                    <a href="team-list.html">Team</a>
+          </li>
+              
+    <li class="none">
+                    <a href="root.html">Example Plots</a>
+          </li>
+          </ul>
+              <h5>User Info</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="project-summary.html">Summary</a>
+          </li>
+              
+    <li class="none">
+                    <a href="http://repo1.maven.org/maven2/org/freehep/freehep-psviewer/" class="externalLink">Jar File(s)</a>
+          </li>
+              
+    <li class="none">
+                    <a href="ReleaseNotes.html">Release Notes</a>
+          </li>
+              
+    <li class="none">
+                    <a href="dependencies.html">Dependencies</a>
+          </li>
+              
+    <li class="none">
+                    <a href="http://forum.freehep.org/" class="externalLink">Forum</a>
+          </li>
+              
+    <li class="none">
+                    <a href="http://bugs.freehep.org/browse/PSVIEWER" class="externalLink">Bug Reports</a>
+          </li>
+          </ul>
+              <h5>Developer Info</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="source-repository.html">Source Code</a>
+          </li>
+          </ul>
+                                           <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div class="section"><h2>PS Viewer 1.0.0 Release Notes</h2>
+<p>Release Notes Version: $Revision: 1.6 $.</p>
+<p>The most recent version of this file is available <a class="externalLink" href="http://java.freehep.org/psviewer/ReleaseNotes-1.0.0.html">here</a>. Release notes for all versions of the PS Viewer are available <a class="externalLink" href="http://java.freehep.org/psviewer/AllReleaseNotes.html">here</a>.</p>
+<p>The PS Viewer is a Level 2 PostScript viewer which can either be used stand-alone or is embeddable in a user application.</p>
+</div>
+<div class="section"><h2>The Viewer will handle most PostScript commands, but some restrictions apply, see our <a class="externalLink" href="http://java.freehep.org/redirect?project=PSViewer&amp;area=bugs&amp;reset=true&amp;mode=hide&amp;sorter/order=ASC&amp;sorter/field=priority&amp;resolutionIds=-1"> bug database</a>.</h2>
+<div class="section"><h3>Contents</h3>
+<ul><li><a href="#Compliance">PostScript Compliance</a></li>
+<li><a href="#Changes">Major changes in the PS Viewer 1.0.0</a></li>
+<li><a href="#Documentation">Documentation</a></li>
+<li><a href="#License">License</a></li>
+<li><a href="#Installation">Installing the PS Viewer</a></li>
+<li><a href="#Compilation">Compiling the PS Viewer</a></li>
+<li><a href="#Building">Building an Application with the PS Viewer</a></li>
+<li><a href="#Running">Running the PS Viewer</a></li>
+<li><a href="#Features">Features/Limitations of the Current Release</a></li>
+<li><a href="#BugReporting">Reporting Bugs</a></li>
+<li><a href="#Examples">Examples</a></li>
+</ul>
+</div>
+<div class="section"><h3><a name="Compliance">Compliance</a>PostScript Compliance</h3>
+<p>This viewer implements most of the PostScript Level 2 commands and some of the Level 3 commands. For a description of PostScript see the <a class="externalLink" href="http://partners.adobe.com/asn/developer/pdfs/tn/PLRM.pdf">PostScript Language Reference Manual, Third Edition</a> from Adobe Systems Inc.</p>
+</div>
+<div class="section"><h3><a name="Changes">Changes</a>Major changes in the PS Viewer 1.0.0</h3>
+<ul><li><a class="externalLink" href="http://bugs.freehep.org/secure/ViewIssue.jspa?key=FREEHEP-375"> FREEHEP-375</a>: Examples added for PStoSWF converter and EmbeddedPSViewer. * <a class="externalLink" href="http://bugs.freehep.org/secure/ViewIssue.jspa?key=FREEHEP-359"> FREEHEP-359</a>: PSPanel no longer dependent on BackedBuffer but on BufferedPanel. * <a class="externalLink" href="http://bugs.freehep.org/secure/ViewIssue.jspa?key=FREEHEP-372"> FREEHEP-372</a>: Setup of PS Viewer is now easier. * <a class="externalLink" href="http://bugs.freehep.org/secure/ViewIssue.jspa?key=FREEHEP-373">FREEHEP-373</a>: Package PS Viewer and its source and tests files separately from FreeHEP. * <a class="externalLink" href="http://bugs.freehep.org/secure/ViewIssue.jspa?key=FREEHEP-358">FREEHEP-358</a>: Runs in JDK 1.4 again after fixing ExceptionInInitializerError.</li>
+</ul>
+</div>
+<div class="section"><h3><a name="Documentation">Documentation</a>Documentation</h3>
+<p>The following documentation is currently available:</p>
+<ul><li><a class="externalLink" href="http://partners.adobe.com/asn/developer/pdfs/tn/PLRM.pdf">PostScript Language Reference Manual, Third Edition</a> (Red Book)</li>
+<li><a class="externalLink" href="http://www-cdf.fnal.gov/offline/PostScript/BLUEBOOK.PDF">PostScript Language Tutorial and Cookbook</a> (Blue Book)</li>
+<li><a class="externalLink" href="http://www-cdf.fnal.gov/offline/PostScript/GREENBK.PDF">PostScript Language Program Design</a> (Green Book)</li>
+<li><a class="externalLink" href="http://www.rightbrain.com/pages/books.html">Thinking in PostScript</a></li>
+<li><a class="externalLink" href="http://java.freehep.org/lib/freehep/api/org/freehep/postscript/package-summary.html"> PSViewer API documentation</a></li>
+</ul>
+</div>
+<div class="section"><h3><a name="License">License</a>License</h3>
+<p>The PS Viewer is part of the <a class="externalLink" href="http://java.freehep.org/">FreeHEP Java Library</a>, an &quot;Open Source&quot; library distributed under the terms of the <a class="externalLink" href="http://www.gnu.org/copyleft/lesser.html">LGPL</a>. If you have questions about the licensing please send a mail to: <a class="externalLink" href="mailto:developers@freehep.org">developers@freehep.org</a>.</p>
+</div>
+<div class="section"><h3><a name="Installation">Installation</a>Installing the PS Viewer</h3>
+<p>Download the PS Viewer and unpack. The distribution creates the following directory structure:</p>
+<div class="source"><pre>PSViewer-version            containing license and release notes
+PSViewer-version/bin        containing run scripts
+PSViewer-version/examples   containing examples
+PSViewer-version/lib        containing jar files</pre>
+</div>
+</div>
+<div class="section"><h3><a name="Compilation">Compilation</a>Compiling the PS Viewer</h3>
+<p>The current distribution does not contain source files. </p>
+<p>To (re-)build the PS Viewer you need to get PSViewer-1.0.0-src.zip or .tar.gz file from the <a class="externalLink" href="ftp://ftp.slac.stanford.edu/software/freehep/PSViewer/v1.0.0">ftp://ftp.slac.stanford.edu/software/freehep/PSViewer/v1.0.0/</a> directory. </p>
+<p>To compile it, follow the general instructions for <a class="externalLink" href="http://java.freehep.org/Build.html">Building the Java FreeHEP Library</a> and compile only the psviewer.jar file using the command:</p>
+<div class="source"><pre>ant -Djar=psviewer</pre>
+</div>
+<p>To build the distribution kit:</p>
+<div class="source"><pre>cd org/freehep/postscript
+gmake dist</pre>
+</div>
+</div>
+<div class="section"><h3><a name="Building">Building</a>Building an Application with the PS Viewer</h3>
+<p>Set the environment variable PSVIEWER_HOME to your unpacked PSViewer distribution. </p>
+<p>Add the following libraries (all in $PSVIEWER_HOME/lib) to your CLASSPATH:</p>
+<div class="source"><pre>freehep-psviewer.jar
+freehep-graphicsio.jar
+freehep-graphics2d.jar
+freehep-base.jar</pre>
+</div>
+<p>Now you can compile your application using the PS Viewer, and run it.</p>
+</div>
+<div class="section"><h3><a name="Running">Running</a>Running the PS Viewer</h3>
+<p>Set the environment variable PSVIEWER_HOME to your unpacked PSViewer distribution. </p>
+<p>Add $PSVIEWER_HOME/bin to your PATH and run:</p>
+<div class="source"><pre>psviewer</pre>
+</div>
+</div>
+<div class="section"><h3><a name="Features">Features</a>Features/Limitations of the Current Release</h3>
+<p>The following limitations exist:</p>
+<ul><li>All outstanding issues in the <a class="externalLink" href="http://java.freehep.org/redirect?project=PSViewer&amp;area=bugs&amp;reset=true&amp;mode=hide&amp;sorter/order=ASC&amp;sorter/field=priority&amp;resolutionIds=-1"> Bug Database</a>.</li>
+<li>All images using 12 bits/component probably will not work.</li>
+<li>The distribution kits contain some CVS directories and files, please ignore.</li>
+<li>The freehep-base.jar file (and especially its sources) are dependent on some external jar files which are not strictly needed for the PS Viewer. Please ignore for now. In a later release we will shrink freehep-base.jar and get rid of these dependencies.</li>
+</ul>
+</div>
+<div class="section"><h3><a name="BugReporting">BugReporting</a>Reporting Bugs</h3>
+<p>To report bugs or request enhancements you may use the <a class="externalLink" href="http://java.freehep.org/redirect?project=PSViewer&amp;area=bugs&amp;reset=true&amp;mode=hide&amp;sorter/order=ASC&amp;sorter/field=priority&amp;resolutionIds=-1"> FreeHEP bug database</a>, component PS Viewer.</p>
+</div>
+<div class="section"><h3><a name="Examples">Examples</a>Examples</h3>
+<p>The PSViewer/examples directory contains: </p>
+<ul><li><b>EmbedPSViewer.java</b> which shows how to embed 2 PSViewers in one application</li>
+<li><b>PStoSWF.java</b> which shows how to build a converter from PostScript to Macromedia Flash Format (SWF).</li>
+</ul>
+</div>
+</div>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2009
+    
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="" href="">
+    <information>
+        <title>PostScript Viewer</title>
+        <vendor>FreeHEP</vendor>
+    </information>
+    <resources>
+        <!-- Application Resources -->
+        <j2se version="1.6+"
+              href="http://java.sun.com/products/autodl/j2se" />
+        <jar href="PSViewer.jar" main="true" />
+    </resources>
+    <applet-desc 
+         name="PostScript Viewer Applet"
+         main-class="org.freehep.postscript.PSApplet.class"
+         width="300"
+         height="300">
+     </applet-desc>
+     <update check="background"/>
+</jnlp>
+

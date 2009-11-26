@@ -1,0 +1,49 @@
+%
+% DashedLines
+%
+
+/ypos 130 def
+/Times-Roman findfont 6 scalefont setfont
+
+/prt-n {
+    (   ) cvs show
+} def
+
+/borders {
+    -2.5 0 moveto
+    0 135 rlineto
+    102.5 0 moveto
+    0 135 rlineto
+    stroke
+} def
+
+/newline {
+    /ypos ypos 15 sub def
+} def
+
+/doLine {
+    0 ypos moveto
+    100 0 rlineto
+    stroke
+    5 ypos 2 add moveto
+    ypos prt-n
+    newline
+} def
+
+50 50 translate
+3 3 scale
+5 setlinewidth
+borders
+
+.5 setlinewidth
+[] 0 setdash doLine
+[4 2] 0 setdash doLine
+[2 4] 0 setdash doLine
+[6 4 2 4] 0 setdash doLine
+[4 4] 0 setdash doLine
+[4 4] 1 setdash doLine
+[4 4] 2 setdash doLine
+[4 4] 3 setdash doLine
+[4 4] 4 setdash doLine
+
+showpage

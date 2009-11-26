@@ -1,0 +1,40 @@
+%!PS
+
+%	This example appears in section "Building a New Composite Font"
+%	in Chapter 10 - "Fonts".
+%
+%	Notes:		This example uses the font contained
+%			in the file "superfnt.ps".
+%	Caveats:	Requires PostScript Level 2.
+
+
+12 dict					%  create font dictionary
+begin					%  put on dictionary stack
+	/FontName /Super-Palatino def	%  name of font
+	/FontType 0 def			%  0 = composite font
+	/WMode 0 def			%  0 = horizontal writing mode
+	/FontMatrix matrix def		%  dummy matrix
+	/Encoding [ 0 1 2 3 4 ] def	%  simple encoding--five fonts
+	/FMapType 3 def			%  3 = escape mapping
+	/EscChar 255 def		%  use 255 as escape character
+	/FDepVector [			%  define descendant fonts
+		/Palatino-Roman findfont
+		/Palatino-Italic findfont
+		/Palatino-Bold findfont
+		/Palatino-BoldItalic findfont
+		/ZapfDingbats findfont
+	] def				%  descendant fonts
+	FontName			%  name of font on stack
+	currentdict			%  current dictionary on stack
+end					%  pop font off dictionary stack
+definefont				%  define the font
+pop					%  remove font dictionary
+
+
+/Super-Palatino findfont	%  find required font
+160 scalefont			%  scale to required size
+setfont				%  set in graphics state
+100 40 moveto			%  set current point
+52 rotate			%  rotate coordinate system
+(Po\377\001st\377\002Sc\377\003ri\377\004pt) show
+showpage			%  display page

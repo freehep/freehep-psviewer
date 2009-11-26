@@ -78,7 +78,8 @@ public class FontOperator extends PSOperator {
 			String encoding = "STDLatin";
 			if (fontName.equals("Symbol")) {
 				encoding = "Symbol";
-				fontName = "SansSerif.plain"; // 31 chars missing, mainly math
+				// FIXME, next line creates blocks on MacOS X, see PSVIEWER-57...
+//				fontName = "SansSerif.plain"; // 31 chars missing, mainly math
 			} else if (fontName.equals("ZapfDingbats")) {
 				encoding = "Zapfdingbats";
 				fontName = "SansSerif.plain";

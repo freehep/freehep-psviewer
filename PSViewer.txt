@@ -1,3 +1,0 @@
-For information on the PS Viewer see:
-
-http://java.freehep.org/psviewer

@@ -26,7 +26,7 @@ public class FontCache {
 		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
 				.getLocalGraphicsEnvironment();
 		Font[] font = graphicsEnvironment.getAllFonts();
-		for (int i = 0; i < font.length; i++) {
+		for (int i = 0; i < font.length; i++) {		
 			replace(font[i].getPSName(), new FontEntry(font[i]));
 		}
 

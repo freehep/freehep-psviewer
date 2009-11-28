@@ -4,8 +4,10 @@ package org.freehep.postscript;
 import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 
@@ -24,15 +26,20 @@ import org.freehep.util.argv.StringParameter;
  */
 public final class PSViewer {
 
-	public PSViewer(Processor processor, String name, int pageNo, double sx, double sy, double tx, double ty, boolean debug) throws IOException {
-		this(processor, new PSInputFile(name), pageNo, sx, sy, tx, ty, debug);
+	public PSViewer(Processor processor, String name, int pageNo, double sx,
+			double sy, double tx, double ty, int buffer, boolean debug) throws IOException {
+		this(processor, new PSInputFile(name, buffer), pageNo, sx, sy, tx, ty, debug);
 	}
 
-	public PSViewer(Processor processor, URL url, int pageNo, double sx, double sy, double tx, double ty, boolean debug) throws IOException {
-		this(processor, new PSInputFile(url.toExternalForm()), pageNo, sx, sy, tx, ty, debug);
+	public PSViewer(Processor processor, URL url, int pageNo, double sx,
+			double sy, double tx, double ty, int buffer, boolean debug) throws IOException {
+		this(processor, new PSInputFile(url.toExternalForm(), buffer), pageNo, sx, sy,
+				tx, ty, debug);
 	}
 
-	public PSViewer(Processor processor, PSInputFile data, int pageNo, double sx, double sy, double tx, double ty, boolean debug) throws IOException {
+	public PSViewer(Processor processor, PSInputFile data, int pageNo,
+			double sx, double sy, double tx, double ty, boolean debug)
+			throws IOException {
 		processor.setData(data);
 		processor.setPageNo(pageNo);
 		processor.setScale(sx, sy);
@@ -46,7 +53,7 @@ public final class PSViewer {
 			processor.process();
 		}
 	}
-	
+
 	public static void main(String args[]) throws Exception {
 		BooleanOption help = new BooleanOption("-help", "-h",
 				"Show this help page", true);
@@ -62,6 +69,8 @@ public final class PSViewer {
 				"Displace output in y by dy");
 		IntOption page = new IntOption("-page", "-p", "#", 1,
 				"Page to be displayed");
+		IntOption buffer = new IntOption("-buffer", "-b", 0x8000,
+				"Buffer size to use for document");
 		StringParameter file = new StringParameter("file", "PostScript File");
 
 		ArgumentParser parser = new ArgumentParser(
@@ -73,6 +82,7 @@ public final class PSViewer {
 		parser.add(tx);
 		parser.add(ty);
 		parser.add(page);
+		parser.add(buffer);
 		parser.add(file);
 
 		try {
@@ -84,8 +94,7 @@ public final class PSViewer {
 			}
 
 			if (version.getValue()) {
-				System.err
-						.println("$Id: src/main/java/org/freehep/postscript/PSViewer.java 829a8d93169a 2006/12/08 09:03:07 duns $");
+				System.err.println("FreeHEP PSViewer "+getVersion());
 				return;
 			}
 		} catch (MissingArgumentException mae) {
@@ -109,12 +118,29 @@ public final class PSViewer {
 
 			Processor processor = new Processor(panel);
 			new PSViewer(processor, name, page.getValue().intValue(), scale
-					.getValue().doubleValue(), scale.getValue().doubleValue(), tx.getValue().doubleValue(), ty.getValue()
-					.doubleValue(), debug.getValue());
+					.getValue().doubleValue(), scale.getValue().doubleValue(),
+					tx.getValue().doubleValue(), ty.getValue().doubleValue(), buffer.getValue().intValue(),
+					debug.getValue());
 			panel.repaint();
 		} catch (FileNotFoundException fnfe) {
 			System.err.println("File: '" + name + "' cannot be found.");
 			System.exit(1);
 		}
+	}
+
+	/**
+	 * @return
+	 * @throws IOException 
+	 */
+	public static String getVersion() throws IOException {
+		String version = "";
+		InputStream is = PSViewer.class.getResourceAsStream("/META-INF/maven/org.freehep/freehep-psviewer/pom.properties");
+		if (is != null) {
+			Properties pom = new Properties();
+			pom.load(is);
+			is.close();
+			version = pom.getProperty("version", "");
+		}
+		return version;
 	}
 }

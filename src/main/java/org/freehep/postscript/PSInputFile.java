@@ -22,6 +22,8 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 	private InputStream in = null;
 	private Scanner scanner = null;
 	private DSC dsc = null;
+	private int buffer;
+	private static final int DEFAULT_BUFFER = 0x8000; // 32 Kbyte
 
 	protected PSInputFile(String n, boolean f, InputStream i, Scanner s, DSC d) {
 		super(n, f, READ_ONLY);
@@ -37,12 +39,21 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 	}
 
 	public PSInputFile(String filename) throws IOException {
-		this(filename, new DSC());
+		this(filename, DEFAULT_BUFFER, new DSC());
+	}
+
+	public PSInputFile(String filename, int buffer) throws IOException {
+		this(filename, buffer, new DSC());
 	}
 
 	public PSInputFile(String filename, DSC dsc) throws IOException {
+		this(filename, DEFAULT_BUFFER, dsc);
+	}
+		
+	public PSInputFile(String filename, int buffer, DSC dsc) throws IOException {
 		super(filename, false, READ_ONLY);
 		this.dsc = dsc;
+		this.buffer = buffer;
 		init();
 	}
 
@@ -63,9 +74,8 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 			input = new GZIPInputStream(input);
 		}
 
-		final int bufferSize = 0x8000; // 32 KByte
-		in = new BufferedInputStream(input, bufferSize);
-		in.mark(bufferSize);
+		in = new BufferedInputStream(input, buffer);
+		in.mark(buffer);
 		
 		scanner = null;
 	}
@@ -215,7 +225,7 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 		}
 
 		try {
-			return new PSInputFile(filename, dsc);
+			return new PSInputFile(filename, buffer, dsc);
 		} catch (FileNotFoundException e) {
 			throw new IllegalArgumentException(
 					"Cannot find file while copying: " + filename);

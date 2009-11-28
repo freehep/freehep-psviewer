@@ -9,12 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * PostScript Applet for PostScript Processor,
@@ -29,6 +27,7 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 	private static final String SY = "sy";
 	private static final String TX = "tx";
 	private static final String TY = "ty";
+	private static final String BUFFER = "buffer";
 
 	private List<RefreshListener> listeners = new ArrayList<RefreshListener>();
 	private PopupMenu menu;
@@ -78,7 +77,8 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 				{ SX, "double", "Scale in X direction (1.0)" },
 				{ SY, "double", "Scale in Y direction (1.0)" },
 				{ TX, "double", "Translate in X direction (0.0)" },
-				{ TY, "double", "Translate in Y direction (0.0)" } };
+				{ TY, "double", "Translate in Y direction (0.0)" },
+				{ BUFFER, "int", "Size of the buffer" } };
 	}
 
 	/*
@@ -89,27 +89,22 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 	@Override
 	public void init() {
 		try {
-			String version = "";
-			InputStream is = getClass().getResourceAsStream("/META-INF/maven/org.freehep/freehep-psviewer/pom.properties");
-			if (is != null) {
-				Properties pom = new Properties();
-				pom.load(is);
-				is.close();
-				version = pom.getProperty("version", "");
-			}
+			String version = PSViewer.getVersion();
 			// Popup Menu
-			final URL aboutURL = new URL("http://freehep.github.com/freehep-psviewer");
+			final URL aboutURL = new URL(
+					"http://freehep.github.com/freehep-psviewer");
 			menu = new PopupMenu();
 			add(menu);
-			
+
 			// about
-			MenuItem aboutMenu = new MenuItem("About the FreeHEP Postscript Viewer "+version+"...");
+			MenuItem aboutMenu = new MenuItem(
+					"About the FreeHEP Postscript Viewer " + version + "...");
 			menu.add(aboutMenu);
 			aboutMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					getAppletContext().showDocument(aboutURL);
 				}
-			});		
+			});
 			enableEvents(AWTEvent.MOUSE_EVENT_MASK);
 
 			String file = getParameter(FILE, "examples/cookbook/program_00.ps");
@@ -118,18 +113,19 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 			double sy = getParameter(SY, 1.0);
 			double tx = getParameter(TX, 0.0);
 			double ty = getParameter(TY, 0.0);
+			int buffer = getParameter(BUFFER, 0x8000);
 			final URL url = new URL(getDocumentBase(), file);
-			
+
 			MenuItem urlMenu = new MenuItem(url.toExternalForm());
 			menu.add(urlMenu);
-			urlMenu.addActionListener(new ActionListener() {				
+			urlMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					getAppletContext().showDocument(url, "_blank");
 				}
 			});
-			
+
 			Processor processor = new Processor(this);
-			new PSViewer(processor, url, pageNo, sx, sy, tx, ty, false);
+			new PSViewer(processor, url, pageNo, sx, sy, tx, ty, buffer, false);
 		} catch (IOException e) {
 			showStatus(e.getMessage());
 		}

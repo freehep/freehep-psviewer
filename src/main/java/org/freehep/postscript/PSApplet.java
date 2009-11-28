@@ -120,7 +120,7 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 			menu.add(urlMenu);
 			urlMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					getAppletContext().showDocument(url, "_blank");
+					getAppletContext().showDocument(url);
 				}
 			});
 

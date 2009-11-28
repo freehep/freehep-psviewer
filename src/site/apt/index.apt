@@ -13,3 +13,42 @@ user application.
 
 	Some limitations on the PostScript interpretation exist.
 	
+* Examples
+	
+	The following pages show PostScript examples displayed in multiple PS Viewer Applets:
+	
+	* {{{cookbook.html}Cookbook}}: examples from the Blue Book, see documentation below
+	
+	* {{{tutorial.html}Tutorial}}: examples from the Green Book, see documentation below
+	
+	* {{{fonts.html}Fonts}}: examples with fonts
+	
+	* {{{freehep.html}FreeHEP}}: examples of output from the {{{http://freehep.github.com/freehep-vectorgraphics}FreeHEP VectorGraphics}} package
+	
+	* {{{wired.html}WIRED}}: examples of output from the {{{http://wired.freehep.org/}WIRED Event Display}} package
+	
+	* {{{plots.html}Plots}}: examples of scientific plots, among others from the {{{http://root.cern.ch}Root}} package
+	
+	[]
+	
+* Documentation
+
+    The following general PostScript documentation is available (on the internet):
+    
+    * {{{http://partners.adobe.com/asn/developer/pdfs/tn/PLRM.pdf}PostScript 
+Language Reference Manual, Third Edition}} (Red Book)
+  
+    * {{{http://www-cdf.fnal.gov/offline/PostScript/BLUEBOOK.PDF}PostScript 
+  Language Tutorial and Cookbook}} (Blue Book)
+  
+    * {{{http://www-cdf.fnal.gov/offline/PostScript/GREENBK.PDF}PostScript 
+  Language Program Design}} (Green Book)
+  
+    * {{{http://www.rightbrain.com/download/books/ThinkingInPostScript.pdf}Thinking in PostScript}}
+    
+    * {{{apidocs/index.html}FreeHEP PSViewer API Documentation}}
+	
+	[]
+	
+	
+	

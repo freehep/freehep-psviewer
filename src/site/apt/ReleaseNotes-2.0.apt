@@ -87,10 +87,9 @@ Language Reference Manual, Third Edition}} (Red Book)
   * {{{http://www-cdf.fnal.gov/offline/PostScript/GREENBK.PDF}PostScript 
   Language Program Design}} (Green Book)
   
-  * {{{http://www.rightbrain.com/pages/books.html}Thinking in PostScript}}
+  * {{{http://www.rightbrain.com/download/books/ThinkingInPostScript.pdf}Thinking in PostScript}}
   
-  * {{{http://java.freehep.org/lib/freehep/api/org/freehep/postscript/package-summary.html}
-  PSViewer API documentation}}
+  * {{{apidocs/index.html}PSViewer API documentation}}
 
 * Features/Limitations of the Current Release
 

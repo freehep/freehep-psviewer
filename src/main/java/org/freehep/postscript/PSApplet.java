@@ -100,7 +100,9 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 			// Popup Menu
 			final URL aboutURL = new URL("http://freehep.github.com/freehep-psviewer");
 			menu = new PopupMenu();
-			add(menu);		
+			add(menu);
+			
+			// about
 			MenuItem aboutMenu = new MenuItem("About the FreeHEP Postscript Viewer "+version+"...");
 			menu.add(aboutMenu);
 			aboutMenu.addActionListener(new ActionListener() {
@@ -116,7 +118,16 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 			double sy = getParameter(SY, 1.0);
 			double tx = getParameter(TX, 0.0);
 			double ty = getParameter(TY, 0.0);
-			URL url = new URL(getDocumentBase(), file);
+			final URL url = new URL(getDocumentBase(), file);
+			
+			MenuItem urlMenu = new MenuItem(url.toExternalForm());
+			menu.add(urlMenu);
+			urlMenu.addActionListener(new ActionListener() {				
+				public void actionPerformed(ActionEvent e) {
+					getAppletContext().showDocument(url, "_blank");
+				}
+			});
+			
 			Processor processor = new Processor(this);
 			new PSViewer(processor, url, pageNo, sx, sy, tx, ty, false);
 		} catch (IOException e) {

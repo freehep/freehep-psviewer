@@ -63,7 +63,7 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 			input = new GZIPInputStream(input);
 		}
 
-		final int bufferSize = 0x800000; // 8 MByte
+		final int bufferSize = 0x8000; // 32 KByte
 		in = new BufferedInputStream(input, bufferSize);
 		in.mark(bufferSize);
 		

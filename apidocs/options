@@ -1,0 +1,24 @@
+-classpath
+'/Users/duns/freehep/git/freehep-psviewer/target/checkout/target/classes:/Users/duns/.m2/repository/org/freehep/freehep-graphics-base/2.1.3/freehep-graphics-base-2.1.3.jar:/Users/duns/.m2/repository/org/freehep/freehep-graphics2d/2.1.3/freehep-graphics2d-2.1.3.jar:/Users/duns/.m2/repository/org/freehep/freehep-io/2.1/freehep-io-2.1.jar:/Users/duns/.m2/repository/junit/junit/4.7/junit-4.7.jar:/Users/duns/.m2/repository/org/freehep/freehep-argv/2.1/freehep-argv-2.1.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/Users/duns/freehep/git/freehep-psviewer/target/checkout/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2001-2009 <a href="http://java.freehep.org">FreeHEP</a>. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/duns/freehep/git/freehep-psviewer/target/checkout/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'FreeHEP PostScript Viewer 2.0 API'
+-link
+'http://java.sun.com/j2se/1.5.0/docs/api'
+-use
+-version
+-windowtitle
+'FreeHEP PostScript Viewer 2.0 API'

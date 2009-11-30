@@ -1,15 +1,18 @@
-// Copyright 2004, FreeHEP.
+// Copyright 2004-2009, FreeHEP.
+package org.freehep.psviewer.test;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.io.File;
-import javax.swing.JPanel;
-import javax.swing.JFrame;
 
-import org.freehep.postscript.Processor;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import org.freehep.postscript.PSInputFile;
 import org.freehep.postscript.PSPanel;
+import org.freehep.postscript.Processor;
 
+/**
+ * @author Mark Donszelmann (Mark.Donszelmann@gmail.com)
+ */
 public class EmbeddedPSViewer {
 
     public static void main(String[] args) throws Exception{

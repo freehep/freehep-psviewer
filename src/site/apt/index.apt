@@ -9,7 +9,7 @@ Introduction
 
 	The PS Viewer is a Level 2 PostScript interpreter which can be used as a 
 stand-alone (Encapsulated) PostScript viewer, or it can be embedded in a
-user application.
+user application, see {{{usage.html}usage}}.
 
 	Some limitations on the PostScript interpretation exist.
 	

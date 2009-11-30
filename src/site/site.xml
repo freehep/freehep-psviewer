@@ -36,6 +36,7 @@
     </menu>
 
     <menu name="User Info">
+      <item name="Usage" href="usage.html" />
       <item name="Summary" href="project-summary.html" />
       <item name="Jar File(s)"
         href="http://repo1.maven.org/maven2/org/freehep/freehep-psviewer/" />

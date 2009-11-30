@@ -1,0 +1,92 @@
+	---
+FreeHEP PostScript Viewer - Usage
+	---
+	---
+Mark Donszelmann
+	---
+	
+Usage
+
+	You can use the PostScript Viewer in three forms: Stand-alone as an Application, as an Applet in a WebPage,
+or Embedded as a JPanel in an Application. Examples of how to do so are given below.
+
+* Stand-alone Application
+
+	Download the freehep-psviewer-\{version\}-standalone.jar, save the file and run it as:
+
++--
+java -jar freehep-psviewer-{version}-standalone.jar File.ps
++--
+
+	to open and show File.ps. Optional parameters can be given. Try:
+
++--
+java -jar freehep-psviewer-{version}-standalone.jar -h
++--
+
+* Applet
+
+	To use the viewer as an Applet, download the freehep-psviewer-\{version\}-standalone.jar and store it
+in the same directory as your postscript files. Then embed the following tag inside an html page:
+
++--
+    <applet code = "org.freehep.postscript.PSApplet.class"
+        archive = "freehep-psviewer-{version}-standalone.jar.jar"
+        width = "300" 
+        height = "300">
+      <param name="file" value="File.ps" />
+    </applet>
++--
+
+	other examples are available from the {{{index.html}introduction page}}.
+
+* Embedded in an Application
+
+	Add the freehep-psviewer-\{version\}-standalone.jar to your classpath and use the following code 
+to embed the PSPanel into your application. You can also have a look at the sourcecode of PSViewer.
+
++--
+import java.awt.GridLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import org.freehep.postscript.PSInputFile;
+import org.freehep.postscript.PSPanel;
+import org.freehep.postscript.Processor;
+
+public class EmbeddedPSViewer {
+
+    public static void main(String[] args) throws Exception{
+        if (args.length != 2) {
+            System.out.println("Usage: EmbeddedPSViewer file1.ps file2.ps");
+            System.exit(1);
+        }
+                
+        // Create Panels
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(1,2));
+        PSPanel ps1 = new PSPanel();
+        panel.add(ps1);
+        PSPanel ps2 = new PSPanel();
+        panel.add(ps2);
+        
+        // Show Panel
+        JFrame frame = new JFrame("Embedded PSViewer");
+        frame.getContentPane().add(panel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1024, 800);
+        frame.setVisible(true);
+        
+        // Create processors and associate to panels and input files
+        Processor processor1 = new Processor(ps1);
+        processor1.setData(new PSInputFile(args[0]));
+        Processor processor2 = new Processor(ps2);
+        processor2.setData(new PSInputFile(args[1]));
+        
+        // Process
+        processor1.process();
+        processor2.process();
+    }
+}
++--

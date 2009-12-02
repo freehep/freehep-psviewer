@@ -28,6 +28,8 @@ user application, see {{{usage.html}usage}}.
 	* {{{wired.html}WIRED}}: examples of output from the {{{http://wired.freehep.org/}WIRED Event Display}} package
 	
 	* {{{plots.html}Plots}}: examples of scientific plots, among others from the {{{http://root.cern.ch}Root}} package
+
+	* {{{resize.html}Resizable Plot}}: example of a scientific resizable plot
 	
 	[]
 	

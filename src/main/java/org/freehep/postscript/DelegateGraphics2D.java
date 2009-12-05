@@ -381,8 +381,8 @@ public abstract class DelegateGraphics2D extends Graphics2D {
 	}
 
 	@Override
-	public void setTransform(AffineTransform Tx) {
-		hostGraphics.setTransform(Tx);
+	public void setTransform(AffineTransform t) {
+		hostGraphics.setTransform(t);
 	}
 
 	@Override
@@ -391,8 +391,8 @@ public abstract class DelegateGraphics2D extends Graphics2D {
 	}
 
 	@Override
-	public void transform(AffineTransform Tx) {
-		hostGraphics.transform(Tx);
+	public void transform(AffineTransform t) {
+		hostGraphics.transform(t);
 	}
 
 	@Override
@@ -502,6 +502,7 @@ public abstract class DelegateGraphics2D extends Graphics2D {
 	 * 
 	 * @see java.awt.Graphics2D#fill3DRect(int, int, int, int, boolean)
 	 */
+	@Override
 	public void fill3DRect(int x, int y, int width, int height, boolean raised) {
 		hostGraphics.fill3DRect(x, y, width, height, raised);
 	}

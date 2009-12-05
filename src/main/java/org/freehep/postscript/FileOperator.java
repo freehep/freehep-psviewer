@@ -69,9 +69,8 @@ class FileFile extends FileOperator {
 
 			} else if (filename.equals("%lineedit")
 					|| filename.equals("%statementedit")) {
-				System.err
-						.println("%lineedit and %statementedit not supported.");
-				error(os, new Undefined());
+				error(os, new Undefined(
+						"%lineedit and %statementedit not supported."));
 
 			} else {
 				// regular file
@@ -111,10 +110,10 @@ class Filter extends FileOperator {
 			throws IOException {
 		if (filterName.equals("RunLengthEncode")) {
 			// special parameter
-			int runLength = os.popInteger().getValue();
-			PSDictionary dict;
+			/* int runLength = */os.popInteger().getValue();
+			// PSDictionary dict;
 			if (os.checkType(PSDictionary.class)) {
-				dict = os.popDictionary();
+				/* dict = */os.popDictionary();
 			}
 			PSDataTarget target = os.popDataTarget();
 			// FIXME: runLength parameter is ignored
@@ -126,9 +125,9 @@ class Filter extends FileOperator {
 
 		} else {
 			// no parameters, optional dictionary
-			PSDictionary dict;
+			// PSDictionary dict;
 			if (os.checkType(PSDictionary.class)) {
-				dict = os.popDictionary();
+				/* dict = */os.popDictionary();
 			}
 			PSDataTarget target = os.popDataTarget();
 			if (filterName.equals("ASCIIHexEncode")) {
@@ -171,9 +170,9 @@ class Filter extends FileOperator {
 			return true;
 		} else {
 			// no parameters, optional dictionary
-			PSDictionary dict;
+			// PSDictionary dict;
 			if (os.checkType(PSDictionary.class)) {
-				dict = os.popDictionary();
+				/* dict = */ os.popDictionary();
 			}
 			PSDataSource source = os.popDataSource();
 			if (filterName.equals("ASCIIHexDecode")) {
@@ -592,7 +591,8 @@ class DeleteFile extends FileOperator {
 		} else {
 			File file = new File(name.getValue());
 			if (!file.delete()) {
-				error(os, new IOError(new IOException("Cannot delete file "+file)));
+				error(os, new IOError(new IOException("Cannot delete file "
+						+ file)));
 			}
 		}
 		return true;
@@ -622,7 +622,8 @@ class RenameFile extends FileOperator {
 				error(os, new UndefinedFileName());
 			} else {
 				if (!file1.renameTo(file2)) {
-					error(os, new IOError(new IOException("Could not rename "+file1+" to "+file2)));
+					error(os, new IOError(new IOException("Could not rename "
+							+ file1 + " to " + file2)));
 				}
 			}
 		}
@@ -641,7 +642,8 @@ class FilenameForAll extends FileOperator implements LoopingContext {
 	}
 
 	private FilenameForAll(String[] f, PSPackedArray p, PSString s) {
-		files = f;
+		files = new String[f.length];
+		System.arraycopy(f, 0, files, 0, f.length);
 		proc = p;
 		scratch = s;
 		index = 0;
@@ -663,8 +665,8 @@ class FilenameForAll extends FileOperator implements LoopingContext {
 
 			String dir = template.getValue();
 			if (dir.startsWith("%")) {
-				System.err.println("%device%file currently not supported.");
-				error(os, new Undefined());
+				error(os,
+						new Undefined("%device%file currently not supported."));
 				return true;
 			}
 
@@ -677,7 +679,8 @@ class FilenameForAll extends FileOperator implements LoopingContext {
 				matchedFileNames.add(matchedFiles[i].getName());
 			}
 
-			String[] f = matchedFileNames.toArray(new String[matchedFileNames.size()]);
+			String[] f = matchedFileNames.toArray(new String[matchedFileNames
+					.size()]);
 			os.execStack().pop();
 			os.execStack().push(new FilenameForAll(f, p, s));
 			return false;
@@ -737,8 +740,7 @@ class Print extends FileOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		PSString s = os.popString();
-		System.out.print(s.getValue());
+		/* PSString s = */ os.popString();
 		return true;
 	}
 }
@@ -758,8 +760,7 @@ class FileEqual extends FileOperator {
 	public boolean execute(OperandStack os) {
 		// FIXME: should call CvS
 		// there should maybe be a separate string value for objects
-		PSObject o = os.popObject();
-		System.out.println(o.toString());
+		/* PSObject o = */ os.popObject();
 		return true;
 	}
 }
@@ -777,8 +778,7 @@ class FileEqualEqual extends FileOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		PSObject o = os.popObject();
-		System.out.println(o.toString());
+		/* PSObject o = */ os.popObject();
 		return true;
 	}
 }

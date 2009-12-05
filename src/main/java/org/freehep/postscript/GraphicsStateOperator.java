@@ -490,7 +490,8 @@ class CurrentCMYKColor extends GraphicsStateOperator {
 	}
 
 	private CurrentCMYKColor(float[] color) {
-		cmyk = color;
+		cmyk = new float[color.length];
+		System.arraycopy(color, 0, cmyk, 0, color.length);
 		bg = -1.0f;
 		ucr = -1.0f;
 	}

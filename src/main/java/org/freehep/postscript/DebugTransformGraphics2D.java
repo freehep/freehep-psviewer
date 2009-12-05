@@ -23,6 +23,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.util.logging.Logger;
 
 /**
  * Prints out changes to the Transform
@@ -30,7 +31,8 @@ import java.awt.geom.AffineTransform;
  * @author Mark Donszelmann (Mark.Donszelmann@gmail.com)
  */
 public class DebugTransformGraphics2D extends DelegateGraphics2D {	
-
+	private Logger log = Logger.getLogger("org.freehep.postscript");
+	
 	public DebugTransformGraphics2D(Graphics2D graphics) {
 		super(graphics);
 	}
@@ -57,7 +59,7 @@ public class DebugTransformGraphics2D extends DelegateGraphics2D {
 	@Override
 	public void setTransform(AffineTransform t) {
 		super.setTransform(t);
-		System.err.println("Setting Transform to: "+t);
+		log.fine("Setting Transform to: "+t);
 	}
 	
     /* (non-Javadoc)
@@ -66,7 +68,7 @@ public class DebugTransformGraphics2D extends DelegateGraphics2D {
     @Override
     public void transform(AffineTransform t) {
     	super.transform(t);
-		System.err.println("Transform to: "+t);
+    	log.fine("Transform to: "+t);
     }
 	
 	/* (non-Javadoc)
@@ -75,7 +77,7 @@ public class DebugTransformGraphics2D extends DelegateGraphics2D {
 	@Override
 	public void scale(double sx, double sy) {
 		super.scale(sx, sy);
-		System.err.println("Scale to: "+getTransform());
+		log.fine("Scale to: "+getTransform());
 	}
 	
 	/* (non-Javadoc)
@@ -84,7 +86,7 @@ public class DebugTransformGraphics2D extends DelegateGraphics2D {
 	@Override
 	public void shear(double shx, double shy) {
 		super.shear(shx, shy);
-		System.err.println("Shear to: "+getTransform());
+		log.fine("Shear to: "+getTransform());
 	}
 	
 	/* (non-Javadoc)
@@ -93,7 +95,7 @@ public class DebugTransformGraphics2D extends DelegateGraphics2D {
 	@Override
 	public void translate(int x, int y) {
 		super.translate(x, y);
-		System.err.println("Translate to: "+getTransform());
+		log.fine("Translate to: "+getTransform());
 	}
 	
 	/* (non-Javadoc)
@@ -102,7 +104,7 @@ public class DebugTransformGraphics2D extends DelegateGraphics2D {
 	@Override
 	public void translate(double tx, double ty) {
 		super.translate(tx, ty);
-		System.err.println("Translate to: "+getTransform());		
+		log.fine("Translate to: "+getTransform());		
 	}
 	
 	/* (non-Javadoc)
@@ -111,7 +113,7 @@ public class DebugTransformGraphics2D extends DelegateGraphics2D {
 	@Override
 	public void setClip(int x, int y, int width, int height) {
 		super.setClip(x, y, width, height);
-		System.err.println("Clipped to : "+getClip());
+		log.fine("Clipped to : "+getClip());
 	}
 	
 	/* (non-Javadoc)
@@ -120,7 +122,7 @@ public class DebugTransformGraphics2D extends DelegateGraphics2D {
 	@Override
 	public void setClip(Shape clip) {
 		super.setClip(clip);
-		System.err.println("Clipped to : "+getClip());
+		log.fine("Clipped to : "+getClip());
 	}
 	
 	/* (non-Javadoc)
@@ -129,7 +131,7 @@ public class DebugTransformGraphics2D extends DelegateGraphics2D {
 	@Override
 	public void clip(Shape clip) {
 		super.clip(clip);
-		System.err.println("Clipped to : "+getClip());
+		log.fine("Clipped to : "+getClip());
 	}
 	
 	/* (non-Javadoc)
@@ -138,7 +140,7 @@ public class DebugTransformGraphics2D extends DelegateGraphics2D {
 	@Override
 	public void clipRect(int x, int y, int width, int height) {
 		super.clipRect(x, y, width, height);
-		System.err.println("Clipped to : "+getClip());		
+		log.fine("Clipped to : "+getClip());		
 	}
 	
 	/* (non-Javadoc)
@@ -147,7 +149,7 @@ public class DebugTransformGraphics2D extends DelegateGraphics2D {
 	@Override
 	public void rotate(double theta) {
 		super.rotate(theta);
-		System.err.println("Rotate to: "+getTransform());
+		log.fine("Rotate to: "+getTransform());
 	}
 	
 	/* (non-Javadoc)
@@ -156,6 +158,6 @@ public class DebugTransformGraphics2D extends DelegateGraphics2D {
 	@Override
 	public void rotate(double theta, double x, double y) {
 		super.rotate(theta, x, y);
-		System.err.println("Rotate to: "+getTransform());
+		log.fine("Rotate to: "+getTransform());
 	}
 }

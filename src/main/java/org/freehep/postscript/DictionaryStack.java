@@ -2,6 +2,7 @@
 package org.freehep.postscript;
 
 import java.lang.reflect.Field;
+import java.util.logging.Level;
 
 /**
  * OperandStack for PostScript Processor
@@ -9,7 +10,6 @@ import java.lang.reflect.Field;
  * @author Mark Donszelmann
  */
 public class DictionaryStack extends PostScriptStack implements NameLookup {
-
 	private Class<?>[] operators = { GeneralOperator.class,
 			StackOperator.class, ArithmeticOperator.class, ArrayOperator.class,
 			PackedArrayOperator.class, DictionaryOperator.class,
@@ -166,11 +166,11 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 					addOperator(system, opClass[j]);
 				}
 			} catch (NoSuchFieldException e) {
-				System.err.println("Error: " + operators[i]
-						+ " does not have 'operators' field.");
+				log.log(Level.WARNING, "Error: " + operators[i]
+						+ " does not have 'operators' field.", e);
 			} catch (IllegalAccessException e) {
-				System.err.println("Error: " + operators[i]
-						+ ", no access to 'operators' field.");
+				log.log(Level.WARNING, "Error: " + operators[i]
+						+ ", no access to 'operators' field.", e);
 			}
 		}
 
@@ -201,19 +201,19 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 				dict.put(key, op);
 				op.setName(key.cvs());
 			} else {
-				System.out.println("Duplicate operator '" + key + "'");
+				log.severe("Duplicate operator '" + key + "'");
 				System.exit(1);
 			}
 
 		} catch (ClassCastException e) {
-			System.err.println("Error: " + clazz
-					+ " does not inherit from PSOperator.\n" + e);
+			log.log(Level.WARNING, "Error: " + clazz
+					+ " does not inherit from PSOperator.\n", e);
 		} catch (IllegalAccessException e) {
-			System.err.println("Error: " + clazz + " cannot be instantiated.\n"
-					+ e);
+			log.log(Level.WARNING, "Error: " + clazz
+					+ " cannot be instantiated.\n", e);
 		} catch (InstantiationException e) {
-			System.err.println("Error: " + clazz + " cannot be instantiated.\n"
-					+ e);
+			log.log(Level.WARNING, "Error: " + clazz
+					+ " cannot be instantiated.\n", e);
 		}
 	}
 
@@ -292,10 +292,10 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 	}
 
 	public void printStack() {
-		System.out.println();
-		System.out.println("== Top Dictionary Stack ==");
+		log.info("");
+		log.info("== Top Dictionary Stack ==");
 		super.printStack();
-		System.out.println("== Bottom Dictionary Stack ==");
+		log.info("== Bottom Dictionary Stack ==");
 	}
 
 	public String toString() {

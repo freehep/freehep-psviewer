@@ -132,9 +132,11 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 		repaint();
 	}
 
+	@Override
 	public void processMouseEvent(MouseEvent event) {
-		if (event.isPopupTrigger())
+		if (event.isPopupTrigger()) {
 			menu.show(event.getComponent(), event.getX(), event.getY());
+		}
 		super.processMouseEvent(event);
 	}
 
@@ -145,8 +147,9 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 
 	private int getParameter(String name, int defaultParameter) {
 		String p = getParameter(name);
-		if (p == null)
+		if (p == null) {
 			return defaultParameter;
+		}
 		try {
 			return Integer.parseInt(p);
 		} catch (NumberFormatException e) {
@@ -156,8 +159,9 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 
 	private double getParameter(String name, double defaultParameter) {
 		String p = getParameter(name);
-		if (p == null)
+		if (p == null) {
 			return defaultParameter;
+		}
 		try {
 			return Double.parseDouble(p);
 		} catch (NumberFormatException e) {

@@ -2,7 +2,7 @@
 package org.freehep.postscript;
 
 /**
- * Vritual Memory Operators for PostScript Processor
+ * Virtual Memory Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
  */
@@ -86,8 +86,8 @@ class StartJob extends MemoryOperator {
 	@Override
 	public boolean execute(OperandStack os) {
 		// ignored
-		PSString password = os.popString();
-		PSBoolean state = os.popBoolean();
+		/* PSString password = */ os.popString();
+		/* PSBoolean state = */ os.popBoolean();
 		os.push(false);
 		return true;
 	}

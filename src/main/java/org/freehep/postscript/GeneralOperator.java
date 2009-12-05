@@ -353,7 +353,7 @@ class ForAll extends GeneralOperator implements LoopingContext {
 					return true;
 				}
 			} else {
-				System.err.println("Fatal Error in ForAll");
+				log.severe("Fatal Error in ForAll");
 			}
 		}
 		return false;

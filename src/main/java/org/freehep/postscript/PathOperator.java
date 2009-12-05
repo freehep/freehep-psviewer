@@ -876,7 +876,6 @@ class HMoveTo extends PathOperator {
 			error(os, new NoCurrentPoint());
 		} else {
 			PSNumber dx = os.popNumber();
-			System.out.println(point + " + " + dx.getFloat());
 			os.gstate().path().moveTo((float) point.getX() + dx.getFloat(),
 					(float) point.getY());
 		}

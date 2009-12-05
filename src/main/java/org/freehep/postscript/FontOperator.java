@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * Font Operators for PostScript Processor
@@ -167,7 +168,6 @@ public class FontOperator extends PSOperator {
 				name = encoding.getName(cc);
 			}
 		}
-		// System.out.println("Switched to Font "+font.get("FontName")+" "+type+" "+name);
 		currentGlyph = getCachedGlyph(font, name);
 
 		switch (type) {
@@ -225,8 +225,7 @@ public class FontOperator extends PSOperator {
 				break;
 
 			case 6: // SubsVector Mapping
-				System.out
-						.println("Type 0 font with SubsVector Mapping ignored.");
+				log.info("Type 0 font with SubsVector Mapping ignored.");
 				break;
 
 			case 7: // Double Escape Mapping
@@ -276,11 +275,11 @@ public class FontOperator extends PSOperator {
 				break;
 
 			case 9: // CMap Mapping
-				System.out.println("Type 0 font with CMap Mapping ignored.");
+				log.info("Type 0 font with CMap Mapping ignored.");
 				break;
 
 			default:
-				System.out.println("Type 0 font with invalid FMapType "
+				log.info("Type 0 font with invalid FMapType "
 						+ font.getInteger("FMapType") + " ignored.");
 				break;
 			}
@@ -308,11 +307,11 @@ public class FontOperator extends PSOperator {
 					charstrings.put(name, glyph);
 					show(os, gs, glyph);
 				} catch (IOException e) {
-					System.err.println("IOError while reading charstring '"
-							+ name + "'.");
+					log.log(Level.INFO, "IOError while reading charstring '"
+							+ name + "'.", e);
 				}
 			} else {
-				System.out.println("Show Ignored " + obj);
+				log.info("Show Ignored " + obj);
 			}
 			break;
 
@@ -398,7 +397,6 @@ public class FontOperator extends PSOperator {
 		PSObject obj = metrics.get(name);
 		// FIXME: obj may be an array of 2 or 4
 		float width = ((PSNumber) obj).getFloat();
-		// System.out.println(name+" "+width);
 		return width;
 	}
 
@@ -442,6 +440,7 @@ class UndefineFont extends FontOperator {
 		operandTypes = new Class[] { PSName.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSName key = os.popName();
 		os.dictStack().fontDirectory().remove(key);
@@ -454,6 +453,7 @@ class FindFont extends FontOperator {
 		operandTypes = new Class[] { PSName.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSName name = os.popName();
 		PSDictionary font = findFont(os.dictStack().fontDirectory(), name);
@@ -472,6 +472,7 @@ class ScaleFont extends FontOperator {
 		operandTypes = new Class[] { PSDictionary.class, PSNumber.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		double scale = os.popNumber().getDouble();
 		PSDictionary font = os.popDictionary();
@@ -486,6 +487,7 @@ class MakeFont extends FontOperator {
 		operandTypes = new Class[] { PSDictionary.class, PSPackedArray.class };
 	}
 
+	@Override
 	public boolean execute(OperandStack os) {
 		PSPackedArray matrix = os.popPackedArray();
 		PSDictionary font = os.popDictionary();
@@ -610,7 +612,6 @@ class Show extends FontOperator {
 		}
 
 		if (index >= 0) {
-			// System.out.println("Width "+currentGlyph.wx+" "+currentGlyph.getLSB()+" "+currentGlyph.getRSB()+" "+gs.font().get("FontName"));
 			gs.translate(currentGlyph.wx, currentGlyph.wy);
 		}
 
@@ -861,7 +862,8 @@ class XShow extends FontOperator {
 
 	public XShow(String t, float[] o) {
 		text = t;
-		offset = o;
+		offset = new float[o.length];
+		System.arraycopy(o, 0, offset, 0, o.length);
 		index = -1;
 	}
 
@@ -934,7 +936,8 @@ class XYShow extends FontOperator {
 
 	public XYShow(String t, float[] o) {
 		text = t;
-		offset = o;
+		offset = new float[o.length];
+		System.arraycopy(o, 0, offset, 0, o.length);
 		index = -1;
 	}
 
@@ -1006,7 +1009,8 @@ class YShow extends FontOperator {
 
 	public YShow(String t, float[] o) {
 		text = t;
-		offset = o;
+		offset = new float[o.length];
+		System.arraycopy(o, 0, offset, 0, o.length);
 		index = -1;
 	}
 
@@ -1247,7 +1251,7 @@ class SetCacheDevice2 extends FontOperator {
 	}
 
 	public boolean execute(OperandStack os) {
-		PSGlyph g = (PSGlyph) os.gstate().font().get("_CurrentGlyph");
+		/* PSGlyph g = (PSGlyph) */ os.gstate().font().get("_CurrentGlyph");
 		// FIXME
 		error(os, new Unimplemented());
 		return true;

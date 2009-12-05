@@ -246,8 +246,7 @@ class Exit extends ControlOperator {
 			o = os.execStack().popObject();
 		}
 		if (o == null) {
-			System.err
-					.println("Error: No enclosing LoopingContext; Command: exit");
+			log.severe("Error: No enclosing LoopingContext; Command: exit");
 			os.execStack().push("quit");
 			os.execStack().push(
 					os.dictStack().errorDictionary().get("handleerror"));

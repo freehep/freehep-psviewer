@@ -59,10 +59,6 @@ public class OperandStack extends PostScriptStack {
 		return processor.getDSC();
 	}
 
-	public void push(PSObject o) {
-		super.push(o);
-	}
-
 	public void push(int i) {
 		super.push(new PSInteger(i));
 	}
@@ -291,7 +287,7 @@ public class OperandStack extends PostScriptStack {
 
 	public boolean checkType(Class<?>[] types) {
 		if (elementCount < types.length) {
-			System.err.println("Found " + elementCount + " while expecting "
+			log.warning("Found " + elementCount + " while expecting "
 					+ types.length);
 			return false;
 		}
@@ -299,7 +295,7 @@ public class OperandStack extends PostScriptStack {
 		for (int i = 0; i < types.length; i++) {
 			Object obj = elementData[elementCount - types.length + i];
 			if (!types[i].isInstance(obj)) {
-				System.err.println("Found " + obj + " of " + obj.getClass()
+				log.warning("Found " + obj + " of " + obj.getClass()
 						+ " while expecting " + types[i]);
 				return false;
 			}
@@ -309,10 +305,10 @@ public class OperandStack extends PostScriptStack {
 
 	@Override
 	public void printStack() {
-		System.out.println();
-		System.out.println("== Top Operand Stack ==");
+		log.info("");
+		log.info("== Top Operand Stack ==");
 		super.printStack();
-		System.out.println("== Bottom Operand Stack ==");
+		log.info("== Bottom Operand Stack ==");
 	}
 
 	@Override

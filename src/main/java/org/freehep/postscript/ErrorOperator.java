@@ -2,6 +2,7 @@
 package org.freehep.postscript;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Error Operators for PostScript Processor
@@ -9,6 +10,7 @@ import java.io.IOException;
  * @author Mark Donszelmann
  */
 public abstract class ErrorOperator extends PSOperator {
+	protected Logger log = Logger.getLogger("org.freehep.postscript");
 
 	public static Class<?>[] operators = { ConfigurationError.class,
 			DictFull.class, DictStackOverflow.class, DictStackUnderflow.class,
@@ -73,30 +75,28 @@ class HandleError extends ErrorOperator {
 		// report on error
 		PSDictionary error = os.dictStack().dollarError();
 		if (error.get("newerror").equals(new PSBoolean(true))) {
-			System.err.print("\n\n%%[Error: ");
-			System.err.print(error.get("errorname").toPrint());
-			System.err.print("; Offending Command: ");
-			System.err.print(error.get("command").toPrint());
-			System.err.println("]%%\n");
+			log.warning("\n\n%%[Error: " + error.get("errorname").toPrint()
+					+ "; Offending Command: " + error.get("command").toPrint()
+					+ "]%%");
+			log.warning("");
 
 			if (!error.get("errorinfo").equals(new PSNull())) {
-				System.err.print("Error Info: ");
-				System.err.println(error.get("errorinfo").toPrint());
-				System.err.println();
+				log.warning("Error Info: " + error.get("errorinfo").toPrint());
+				log.warning("");
 			}
 
 			if (error.get("recordstacks").equals(new PSBoolean(true))) {
-				System.err.println("Operand Stack (bottom..top)");
-				System.err.println(error.get("ostack").toPrint());
-				System.err.println();
+				log.warning("Operand Stack (bottom..top)");
+				log.warning(error.get("ostack").toPrint());
+				log.warning("");
 
-				System.err.println("Execution Stack (bottom..top)");
-				System.err.println(error.get("estack").toPrint());
-				System.err.println();
+				log.warning("Execution Stack (bottom..top)");
+				log.warning(error.get("estack").toPrint());
+				log.warning("");
 
-				System.err.println("Dictionary Stack (bottom..top)");
-				System.err.println(error.get("dstack").toPrint());
-				System.err.println();
+				log.warning("Dictionary Stack (bottom..top)");
+				log.warning(error.get("dstack").toPrint());
+				log.warning("");
 			}
 
 			// reset error dict
@@ -138,17 +138,18 @@ class IOError extends ErrorOperator {
 	IOError() {
 		this.e = null;
 	}
-	
+
 	IOError(IOException e) {
 		this.e = e;
 	}
 
 	@Override
 	public boolean execute(OperandStack os) {
-		System.err.println(e);
+		log.warning(e.getMessage());
 		return super.execute(os);
 	}
 }
+
 class LimitCheck extends ErrorOperator {
 }
 
@@ -156,6 +157,23 @@ class NoCurrentPoint extends ErrorOperator {
 }
 
 class RangeCheck extends ErrorOperator {
+	private String msg;
+
+	RangeCheck() {
+		this.msg = null;
+	}
+
+	RangeCheck(String msg) {
+		this.msg = msg;
+	}
+
+	@Override
+	public boolean execute(OperandStack os) {
+		if (msg != null) {
+			log.warning(msg);
+		}
+		return super.execute(os);
+	}
 }
 
 class StackOverflow extends ErrorOperator {
@@ -180,6 +198,23 @@ class TypeCheck extends ErrorOperator {
 }
 
 class Undefined extends ErrorOperator {
+	private String msg;
+
+	Undefined() {
+		this.msg = null;
+	}
+
+	Undefined(String msg) {
+		this.msg = msg;
+	}
+
+	@Override
+	public boolean execute(OperandStack os) {
+		if (msg != null) {
+			log.warning(msg);
+		}
+		return super.execute(os);
+	}
 }
 
 class UndefinedFileName extends ErrorOperator {

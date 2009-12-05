@@ -23,7 +23,8 @@ public class PSString extends PSComposite implements PSTokenizable,
 
 	protected PSString(char[] chars, int index, int count, DSC dsc) {
 		super("string", true);
-		value = chars;
+		value = new char[chars.length];
+		System.arraycopy(chars, 0, value, 0, chars.length);
 		start = index;
 		length = count;
 		this.dsc = dsc;

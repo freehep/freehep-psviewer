@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.freehep.postscript.DSCEvent.State;
 
@@ -18,6 +20,7 @@ import org.freehep.postscript.DSCEvent.State;
  * @author Mark Donszelmann
  */
 public class DSC {
+	private Logger log = Logger.getLogger("org.freehep.postscript");
 
 	private static final String[] MODE = { "diablo630", "fx100", "lj2000",
 			"hpgl", "impress", "hplj", "ti855" };
@@ -322,10 +325,11 @@ public class DSC {
 				}
 				addDSCComment(token, obj);
 			} catch (InstantiationException ie) {
-				System.err.println("DSC: could not instantiate class: '"
-						+ token);
+				log.log(Level.WARNING, "DSC: could not instantiate class: '"
+						+ token, ie);
 			} catch (IllegalAccessException ie) {
-				System.err.println("DSC: no access to class: '" + token);
+				log.log(Level.WARNING, "DSC: no access to class: '"
+								+ token, ie);
 			}
 		}
 	}
@@ -420,6 +424,8 @@ public class DSC {
 	}
 
 	public static class Rectangle implements Arguments {
+		private Logger log = Logger.getLogger("org.freehep.postscript");
+		
 		public final Object parse(String key, String params, OperandStack os) {
 			try {
 				String[] tokens = params.trim().split("[ \t]", 4);
@@ -433,7 +439,7 @@ public class DSC {
 				return new java.awt.Rectangle(p[0], p[1], p[2] - p[0], p[3]
 						- p[1]);
 			} catch (NumberFormatException e) {
-				System.err.println(e);
+				log.logp(Level.WARNING, getClass().getName(), "parse", e.getMessage(), e);
 				return null;
 			}
 		}
@@ -454,7 +460,8 @@ public class DSC {
 		private String[] enumeration;
 
 		public Enumeration(String[] enumeration) {
-			this.enumeration = enumeration;
+			this.enumeration = new String[enumeration.length];
+			System.arraycopy(enumeration, 0, this.enumeration, 0, enumeration.length);
 		}
 
 		public final Object parse(String key, String params, OperandStack os) {

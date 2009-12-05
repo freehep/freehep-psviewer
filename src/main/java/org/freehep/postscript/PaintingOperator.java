@@ -6,6 +6,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * Painting Operators for PostScript Processor
@@ -201,7 +202,7 @@ class UStroke extends PaintingOperator {
 			upath.setExecutable();
 
 			os.execStack().pop();
-			os.execStack().push(new UStroke(true, matrix));
+			os.execStack().push(new UStroke(true, m));
 			os.execStack().push(upath);
 			return false;
 		}
@@ -383,7 +384,7 @@ class ImageOperator extends PaintingOperator {
 		scanlineStride = (int) Math.ceil(width * pixelBitStride / dataSize);
 		popString = false;
 		x = 0;
-		y = 0; 
+		y = 0;
 		c = 0;
 	}
 
@@ -399,7 +400,8 @@ class ImageOperator extends PaintingOperator {
 					PSPackedArray m = dict.getPackedArray("ImageMatrix");
 					PSObject multiDataSources = dict.get("MultipleDataSources");
 					PSObject[] ds;
-					if ((multiDataSources != null) && ((PSBoolean) multiDataSources).getValue()) {
+					if ((multiDataSources != null)
+							&& ((PSBoolean) multiDataSources).getValue()) {
 						if (mask) {
 							error(os, new RangeCheck());
 							return true;
@@ -415,15 +417,15 @@ class ImageOperator extends PaintingOperator {
 						return true;
 					}
 					PSPackedArray d = dict.getPackedArray("Decode");
-					if (mask) {
-						// FIXME: check d being 1 0 or 0 1
-					} else {
+					if (!mask) {
 						if (d.size() != os.gstate()
 								.getNumberOfColorSpaceComponents() * 2) {
 							error(os, new RangeCheck());
 							return true;
 						}
-					}
+					} /*
+					 * else { // FIXME: check d being 1 0 or 0 1 }
+					 */
 					PSBoolean inter = (PSBoolean) dict.get("Interpolate");
 					boolean i = (inter != null) ? inter.getValue() : false;
 
@@ -438,7 +440,7 @@ class ImageOperator extends PaintingOperator {
 					break;
 				}
 			} catch (NullPointerException e) {
-				e.printStackTrace();
+				log.log(Level.SEVERE, e.getMessage(), e.getStackTrace());
 				error(os, new Undefined());
 			} catch (IllegalArgumentException e) {
 				error(os, new Undefined());
@@ -576,8 +578,9 @@ class ImageOperator extends PaintingOperator {
 							rgb = PSGState.toRGB(color, "DeviceCMYK");
 							break;
 						default:
-							System.out.println("length=" + components);
-							error(os, new RangeCheck());
+							error(os, new RangeCheck(getClass().getName()
+									+ ": expected length [1..4], was "
+									+ components));
 							return true;
 						}
 						alpha = 1.0f;

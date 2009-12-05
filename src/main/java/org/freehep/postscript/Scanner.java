@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
+import java.util.logging.Logger;
 
 import org.freehep.util.io.ASCII85InputStream;
 import org.freehep.util.io.ASCIIHexInputStream;
@@ -17,6 +18,7 @@ import org.freehep.util.io.EncodingException;
  * @author Mark Donszelmann
  */
 public class Scanner {
+	private static Logger log = Logger.getLogger("org.freehep.postscript");
 
 	private PushbackInputStream in;
 	private ByteBuffer buffer;
@@ -518,7 +520,7 @@ public class Scanner {
 
 	public static void main(String[] args) throws Exception {
 		if (args.length != 1) {
-			System.err.println("Usage: Scanner filename.ps");
+			log.info("Usage: Scanner filename.ps");
 			System.exit(1);
 		}
 
@@ -528,7 +530,7 @@ public class Scanner {
 
 		PSObject token;
 		while ((token = scanner.nextToken(true, null)) != null) {
-			System.out.println(scanner.getLineNo() + ": "
+			log.info(scanner.getLineNo() + ": "
 					+ token.getClass().getName() + ": " + token);
 		}
 

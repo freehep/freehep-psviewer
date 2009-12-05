@@ -1,4 +1,4 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.BorderLayout;
@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,10 +21,9 @@ import javax.swing.WindowConstants;
  * Debugger for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSDebugger.java
- *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class PSDebugger extends JPanel {
+	private Logger log = Logger.getLogger("org.freehep.postscript");
 	private static final int NCOLS = 3;
 	private static final int NROWS = 10;
 
@@ -65,7 +66,7 @@ public class PSDebugger extends JPanel {
 					} catch (BreakException be) {
 						// ignored, we are stepping
 					} catch (IOException ioe) {
-						ioe.printStackTrace();
+						log.log(Level.SEVERE, ioe.getMessage(), ioe.getStackTrace());
 					}
 				}
 			}

@@ -61,7 +61,7 @@ class MakePattern extends FormOperator {
 				double yStep = d.getNumber("YStep").getDouble();
 				int paintType = d.getInteger("PaintType");
 				// FIXME: ignored
-				int tilingType = d.getInteger("TilingType");
+				/* int tilingType = */ d.getInteger("TilingType");
 
 				// gsave, create image, set modified gstate
 				os.push(d);
@@ -71,7 +71,7 @@ class MakePattern extends FormOperator {
 				try {
 					inverse = m.createInverse();
 				} catch (NoninvertibleTransformException e) {
-					System.err.println("Internal MakePattern Error");
+					log.warning("Internal MakePattern Error");
 				}
 
 				Point2D bb = inverse.deltaTransform(
@@ -150,7 +150,7 @@ class SetPattern extends FormOperator {
 			PSPaint implementation = (PSPaint) pattern.get("Implementation");
 			Paint paint = implementation.getValue();
 			int paintType = pattern.getInteger("PaintType");
-			System.out.println("PaintType..." + paintType);
+			log.info("PaintType..." + paintType);
 			switch (paintType) {
 			case 1:
 				os.gstate().setColor(paint);

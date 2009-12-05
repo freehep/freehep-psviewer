@@ -67,7 +67,7 @@ class ArrayEnd extends ArrayOperator {
 				PSObject o = os.popObject();
 				a[i] = o;
 			}
-			PSMark mark = os.popMark();
+			/* PSMark mark = */ os.popMark();
 
 			os.push(new PSArray(a));
 		}

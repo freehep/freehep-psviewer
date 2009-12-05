@@ -1,4 +1,4 @@
-// Copyright 2001-2006, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.io.IOException;
@@ -6,11 +6,18 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.freehep.util.io.EEXECConstants;
 import org.freehep.util.io.EEXECDecryption;
 
+/**
+ * 
+ * 
+ * @author Mark Donszelmann (Mark.Donszelmann@gmail.com)
+ */
 public class PSCharStringDecoder {
+	private Logger log = Logger.getLogger("org.freehep.postscript");
 
 	protected int currentX, currentY;
 
@@ -88,7 +95,7 @@ public class PSCharStringDecoder {
 						ignore(2);
 						break; // vstem
 					default:
-						System.err.println("Command " + byte1
+						log.warning("Command " + byte1
 								+ " not implemented");
 						break;
 					}
@@ -111,8 +118,7 @@ public class PSCharStringDecoder {
 						addCommand("setcurrentpoint");
 						break; // vstem3
 					default:
-						System.err.println("Command 12 " + byte2
-								+ " not implemented");
+						log.warning("Command 12 " + byte2 + " not implemented");
 						break;
 					}
 				}

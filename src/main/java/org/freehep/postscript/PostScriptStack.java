@@ -2,6 +2,7 @@
 package org.freehep.postscript;
 
 import java.util.Stack;
+import java.util.logging.Logger;
 
 /**
  * PostScript Abstract Stack for PostScript Processor
@@ -9,6 +10,7 @@ import java.util.Stack;
  * @author Mark Donszelmann
  */
 public class PostScriptStack extends Stack<Object> {
+	protected Logger log = Logger.getLogger("org.freehep.postscript");
 
 	protected int marker = -1;
 
@@ -94,7 +96,7 @@ public class PostScriptStack extends Stack<Object> {
 
 	public void printStack() {
 		for (int i = elementCount - 1; i >= 0; i--) {
-			System.out.println(i + ": " + elementData[i].getClass().getName()
+			log.info(i + ": " + elementData[i].getClass().getName()
 					+ ": " + elementData[i].toString());
 		}
 	}

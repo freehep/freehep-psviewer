@@ -1,12 +1,10 @@
-// Copyright 2001-2004, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Objects for PostScript Processor, for the Document Structure Conventions
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSDSC.java 17245790f2a9
- *          2006/09/12 21:44:14 duns $
  */
 // Not strictly part of the PostScript standard
 public class PSDSC extends PSSimple {
@@ -22,7 +20,7 @@ public class PSDSC extends PSSimple {
 	@Override
 	public boolean execute(OperandStack os) {
 		if (!dsc.parse(getValue(), os)) {
-			System.out.println("DSC unrecognized: " + this);
+			log.warning("DSC unrecognized: " + this);
 		}
 		// ignore dsc
 		return true;

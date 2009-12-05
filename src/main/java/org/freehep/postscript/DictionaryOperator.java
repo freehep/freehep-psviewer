@@ -76,7 +76,7 @@ class EndDictionary extends DictionaryOperator {
 
 				d.put(key, value);
 			}
-			PSMark mark = os.popMark();
+			/* PSMark mark = */ os.popMark();
 
 			os.push(d);
 		}

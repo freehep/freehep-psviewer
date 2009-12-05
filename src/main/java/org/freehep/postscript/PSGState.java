@@ -1,4 +1,4 @@
-// Copyright 2001-2006, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.BasicStroke;
@@ -17,7 +17,6 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorConvertOp;
 import java.awt.image.RenderedImage;
 
 /**
@@ -27,8 +26,6 @@ import java.awt.image.RenderedImage;
  * Some of the state is kept in Graphics2D, some of it in BasicStroke
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSGState.java 829a8d93169a
- *          2006/12/08 09:03:07 duns $
  */
 public class PSGState extends PSComposite {
 
@@ -168,7 +165,7 @@ public class PSGState extends PSComposite {
 			break;
 
 		default:
-			System.out.println(getClass() + ": CharPath failed for fonttype: "
+			log.warning(getClass() + ": CharPath failed for fonttype: "
 					+ font.getInteger("FontType"));
 			return null;
 			// FontRenderContext fontRenderContext = new FontRenderContext(null,
@@ -206,7 +203,7 @@ public class PSGState extends PSComposite {
 				AffineTransform pt = m.createInverse();
 				p.transform(pt);
 			} catch (NoninvertibleTransformException e) {
-				System.err.println("Internal GState Error");
+				log.warning("Internal GState Error");
 			}
 
 			// add new transform
@@ -235,7 +232,7 @@ public class PSGState extends PSComposite {
 		try {
 			at = at.createInverse();
 		} catch (NoninvertibleTransformException e) {
-			System.err.println("Internal GState Error");
+			log.warning("Internal GState Error");
 		}
 
 		g.drawRenderedImage(image, at);
@@ -272,7 +269,7 @@ public class PSGState extends PSComposite {
 			pt.concatenate(ctm);
 			path.transform(pt);
 		} catch (NoninvertibleTransformException e) {
-			System.err.println("Internal GState Error");
+			log.warning("Internal GState Error");
 		}
 
 		// set new transform
@@ -286,7 +283,7 @@ public class PSGState extends PSComposite {
 			AffineTransform pt = at.createInverse();
 			path.transform(pt);
 		} catch (NoninvertibleTransformException e) {
-			System.err.println("Internal GState Error");
+			log.warning("Internal GState Error");
 		}
 
 		// add new transform
@@ -316,7 +313,7 @@ public class PSGState extends PSComposite {
 					.getWidth(), (int) device.getHeight()));
 			clipPath.transform(inverse);
 		} catch (NoninvertibleTransformException e) {
-			System.out.println("Internal error in GState");
+			log.warning("Internal error in GState");
 		}
 	}
 
@@ -353,7 +350,8 @@ public class PSGState extends PSComposite {
 			this.dash = null;
 			this.dashPhase = 0;
 		} else {
-			this.dash = dash;
+			this.dash = new float[dash.length];
+			System.arraycopy(dash, 0, this.dash, 0, dash.length);
 			this.dashPhase = dashPhase;
 		}
 		setStroke();
@@ -507,6 +505,7 @@ public class PSGState extends PSComposite {
 	}
 
 	public void setColor(Paint paint, Object[] params) {
+/* FIXME: ignored for now...
 		if (params != null) {
 			FixedTexturePaint ftp = (FixedTexturePaint) paint;
 			BufferedImage image = ftp.getImage();
@@ -519,11 +518,13 @@ public class PSGState extends PSComposite {
 			// ColorModel cm = new ComponentColorModel(colorSpace, );
 			// BufferedImage dstImage = convert.createCompatibleDestImage(image,
 			// null);
-			System.out.println(image.getSampleModel().getNumBands());
+  		    log.warning("PSGState.setColor(): "+paint.getClass()+" "+image.getSampleModel().getNumBands());
 			BufferedImage filteredImage = convert.filter(image, null);
 			// FIXME: copy & set this into paint
 		}
-		device.getGraphics().setPaint(paint);
+*/
+		log.warning("PSGState.setColor(): "+paint.getClass());
+//		device.getGraphics().setPaint(paint);
 	}
 
 	public void setColor(float[] color) {
@@ -531,7 +532,7 @@ public class PSGState extends PSComposite {
 		if (rgb != null) {
 			device.getGraphics().setPaint(new Color(rgb[0], rgb[1], rgb[2]));
 		} else {
-			System.err.println("Unknown colorspace: " + colorSpaceName);
+			log.warning("Unknown colorspace: " + colorSpaceName);
 		}
 	}
 
@@ -573,7 +574,7 @@ public class PSGState extends PSComposite {
 
 		rgb = toColor(space, rgb);
 		if (rgb == null) {
-			System.err.println("Unknown colorspace: " + colorSpaceName);
+			log.warning("Unknown colorspace: " + colorSpaceName);
 		}
 		return rgb;
 	}

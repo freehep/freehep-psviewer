@@ -43,6 +43,7 @@ public abstract class BufferedPanel extends JPanel implements java.io.Serializab
 	 * call the paint(Graphics) method directly, rather than scheduling a
 	 * paint(Graphics) through a repaint().
 	 */
+	@Override
 	public void repaint() {
 		super.repaint();
 		repaint = true;
@@ -52,6 +53,7 @@ public abstract class BufferedPanel extends JPanel implements java.io.Serializab
 	 * Triggers a full repaint, since the component is not valid anymore (size
 	 * change, iconized, ...)
 	 */
+	@Override
 	public void invalidate() {
 		super.invalidate();
 		repaint = true;
@@ -75,16 +77,19 @@ public abstract class BufferedPanel extends JPanel implements java.io.Serializab
 	 * @param g
 	 *            Graphics object
 	 */
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
 		// do not paint if params are null
-		if ((g == null) || (offScreenImage == null))
+		if ((g == null) || (offScreenImage == null)) {
 			return;
+		}
 
 		// decide where we are painting
-		if (g instanceof PrinterGraphics)
+		if (g instanceof PrinterGraphics) {
 			printing = true;
+		}
 
 		if (!isDisplaying()) {
 			repaintComponent(g);
@@ -121,6 +126,7 @@ public abstract class BufferedPanel extends JPanel implements java.io.Serializab
 	/**
 	 * Resize and move a component.
 	 */
+	@Override
 	public void setBounds(int x, int y, int w, int h) {
 		// Make sure that the parent's method is called first;
 		// otherwise, the resize never happens and new images are NOT

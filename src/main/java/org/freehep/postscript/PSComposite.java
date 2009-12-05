@@ -1,12 +1,10 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 /**
  * Objects for PostScript Processor, as defined in 3.3 Data Types and Objects
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSComposite.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public abstract class PSComposite extends PSObject {
 	public final static int UNLIMITED = 3;

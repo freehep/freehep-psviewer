@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.PaintContext;
@@ -10,16 +10,16 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.util.logging.Logger;
 
 /**
  * Texture Paint for PostScript Processor
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/FixedTexturePaint.java
- *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class FixedTexturePaint extends TexturePaint {
-
+	private Logger log = Logger.getLogger("org.freehep.postscript");
+	
 	private OperandStack os;
 	private AffineTransform matrix;
 
@@ -40,7 +40,7 @@ public class FixedTexturePaint extends TexturePaint {
 			mirror = mirror.createInverse();
 			mirror.preConcatenate(xform);
 		} catch (NoninvertibleTransformException e) {
-			System.err.println("Pattern problem: could not invert matrix");
+			log.warning("Pattern problem: could not invert matrix");
 			mirror = xform;
 		}
 		AffineTransform at = new AffineTransform();

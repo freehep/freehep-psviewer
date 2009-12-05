@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
@@ -25,6 +26,7 @@ import org.freehep.util.argv.StringParameter;
  * @author Mark Donszelmann
  */
 public final class PSViewer {
+	private static Logger log = Logger.getLogger("org.freehep.postscript");
 
 	public PSViewer(Processor processor, String name, int pageNo, double sx,
 			double sy, double tx, double ty, int buffer, boolean debug) throws IOException {
@@ -94,14 +96,14 @@ public final class PSViewer {
 			}
 
 			if (version.getValue()) {
-				System.err.println("FreeHEP PSViewer "+getVersion());
+				log.info("FreeHEP PSViewer "+getVersion());
 				return;
 			}
 		} catch (MissingArgumentException mae) {
-			System.out.println(mae.getMessage());
+			log.warning(mae.getMessage());
 			return;
 		} catch (ArgumentFormatException afe) {
-			System.out.println(afe.getMessage());
+			log.warning(afe.getMessage());
 			return;
 		}
 
@@ -123,7 +125,7 @@ public final class PSViewer {
 					debug.getValue());
 			panel.repaint();
 		} catch (FileNotFoundException fnfe) {
-			System.err.println("File: '" + name + "' cannot be found.");
+			log.warning("File: '" + name + "' cannot be found.");
 			System.exit(1);
 		}
 	}

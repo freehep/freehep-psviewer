@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JApplet;
 import javax.swing.JPanel;
@@ -17,7 +19,8 @@ import javax.swing.JPanel;
  * @author Mark Donszelmann
  */
 public class Processor implements DebuggerListener {
-
+	private Logger log = Logger.getLogger("org.freehep.postscript");
+	
 	private PSDevice device;
 	private boolean secure;
 
@@ -59,7 +62,7 @@ public class Processor implements DebuggerListener {
 						process();
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
+					log.log(Level.SEVERE, e.getMessage(), e.getStackTrace());
 				}
 			}
 		});
@@ -78,8 +81,12 @@ public class Processor implements DebuggerListener {
 	}
 
 	public void reset() throws IOException {
-		if (device.getGraphics() == null) return;
-		if (data == null) return;
+		if (device.getGraphics() == null) {
+			return;
+		}
+		if (data == null) {
+			return;
+		}
 		
 		PSGState gstate = new PSGState(device);
 		dictStack = new DictionaryStack();
@@ -192,19 +199,17 @@ public class Processor implements DebuggerListener {
 					i++;
 				} catch (BreakException e) {
 					if (debugger != null) {
-						System.out.println("BreakPoint Found...");
+						log.info("BreakPoint Found...");
 						go = false;
 					} else {
-						System.out
-								.println("BreakPoint found but ignored, run with -debug to break.");
+						log.info("BreakPoint found but ignored, run with -debug to break.");
 						go = true;
 					}
 				}
 			} while (go);
 		} catch (ClassCastException cce) {
-			System.out
-					.println("PS processing stopped due to ClassCastException after "+i+" steps");
-			cce.printStackTrace();
+			log.severe("PS processing stopped due to ClassCastException after "+i+" steps");
+			log.log(Level.SEVERE, cce.getMessage(), cce.getStackTrace());
 		}
 
 		if (debugger != null) {
@@ -216,9 +221,9 @@ public class Processor implements DebuggerListener {
 
 	public void process() throws IOException {
 		reset();
-//		System.err.println("Processing...");
+		log.fine("Processing...");
 		int steps = go();
-//		System.err.println("Processing finished "+steps+" steps.");
+		log.fine("Processing finished "+steps+" steps.");
 	}
 
 	public void attach(PSDebugger debugger) {

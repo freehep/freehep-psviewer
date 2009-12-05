@@ -1,4 +1,4 @@
-// Copyright 2006, FreeHEP.
+// Copyright 2006-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.Font;
@@ -13,12 +13,10 @@ import java.util.TreeMap;
  * returned.
  * 
  * @author duns
- * @version $Id: src/main/java/org/freehep/postscript/FontCache.java
- *          5f3e85e0001c 2006/11/20 08:39:41 duns $
  */
 public class FontCache {
 
-	private SortedMap/* <String, FontEntry> */<String, FontEntry> fonts;
+	private SortedMap<String, FontEntry> fonts;
 
 	public FontCache() {
 		this.fonts = new TreeMap<String, FontEntry>();
@@ -47,7 +45,7 @@ public class FontCache {
 		put("Serif.bolditalic", new Font("Serif", Font.BOLD + Font.ITALIC, 12));
 	}
 
-	public Font get(String name) {
+	public final Font get(String name) {
 		FontEntry entry = fonts.get(name);
 		if (entry == null) {
 			// FIXME, we could look in lists for replacements
@@ -57,11 +55,11 @@ public class FontCache {
 		return entry.getFont();
 	}
 
-	public void put(Font font) {
+	public final void put(Font font) {
 		put(font.getPSName(), font);
 	}
 
-	public void put(String name, Font font) {
+	public final void put(String name, Font font) {
 		if (fonts.get(name) == null) {
 			replace(name, new FontEntry(font));
 		}

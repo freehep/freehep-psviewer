@@ -1,17 +1,16 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.color.ColorSpace;
+import java.util.logging.Logger;
 
 /**
  * Pattern colorspace.
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/Pattern.java 17245790f2a9
- *          2006/09/12 21:44:14 duns $
  */
 public class Pattern extends ColorSpace {
-
+	private Logger log = Logger.getLogger("org.freehep.postscript");
 	private ColorSpace colorSpace;
 
 	public Pattern(ColorSpace colorSpace) {
@@ -21,37 +20,37 @@ public class Pattern extends ColorSpace {
 
 	@Override
 	public final float[] fromCIEXYZ(float[] colorvalue) {
-		System.out.println("fromCIEXYZ " + colorvalue.length);
+		log.info("fromCIEXYZ " + colorvalue.length);
 		return new float[] { 0.7f, 0.7f, 0.7f, 0.7f, 0.7f };
 	}
 
 	@Override
 	public final float[] fromRGB(float[] rgbvalue) {
-		System.out.println("fromRGB");
+		log.info("fromRGB");
 		return colorSpace.fromRGB(rgbvalue);
 	}
 
 	@Override
 	public final float[] toCIEXYZ(float[] colorvalue) {
-		System.out.println("toCIEXYZ");
+		log.info("toCIEXYZ");
 		return colorSpace.toCIEXYZ(colorvalue);
 	}
 
 	@Override
 	public final float[] toRGB(float[] colorvalue) {
-		System.out.println("toRGB");
+		log.info("toRGB");
 		return colorSpace.toRGB(colorvalue);
 	}
 
 	@Override
 	public final String getName(int index) {
-		System.out.println("getName");
+		log.info("getName");
 		return colorSpace.getName(index);
 	}
 
 	@Override
 	public final int getNumComponents() {
-		System.out.println("getNumComponents " + colorSpace.getNumComponents());
+		log.info("getNumComponents " + colorSpace.getNumComponents());
 		return 4;
 	}
 
@@ -62,7 +61,7 @@ public class Pattern extends ColorSpace {
 
 	@Override
 	public final boolean isCS_sRGB() {
-		System.out.println("isRGB");
+		log.info("isRGB");
 		return colorSpace.isCS_sRGB();
 	}
 

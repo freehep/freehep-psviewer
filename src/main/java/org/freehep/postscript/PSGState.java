@@ -74,7 +74,7 @@ public class PSGState extends PSComposite {
 		ctm = new AffineTransform();
 		newPath();
 		initClip();
-		setColorSpace("DeviceGray");
+		setColorSpace(Constants.DEVICE_GRAY);
 		setColor(new float[] { 0.0f });
 		lineWidth = 1.0f;
 		cap = BasicStroke.CAP_BUTT;
@@ -95,7 +95,7 @@ public class PSGState extends PSComposite {
 	public void erasePage() {
 		String oldSpace = colorSpace();
 		float[] oldColor = color();
-		setColorSpace("DeviceGray");
+		setColorSpace(Constants.DEVICE_GRAY);
 		setColor(new float[] { 1.0f });
 		device.erasePage();
 		setColorSpace(oldSpace);
@@ -207,7 +207,7 @@ public class PSGState extends PSComposite {
 				AffineTransform pt = m.createInverse();
 				p.transform(pt);
 			} catch (NoninvertibleTransformException e) {
-				log.warning("Internal GState Error");
+				log.warning(Constants.INTERNAL_GSTATE_ERROR);
 			}
 
 			// add new transform
@@ -236,7 +236,7 @@ public class PSGState extends PSComposite {
 		try {
 			at = at.createInverse();
 		} catch (NoninvertibleTransformException e) {
-			log.warning("Internal GState Error");
+			log.warning(Constants.INTERNAL_GSTATE_ERROR);
 		}
 
 		g.drawRenderedImage(image, at);
@@ -273,7 +273,7 @@ public class PSGState extends PSComposite {
 			pt.concatenate(ctm);
 			path.transform(pt);
 		} catch (NoninvertibleTransformException e) {
-			log.warning("Internal GState Error");
+			log.warning(Constants.INTERNAL_GSTATE_ERROR);
 		}
 
 		// set new transform
@@ -287,7 +287,7 @@ public class PSGState extends PSComposite {
 			AffineTransform pt = at.createInverse();
 			path.transform(pt);
 		} catch (NoninvertibleTransformException e) {
-			log.warning("Internal GState Error");
+			log.warning(Constants.INTERNAL_GSTATE_ERROR);
 		}
 
 		// add new transform
@@ -439,11 +439,11 @@ public class PSGState extends PSComposite {
 	}
 
 	private static ColorSpace toColorSpace(String name) {
-		if (name.equals("DeviceGray")) {
+		if (name.equals(Constants.DEVICE_GRAY)) {
 			return ColorSpace.getInstance(ColorSpace.CS_GRAY);
-		} else if (name.equals("DeviceRGB")) {
+		} else if (name.equals(Constants.DEVICE_RGB)) {
 			return ColorSpace.getInstance(ColorSpace.CS_sRGB);
-		} else if (name.equals("DeviceCMYK")) {
+		} else if (name.equals(Constants.DEVICE_CMYK)) {
 			return ColorSpace.getInstance(ColorSpace.CS_sRGB);
 		}
 		return null;
@@ -456,9 +456,9 @@ public class PSGState extends PSComposite {
 	public boolean setColorSpace(String name, Object[] params) {
 		ColorSpace space = toColorSpace(name);
 		if (space == null) {
-			if (name.equals("Pattern")) {
+			if (name.equals(Constants.PATTERN)) {
 				if (params == null) {
-					space = new Pattern(toColorSpace("DeviceRGB"));
+					space = new Pattern(toColorSpace(Constants.DEVICE_RGB));
 				} else {
 					space = new Pattern(
 							toColorSpace(((PSName) params[1]).cvs()));
@@ -475,13 +475,13 @@ public class PSGState extends PSComposite {
 	}
 
 	public int getNumberOfColorSpaceComponents() {
-		if (colorSpaceName.equals("DeviceGray")) {
+		if (colorSpaceName.equals(Constants.DEVICE_GRAY)) {
 			return 1;
-		} else if (colorSpaceName.equals("DeviceRGB")) {
+		} else if (colorSpaceName.equals(Constants.DEVICE_RGB)) {
 			return 3;
-		} else if (colorSpaceName.equals("DeviceCMYK")) {
+		} else if (colorSpaceName.equals(Constants.DEVICE_CMYK)) {
 			return 4;
-		} else if (colorSpaceName.equals("Pattern")) {
+		} else if (colorSpaceName.equals(Constants.PATTERN)) {
 			return colorSpace.getNumComponents();
 		}
 		return 0;
@@ -495,22 +495,22 @@ public class PSGState extends PSComposite {
 		switch (space.getType()) {
 		// FIXME: does not work for CMYK
 		case ColorSpace.CS_GRAY:
-			return "DeviceGray";
+			return Constants.DEVICE_GRAY;
 		case ColorSpace.CS_sRGB:
-			return "DeviceRGB";
+			return Constants.DEVICE_RGB;
 		default:
 			return "Unknown";
 		}
 	}
 
 	public void setColor(Paint paint) {
-		setColorSpace("Pattern");
+		setColorSpace(Constants.PATTERN);
 		setColor(paint, null);
 	}
 
 	public void setColor(Paint paint, Object[] params) {
+/*
 		if (params != null) {
-			log.warning("PSGState.setColor(): "+paint.getClass());
 			FixedTexturePaint ftp = (FixedTexturePaint) paint;
 			BufferedImage image = ftp.getImage();
 			ColorConvertOp convert = new ColorConvertOp(ColorSpace
@@ -526,6 +526,8 @@ public class PSGState extends PSComposite {
 			BufferedImage filteredImage = convert.filter(image, null);
 			// FIXME: copy & set this into paint
 		}
+*/
+		log.warning("PSGState.setColor(): "+paint.getClass());
 		device.getGraphics().setPaint(paint);
 	}
 
@@ -539,17 +541,17 @@ public class PSGState extends PSComposite {
 	}
 
 	public static float[] toRGB(float[] color, String space) {
-		if (space.equals("DeviceGray")) {
+		if (space.equals(Constants.DEVICE_GRAY)) {
 			float c = Math.max(0.0f, Math.min(1.0f, color[0]));
 			return new float[] { c, c, c };
 
-		} else if (space.equals("DeviceRGB")) {
+		} else if (space.equals(Constants.DEVICE_RGB)) {
 			float r = Math.max(0.0f, Math.min(1.0f, color[0]));
 			float g = Math.max(0.0f, Math.min(1.0f, color[1]));
 			float b = Math.max(0.0f, Math.min(1.0f, color[2]));
 			return new float[] { r, g, b };
 
-		} else if (space.equals("DeviceCMYK")) {
+		} else if (space.equals(Constants.DEVICE_CMYK)) {
 			float r = Math
 					.max(0.0f, 1.0f - Math.min(1.0f, color[0] + color[3]));
 			float g = Math
@@ -569,7 +571,7 @@ public class PSGState extends PSComposite {
 		float[] rgb;
 		rgb = device.getGraphics().getColor().getColorComponents(null);
 
-		if (space.equals("Pattern")) {
+		if (space.equals(Constants.PATTERN)) {
 			rgb = colorSpace.toRGB(rgb);
 			space = toColorSpaceName(colorSpace);
 		}
@@ -583,15 +585,15 @@ public class PSGState extends PSComposite {
 
 	public static float[] toColor(String space, float[] rgb) {
 		float[] color;
-		if (space.equals("DeviceGray")) {
+		if (space.equals(Constants.DEVICE_GRAY)) {
 			color = new float[1];
 			color[0] = (float) (0.30 * rgb[0] + 0.59 * rgb[1] + 0.11 * rgb[2]);
 			return color;
 
-		} else if (space.equals("DeviceRGB")) {
+		} else if (space.equals(Constants.DEVICE_RGB)) {
 			return rgb;
 
-		} else if (space.equals("DeviceCMYK")) {
+		} else if (space.equals(Constants.DEVICE_CMYK)) {
 			float c = 1.0f - rgb[0];
 			float m = 1.0f - rgb[1];
 			float y = 1.0f - rgb[2];

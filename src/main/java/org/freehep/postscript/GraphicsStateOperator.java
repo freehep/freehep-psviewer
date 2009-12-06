@@ -307,17 +307,17 @@ class SetColor extends GraphicsStateOperator {
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSNumber.class)) {
 			String space = os.gstate().colorSpace();
-			if (space.equals("DeviceGray")) {
+			if (space.equals(Constants.DEVICE_GRAY)) {
 				PSNumber g = os.popNumber();
 				os.gstate().setColor(new float[] { g.getFloat() });
-			} else if (space.equals("DeviceRGB")) {
+			} else if (space.equals(Constants.DEVICE_RGB)) {
 				PSNumber blue = os.popNumber();
 				PSNumber green = os.popNumber();
 				PSNumber red = os.popNumber();
 				os.gstate().setColor(
 						new float[] { red.getFloat(), green.getFloat(),
 								blue.getFloat() });
-			} else if (space.equals("DeviceCMYK")) {
+			} else if (space.equals(Constants.DEVICE_CMYK)) {
 				PSNumber black = os.popNumber();
 				PSNumber yellow = os.popNumber();
 				PSNumber magenta = os.popNumber();

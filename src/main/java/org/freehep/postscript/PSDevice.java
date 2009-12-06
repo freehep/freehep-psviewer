@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -120,8 +119,7 @@ public abstract class PSDevice implements DSCEventListener {
 
 	public abstract double getHeight();
 
-	public abstract BufferedImage convertToImage(int width, int height);
-
 	public abstract void refresh();
 
+	public abstract ImageDevice createImageDevice(int width, int height);
 }

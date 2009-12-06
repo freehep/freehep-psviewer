@@ -6,15 +6,10 @@ package org.freehep.postscript;
  * 
  * @author Mark Donszelmann
  */
-public class OutputOperator extends PSOperator {
+public abstract class OutputOperator extends PSOperator {
 
 	public static Class<?>[] operators = { ShowPage.class, CopyPage.class,
 			SetPageDevice.class, CurrentPageDevice.class, NullDevice.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class ShowPage extends OutputOperator {

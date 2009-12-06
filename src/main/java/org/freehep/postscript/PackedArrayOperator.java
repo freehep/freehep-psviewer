@@ -6,15 +6,10 @@ package org.freehep.postscript;
  * 
  * @author Mark Donszelmann
  */
-public class PackedArrayOperator extends PSOperator {
+public abstract class PackedArrayOperator extends PSOperator {
 
 	public static Class<?>[] operators = { PackedArray.class, SetPacking.class,
 			CurrentPacking.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class PackedArray extends PackedArrayOperator {

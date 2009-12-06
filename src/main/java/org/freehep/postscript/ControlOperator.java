@@ -11,17 +11,12 @@ import org.freehep.util.io.EEXECDecryption;
  * 
  * @author Mark Donszelmann
  */
-public class ControlOperator extends PSOperator {
+public abstract class ControlOperator extends PSOperator {
 
 	public static Class<?>[] operators = { Exec.class, If.class, IfElse.class,
 			For.class, Repeat.class, Loop.class, Exit.class, Stop.class,
 			Stopped.class, CountExecStack.class, ExecStack.class, Quit.class,
 			Start.class, EExec.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class Exec extends ControlOperator {

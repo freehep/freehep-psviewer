@@ -6,16 +6,11 @@ package org.freehep.postscript;
  * 
  * @author Mark Donszelmann
  */
-public class StackOperator extends PSOperator {
+public abstract class StackOperator extends PSOperator {
 
 	public static Class<?>[] operators = { Pop.class, Exch.class, Dup.class,
 			Index.class, Roll.class, Clear.class, Count.class, Mark.class,
 			ClearToMark.class, CountToMark.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class Pop extends StackOperator {

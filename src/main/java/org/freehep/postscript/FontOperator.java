@@ -12,7 +12,7 @@ import java.util.logging.Level;
  * 
  * @author Mark Donszelmann
  */
-public class FontOperator extends PSOperator {
+public abstract class FontOperator extends PSOperator {
 
 	protected static FontCache fontCache;
 
@@ -398,11 +398,6 @@ public class FontOperator extends PSOperator {
 		// FIXME: obj may be an array of 2 or 4
 		float width = ((PSNumber) obj).getFloat();
 		return width;
-	}
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
 	}
 }
 

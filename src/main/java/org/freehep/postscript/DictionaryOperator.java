@@ -6,18 +6,13 @@ package org.freehep.postscript;
  * 
  * @author Mark Donszelmann
  */
-public class DictionaryOperator extends PSOperator {
+public abstract class DictionaryOperator extends PSOperator {
 
 	public static Class<?>[] operators = { Dict.class, StartDictionary.class,
 			EndDictionary.class, MaxLength.class, Begin.class, End.class,
 			Def.class, Load.class, Store.class, Undef.class, Known.class,
 			Where.class, CurrentDict.class, CountDictStack.class,
 			DictStack.class, ClearDictStack.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class Dict extends DictionaryOperator {

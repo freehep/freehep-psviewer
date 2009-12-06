@@ -6,16 +6,11 @@ package org.freehep.postscript;
  * 
  * @author Mark Donszelmann
  */
-public class MiscellaneousOperator extends PSOperator {
+public abstract class MiscellaneousOperator extends PSOperator {
 
 	public static Class<?>[] operators = { Bind.class, Version.class,
 			RealTime.class, UserTime.class, Product.class, Revision.class,
 			SerialNumber.class, Executive.class, Echo.class, Prompt.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class Bind extends MiscellaneousOperator {

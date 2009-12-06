@@ -6,14 +6,9 @@ package org.freehep.postscript;
  * 
  * @author Mark Donszelmann
  */
-public class ExtraOperator extends PSOperator {
+public abstract class ExtraOperator extends PSOperator {
 
 	public static Class<?>[] operators = { Break.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class Break extends ExtraOperator {

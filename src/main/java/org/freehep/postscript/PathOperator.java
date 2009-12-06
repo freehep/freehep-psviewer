@@ -19,7 +19,7 @@ import java.util.Stack;
  * 
  * @author Mark Donszelmann
  */
-public class PathOperator extends PSOperator {
+public abstract class PathOperator extends PSOperator {
 
     static final int MATRIX_SIZE = 6;
     static final int PATH_SIZE = 6;
@@ -36,11 +36,6 @@ public class PathOperator extends PSOperator {
 			// type 1 font
 			HLineTo.class, VLineTo.class, HMoveTo.class, VMoveTo.class,
 			RRCurveTo.class, VHCurveTo.class, HVCurveTo.class, };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class NewPath extends PathOperator {

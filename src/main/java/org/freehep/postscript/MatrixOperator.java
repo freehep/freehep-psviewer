@@ -10,7 +10,7 @@ import java.awt.geom.Point2D;
  * 
  * @author Mark Donszelmann
  */
-public class MatrixOperator extends PSOperator {
+public abstract class MatrixOperator extends PSOperator {
 
 	public static Class<?>[] operators = { Matrix.class, InitMatrix.class,
 			IdentMatrix.class, DefaultMatrix.class, CurrentMatrix.class,
@@ -18,11 +18,6 @@ public class MatrixOperator extends PSOperator {
 			Concat.class, ConcatMatrix.class, Transform.class,
 			DTransform.class, ITransform.class, IDTransform.class,
 			InvertMatrix.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class Matrix extends MatrixOperator {

@@ -6,17 +6,12 @@ package org.freehep.postscript;
  * 
  * @author Mark Donszelmann
  */
-public class ConversionOperator extends PSOperator {
+public abstract class ConversionOperator extends PSOperator {
 
 	public static Class<?>[] operators = { Type.class, CvLit.class, CvX.class,
 			XCheck.class, ExecuteOnly.class, NoAccess.class, ReadOnly.class,
 			RCheck.class, WCheck.class, CvI.class, CvN.class, CvR.class,
 			CvRS.class, CvS.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class Type extends ConversionOperator {

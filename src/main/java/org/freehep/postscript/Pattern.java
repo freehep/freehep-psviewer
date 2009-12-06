@@ -20,48 +20,41 @@ public class Pattern extends ColorSpace {
 
 	@Override
 	public final float[] fromCIEXYZ(float[] colorvalue) {
-		log.info("fromCIEXYZ " + colorvalue.length);
-		return new float[] { 0.7f, 0.7f, 0.7f, 0.7f, 0.7f };
+		return colorSpace.fromCIEXYZ(colorvalue);
 	}
 
 	@Override
 	public final float[] fromRGB(float[] rgbvalue) {
-		log.info("fromRGB");
 		return colorSpace.fromRGB(rgbvalue);
 	}
 
 	@Override
 	public final float[] toCIEXYZ(float[] colorvalue) {
-		log.info("toCIEXYZ");
 		return colorSpace.toCIEXYZ(colorvalue);
 	}
 
 	@Override
 	public final float[] toRGB(float[] colorvalue) {
-		log.info("toRGB");
 		return colorSpace.toRGB(colorvalue);
 	}
 
 	@Override
 	public final String getName(int index) {
-		log.info("getName");
 		return colorSpace.getName(index);
 	}
 
 	@Override
 	public final int getNumComponents() {
-		log.info("getNumComponents " + colorSpace.getNumComponents());
-		return 4;
+		return colorSpace.getNumComponents();
 	}
 
 	@Override
 	public final int getType() {
-		return super.getType();
+		return colorSpace.getType();
 	}
 
 	@Override
 	public final boolean isCS_sRGB() {
-		log.info("isRGB");
 		return colorSpace.isCS_sRGB();
 	}
 

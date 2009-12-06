@@ -5,14 +5,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 
 /*
  * @author Mark Donszelmann
  */
 public class VirtualDevice extends PSDevice {
-
-	private Graphics2D imageGraphics = null;
 	private Graphics2D graphics;
 	private Dimension dimension;
 	private AffineTransform device = new AffineTransform();
@@ -34,22 +31,6 @@ public class VirtualDevice extends PSDevice {
 	}
 
 	@Override
-	public BufferedImage convertToImage(int width, int height) {
-		BufferedImage image = new BufferedImage(width, height,
-				BufferedImage.TYPE_INT_ARGB);
-		imageGraphics = (Graphics2D) image.getGraphics();
-		return image;
-	}
-
-	@Override
-	public Graphics2D getGraphics() {
-		if (imageGraphics != null) {
-			return imageGraphics;
-		}
-		return super.getGraphics();
-	}
-
-	@Override
 	public AffineTransform getDeviceTransform() {
 		return device;
 	}
@@ -62,5 +43,13 @@ public class VirtualDevice extends PSDevice {
 	@Override
 	public void refresh() {
 		// ignored
+	}
+
+	/* (non-Javadoc)
+	 * @see org.freehep.postscript.PSDevice#createImageDevice(int, int)
+	 */
+	@Override
+	public ImageDevice createImageDevice(int width, int height) {
+		return new ImageDevice(width, height);
 	}
 }

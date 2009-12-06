@@ -6,7 +6,7 @@ package org.freehep.postscript;
  * 
  * @author Mark Donszelmann
  */
-public class DeviceOperator extends PSOperator {
+public abstract class DeviceOperator extends PSOperator {
 
 	// FIXME: most of these should be part of GSTate
 	// FIXME: all are fake and ignored, just implemented as dummies
@@ -29,11 +29,6 @@ public class DeviceOperator extends PSOperator {
 			CurrentColorRendering.class, SetFlat.class, CurrentFlat.class,
 			SetOverprint.class, CurrentOverprint.class, SetSmoothness.class,
 			CurrentSmoothness.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class SetHalftone extends DeviceOperator {

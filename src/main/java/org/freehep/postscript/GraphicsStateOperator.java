@@ -8,7 +8,7 @@ import java.awt.Color;
  * 
  * @author Mark Donszelmann
  */
-public class GraphicsStateOperator extends PSOperator {
+public abstract class GraphicsStateOperator extends PSOperator {
 
 	public static Class<?>[] operators = { GSave.class, GRestore.class,
 			ClipSave.class, ClipRestore.class, GRestoreAll.class,
@@ -22,11 +22,6 @@ public class GraphicsStateOperator extends PSOperator {
 			CurrentColor.class, SetGray.class, CurrentGray.class,
 			SetHSBColor.class, CurrentHSBColor.class, SetRGBColor.class,
 			CurrentRGBColor.class, SetCMYKColor.class, CurrentCMYKColor.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class GSave extends GraphicsStateOperator {
@@ -339,9 +334,12 @@ class SetColor extends GraphicsStateOperator {
 			int patternType = pattern.getInteger("PatternType");
 			int paintType = pattern.getInteger("PaintType");
 			if ((patternType == 1) && (paintType == 2)) {
-				// FIXME: where is the color
-				// FIXME: where is the pattern
-				os.gstate().setColor(paint.getValue(), new PSObject[0]);
+				int n = os.gstate().getNumberOfColorSpaceComponents();
+				PSObject[] params = new PSObject[n];
+				for (int i=n-1; i>=0; i--) {
+					params[i] = os.popNumber();
+				}
+				os.gstate().setColor(paint.getValue(), params);
 			} else {
 				os.gstate().setColor(paint.getValue());
 			}

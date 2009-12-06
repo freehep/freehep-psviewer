@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 
 /**
  * @author Mark Donszelmann
@@ -69,10 +68,11 @@ public class PanelDevice extends PSDevice {
 		container.repaint();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.freehep.postscript.PSDevice#createImageDevice(int, int)
+	 */
 	@Override
-	public BufferedImage convertToImage(int width, int height) {
-		BufferedImage image = (BufferedImage) container.createImage(width, height);
-		imageGraphics = (Graphics2D) image.getGraphics();
-		return image;
+	public ImageDevice createImageDevice(int width, int height) {
+		return new ImageDevice(container, width, height);
 	}
 }

@@ -17,6 +17,7 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 import java.awt.image.RenderedImage;
 
 /**
@@ -83,9 +84,12 @@ public class PSGState extends PSComposite {
 		dashPhase = 0.0f;
 		setStroke();
 	}
-
+	
 	public BufferedImage convertToImage(int width, int height) {
-		return device.convertToImage(width, height);
+		if (!(device instanceof ImageDevice)) {
+			device = device.createImageDevice(width, height);
+		}
+		return ((ImageDevice)device).getImage();
 	}
 
 	public void erasePage() {
@@ -505,8 +509,8 @@ public class PSGState extends PSComposite {
 	}
 
 	public void setColor(Paint paint, Object[] params) {
-/* FIXME: ignored for now...
 		if (params != null) {
+			log.warning("PSGState.setColor(): "+paint.getClass());
 			FixedTexturePaint ftp = (FixedTexturePaint) paint;
 			BufferedImage image = ftp.getImage();
 			ColorConvertOp convert = new ColorConvertOp(ColorSpace
@@ -522,9 +526,7 @@ public class PSGState extends PSComposite {
 			BufferedImage filteredImage = convert.filter(image, null);
 			// FIXME: copy & set this into paint
 		}
-*/
-		log.warning("PSGState.setColor(): "+paint.getClass());
-//		device.getGraphics().setPaint(paint);
+		device.getGraphics().setPaint(paint);
 	}
 
 	public void setColor(float[] color) {

@@ -13,17 +13,12 @@ import java.util.logging.Level;
  * 
  * @author Mark Donszelmann
  */
-public class PaintingOperator extends PSOperator {
+public abstract class PaintingOperator extends PSOperator {
 
 	public static Class<?>[] operators = { ErasePage.class, Stroke.class,
 			Fill.class, EOFill.class, RectStroke.class, RectFill.class,
 			UStroke.class, UFill.class, UEOFill.class, ShFill.class,
 			PaintImage.class, ColorImage.class, ImageMask.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class ErasePage extends PaintingOperator {

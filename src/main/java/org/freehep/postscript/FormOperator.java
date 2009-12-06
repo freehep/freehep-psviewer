@@ -13,15 +13,11 @@ import java.awt.image.BufferedImage;
  * 
  * @author Mark Donszelmann
  */
-public class FormOperator extends PSOperator {
+public abstract class FormOperator extends PSOperator {
 
 	public static Class<?>[] operators = { MakePattern.class, SetPattern.class,
 			ExecForm.class };
 
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class MakePattern extends FormOperator {
@@ -83,8 +79,7 @@ class MakePattern extends FormOperator {
 						yStep), null);
 				int biWidth = (int) biSize.getX();
 				int biHeight = (int) biSize.getY();
-				BufferedImage bi = os.gstate()
-						.convertToImage(biWidth, biHeight);
+				BufferedImage bi = os.gstate().convertToImage(biWidth, biHeight);
 
 				AffineTransform ctm = os.gstate().getTransform();
 
@@ -150,7 +145,6 @@ class SetPattern extends FormOperator {
 			PSPaint implementation = (PSPaint) pattern.get("Implementation");
 			Paint paint = implementation.getValue();
 			int paintType = pattern.getInteger("PaintType");
-			log.info("PaintType..." + paintType);
 			switch (paintType) {
 			case 1:
 				os.gstate().setColor(paint);

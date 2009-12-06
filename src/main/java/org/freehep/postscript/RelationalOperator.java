@@ -6,16 +6,11 @@ package org.freehep.postscript;
  * 
  * @author Mark Donszelmann
  */
-public class RelationalOperator extends PSOperator {
+public abstract class RelationalOperator extends PSOperator {
 
 	public static Class<?>[] operators = { EQ.class, NE.class, GE.class,
 			GT.class, LE.class, LT.class, And.class, Not.class, Or.class,
 			Xor.class, True.class, False.class, BitShift.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class EQ extends RelationalOperator {

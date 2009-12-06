@@ -8,16 +8,11 @@ import java.io.IOException;
  * 
  * @author Mark Donszelmann
  */
-public class GeneralOperator extends PSOperator {
+public abstract class GeneralOperator extends PSOperator {
 
 	public static Class<?>[] operators = { Length.class, Get.class, Put.class,
 			GetInterval.class, PutInterval.class, ALoad.class, Copy.class,
 			ForAll.class, Token.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
-	}
 }
 
 class Length extends GeneralOperator {

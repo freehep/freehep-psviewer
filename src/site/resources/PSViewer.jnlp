@@ -12,7 +12,7 @@
     </resources>
     <applet-desc 
          name="PostScript Viewer Applet"
-         main-class="org.freehep.postscript.PSApplet.class"
+         main-class="org.freehep.postscript.viewer.PSApplet.class"
          width="300"
          height="300">
      </applet-desc>

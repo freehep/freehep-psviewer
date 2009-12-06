@@ -311,26 +311,26 @@ class ShFill extends PaintingOperator {
 
 class ImageOperator extends PaintingOperator {
 
-	protected boolean imageMask;
-	protected int width;
-	protected int height;
-	protected AffineTransform matrix;
-	protected PSPackedArray[] proc;
-	protected PSDataSource[] source;
-	protected boolean multi;
-	protected int bitsPerComponent;
-	protected PSPackedArray decode;
-	protected boolean interpolate;
+	private boolean imageMask;
+	private int width;
+	private int height;
+	private AffineTransform matrix;
+	private PSPackedArray[] proc;
+	private PSDataSource[] source;
+	private boolean multi;
+	private int bitsPerComponent;
+	private PSPackedArray decode;
+	private boolean interpolate;
 
-	protected final int dataSize = 8;
-	protected BufferedImage image;
-	protected int pixelBitStride;
-	protected int scanlineStride;
-	protected int components;
-	protected float[] color;
-	protected int[] pixels = new int[4];
-	protected int x, y, c;
-	protected boolean popString;
+	private final int dataSize = 8;
+	private BufferedImage image;
+	private int pixelBitStride;
+	private int scanlineStride;
+	private int components;
+	private float[] color;
+	private int[] pixels = new int[4];
+	private int x, y, c;
+	private boolean popString;
 
 	protected ImageOperator() {
 	}

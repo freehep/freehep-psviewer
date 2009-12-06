@@ -12,9 +12,9 @@ import java.io.RandomAccessFile;
  * @author Mark Donszelmann
  */
 public class PSRandomAccessFile extends PSFile {
-	protected RandomAccessFile raf = null;
-	protected boolean write;
-	protected boolean append;
+	private RandomAccessFile raf = null;
+	private boolean write;
+	private boolean append;
 
 	protected PSRandomAccessFile(String n, boolean f, RandomAccessFile r) {
 		super(n, f, UNLIMITED);
@@ -140,10 +140,10 @@ public class PSRandomAccessFile extends PSFile {
 			return new PSRandomAccessFile(filename, write, append, true);
 		} catch (FileNotFoundException e) {
 			throw new IllegalArgumentException(
-					"Cannot find file while copying: " + filename);
+					"Cannot find file while copying: " + filename, e);
 		} catch (IOException e) {
 			throw new IllegalArgumentException(
-					"IOException for file while copying: " + filename);
+					"IOException for file while copying: " + filename, e);
 		}
 	}
 }

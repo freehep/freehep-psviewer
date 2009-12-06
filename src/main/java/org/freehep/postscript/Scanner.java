@@ -459,7 +459,9 @@ public class Scanner {
 					next = in85.read();
 				}
 			} catch (EncodingException e) {
-				throw new SyntaxException(lineNo, e.getMessage());
+				SyntaxException se = new SyntaxException(lineNo, e.getMessage());
+				se.initCause(e);
+				throw se;
 			}
 			lineNo += in85.getLineNo() - 1;
 			return new PSString(buffer.getChars());
@@ -479,7 +481,9 @@ public class Scanner {
 					next = inHex.read();
 				}
 			} catch (EncodingException e) {
-				throw new SyntaxException(lineNo, e.getMessage());
+				SyntaxException se = new SyntaxException(lineNo, e.getMessage());
+				se.initCause(e);
+				throw se;
 			}
 			lineNo += inHex.getLineNo() - 1;
 			return new PSString(buffer.getChars());

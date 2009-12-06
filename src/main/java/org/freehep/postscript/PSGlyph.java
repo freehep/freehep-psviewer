@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript;
 
 import java.awt.geom.Rectangle2D;
@@ -8,11 +8,9 @@ import java.awt.geom.Rectangle2D;
  * executed.
  * 
  * @author Mark Donszelmann
- * @version $Id: src/main/java/org/freehep/postscript/PSGlyph.java 17245790f2a9
- *          2006/09/12 21:44:14 duns $
  */
 public class PSGlyph extends PSSimple {
-	double wx, wy, llx, lly, urx, ury;
+    double wx, wy, llx, lly, urx, ury;
 
 	public PSGlyph() {
 		super("glyph", true);

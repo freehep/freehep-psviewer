@@ -19,13 +19,13 @@ import org.freehep.util.io.EEXECDecryption;
 public class PSCharStringDecoder {
 	private Logger log = Logger.getLogger("org.freehep.postscript");
 
-	protected int currentX, currentY;
+	private int currentX, currentY;
 
 	private InputStream decryption;
 
 	private List<PSObject> charProc;
 
-	protected int sbX, sbY, widthX, widthY;
+	private int sbX, sbY, widthX, widthY;
 
 	private PSPackedArray array;
 

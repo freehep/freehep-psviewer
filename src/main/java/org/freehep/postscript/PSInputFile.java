@@ -66,8 +66,10 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 		} catch (MalformedURLException e) {
 			input = new FileInputStream(filename);
 		} catch (ZipException e) {
-			throw new FileNotFoundException("Archive cannot be found: "
+			FileNotFoundException fnfe = new FileNotFoundException("Archive cannot be found: "
 					+ filename);
+			fnfe.initCause(e);
+			throw fnfe;
 		}
 
 		if (filename.toLowerCase().endsWith(".gz")) {
@@ -148,7 +150,7 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 			return reader.readLine();
 
 		} catch (ClassCastException e) {
-			throw new IOException("Cannot readLine");
+			throw new IOException("Cannot readLine ", e);
 		}
 	}
 
@@ -228,10 +230,10 @@ public class PSInputFile extends PSFile implements PSTokenizable, PSDataSource {
 			return new PSInputFile(filename, buffer, dsc);
 		} catch (FileNotFoundException e) {
 			throw new IllegalArgumentException(
-					"Cannot find file while copying: " + filename);
+					"Cannot find file while copying: " + filename, e);
 		} catch (IOException e) {
 			throw new IllegalArgumentException(
-					"IOException for file while copying: " + filename);
+					"IOException for file while copying: " + filename, e);
 		}
 	}
 }

@@ -111,8 +111,8 @@ public class PSOutputFile extends PSFile implements PSDataTarget {
 		try {
 			return new PSOutputFile(filename, append, true);
 		} catch (IOException e) {
-			throw new IllegalArgumentException("IOException for file while copying: "
-					+ filename);
+			throw new IllegalArgumentException(
+					"IOException for file while copying: " + filename, e);
 		}
 	}
 }

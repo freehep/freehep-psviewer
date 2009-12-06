@@ -6,9 +6,9 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.freehep.postscript.PSInputFile;
-import org.freehep.postscript.PSPanel;
-import org.freehep.postscript.Processor;
+import org.freehep.postscript.processor.Processor;
+import org.freehep.postscript.types.PSInputFile;
+import org.freehep.postscript.viewer.PSPanel;
 
 /**
  * @author Mark Donszelmann (Mark.Donszelmann@gmail.com)

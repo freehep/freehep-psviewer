@@ -143,7 +143,7 @@ public abstract class FontOperator extends AbstractOperator {
 			at.concatenate(javaFont.getTransform());
 			javaFont = javaFont.deriveFont(at);
 
-			return new PSFontDictionary(javaFont, encoding);
+			return new PSFontDictionary(javaFont, font.getArray("Encoding"));
 		}
 	}
 
@@ -193,6 +193,7 @@ public abstract class FontOperator extends AbstractOperator {
 				name = encoding.getName(cc);
 			}
 		}
+
 		currentGlyph = getCachedGlyph(font, name);
 
 		switch (type) {
@@ -497,7 +498,8 @@ class ScaleFont extends FontOperator {
 		double scale = os.popNumber().getDouble();
 		PSDictionary font = os.popDictionary();
 
-		os.push(makeFont(font, new double[] { scale, 0, 0, scale, 0, 0 }));
+		font = makeFont(font, new double[] { scale, 0, 0, scale, 0, 0 });
+		os.push(font);
 		return true;
 	}
 }

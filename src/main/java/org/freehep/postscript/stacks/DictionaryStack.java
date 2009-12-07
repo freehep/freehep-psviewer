@@ -114,13 +114,13 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 			"threequarters", "questiondown", "Agrave", "Aacute", "Acircumflex",
 			"Atilde", "Adieresis", "Aring", "AE", "Ccedilla", "Egrave",
 			"Eacute", "Ecircumflex", "Edieresis", "Igrave", "Iacute",
-			"Icircumflex", "Idieresis", "Dcroat", "Ntilde", "Ograve", "Oacute",
+			"Icircumflex", "Idieresis", "Eth", "Ntilde", "Ograve", "Oacute",
 			"Ocircumflex", "Otilde", "Odieresis", "multiply", "Oslash",
 			"Ugrave", "Uacute", "Ucircumflex", "Udieresis", "Yacute", "Thorn",
 			"germandbls", "agrave", "aacute", "acircumflex", "atilde",
 			"adieresis", "aring", "ae", "ccedilla", "egrave", "eacute",
 			"ecircumflex", "edieresis", "igrave", "iacute", "icircumflex",
-			"idieresis", "dcroat", "ntilde", "ograve", "oacute", "ocircumflex",
+			"idieresis", "eth", "ntilde", "ograve", "oacute", "ocircumflex",
 			"otilde", "odieresis", "divide", "oslash", "ugrave", "uacute",
 			"ucircumflex", "udieresis", "yacute", "thorn", "ydieresis" };
 

@@ -248,7 +248,6 @@ public class Scanner {
 		if ((balance == 0) && (next > 0)) {
 			in.unread(next);
 		}
-
 		return new PSString(buffer.getChars());
 	}
 

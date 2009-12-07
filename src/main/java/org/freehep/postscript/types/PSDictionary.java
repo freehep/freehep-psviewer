@@ -113,6 +113,10 @@ public class PSDictionary extends PSComposite {
 		return (PSPackedArray) table.get(new PSName(key));
 	}
 
+	public PSArray getArray(String key) {
+		return (PSArray) table.get(new PSName(key));
+	}
+
 	public PSDictionary getDictionary(String key) {
 		return (PSDictionary) table.get(new PSName(key));
 	}

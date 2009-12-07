@@ -84,7 +84,7 @@ public class PSFontDictionary extends PSDictionary {
 		char[] uc = new char[1];
 		for (int cc = 0; cc < 256; cc++) {
 			String name = encoding.getName(cc).getValue();
-			uc[0] = name.equals(".notdef") ? box : getUniCode(name);
+			uc[0] = name.equals(".notdef") ? box : UnicodeGlyphList.get(name);
 			
 			// System.out.println(cc+" "+name+" "+uc[0]);
 			GlyphVector gv = font.createGlyphVector(fontRenderContext, uc);
@@ -124,24 +124,6 @@ public class PSFontDictionary extends PSDictionary {
 		return font;
 	}
 	
-	// NOTE: we should just generate a full table from name to unicode by our encoding files in graphics2d.
-	private char getUniCode(String name) {
-		String[] tables = { "STDLatin", "ISOLatin", "Symbol", "Zapfdingbats"};
-		for (int i = 0; i< tables.length; i++) {
-			CharTable table = Lookup.getInstance().getTable(tables[i]);
-			try {
-				return table.toUnicode(name);
-			} catch (NullPointerException npe) {
-				
-			}
-		}
-		log.warning("Unicode of character with name '"+name+"' not found, replaced by 'box'. Looked in ");
-		for (int i = 0; i< tables.length; i++) {
-			log.warning("   "+tables[i]);
-		}
-		return box;
-	}
-
 	@Override
 	public String getType() {
 		return "javafontdictionary";

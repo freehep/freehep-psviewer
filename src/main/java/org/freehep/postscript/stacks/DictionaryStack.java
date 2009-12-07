@@ -137,7 +137,7 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 
 	public DictionaryStack() {
 		super();
-
+		
 		// fill error dictionary
 		PSDictionary error = new PSDictionary();
 		error.setName("errordict");

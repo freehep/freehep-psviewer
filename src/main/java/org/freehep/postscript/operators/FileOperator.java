@@ -23,7 +23,6 @@ import org.freehep.postscript.types.PSInputFile;
 import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSName;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSOutputFile;
 import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSRandomAccessFile;
@@ -44,21 +43,20 @@ import org.freehep.util.io.StandardFileFilter;
  * 
  * @author Mark Donszelmann
  */
-public class FileOperator extends PSOperator {
+public abstract class FileOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { FileFile.class, Filter.class,
-			CloseFile.class, Read.class, Write.class, ReadHexString.class,
-			WriteHexString.class, ReadString.class, WriteString.class,
-			ReadLine.class, BytesAvailable.class, Flush.class, FlushFile.class,
-			ResetFile.class, Status.class, Run.class, CurrentFile.class,
-			DeleteFile.class, RenameFile.class, FilenameForAll.class,
-			SetFilePosition.class, FilePosition.class, Print.class,
-			FileEqual.class, FileEqualEqual.class, Stack.class, PStack.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { FileFile.class,
+				Filter.class, CloseFile.class, Read.class, Write.class,
+				ReadHexString.class, WriteHexString.class, ReadString.class,
+				WriteString.class, ReadLine.class, BytesAvailable.class,
+				Flush.class, FlushFile.class, ResetFile.class, Status.class,
+				Run.class, CurrentFile.class, DeleteFile.class,
+				RenameFile.class, FilenameForAll.class, SetFilePosition.class,
+				FilePosition.class, Print.class, FileEqual.class,
+				FileEqualEqual.class, Stack.class, PStack.class });
 	}
+
 }
 
 class FileFile extends FileOperator {
@@ -190,7 +188,7 @@ class Filter extends FileOperator {
 			// no parameters, optional dictionary
 			// PSDictionary dict;
 			if (os.checkType(PSDictionary.class)) {
-				/* dict = */ os.popDictionary();
+				/* dict = */os.popDictionary();
 			}
 			PSDataSource source = os.popDataSource();
 			if (filterName.equals("ASCIIHexDecode")) {
@@ -758,7 +756,7 @@ class Print extends FileOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		/* PSString s = */ os.popString();
+		/* PSString s = */os.popString();
 		return true;
 	}
 }
@@ -778,7 +776,7 @@ class FileEqual extends FileOperator {
 	public boolean execute(OperandStack os) {
 		// FIXME: should call CvS
 		// there should maybe be a separate string value for objects
-		/* PSObject o = */ os.popObject();
+		/* PSObject o = */os.popObject();
 		return true;
 	}
 }
@@ -796,7 +794,7 @@ class FileEqualEqual extends FileOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		/* PSObject o = */ os.popObject();
+		/* PSObject o = */os.popObject();
 		return true;
 	}
 }

@@ -4,20 +4,22 @@ package org.freehep.postscript.operators;
 import org.freehep.postscript.errors.StackUnderflow;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSArray;
+import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSMark;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 
 /**
  * Array Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
  */
-public abstract class ArrayOperator extends PSOperator {
+public abstract class ArrayOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { Array.class, ArrayBegin.class,
-			ArrayEnd.class, AStore.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { Array.class,
+				ArrayBegin.class, ArrayEnd.class, AStore.class });
+	}
 }
 
 class Array extends ArrayOperator {
@@ -70,7 +72,7 @@ class ArrayEnd extends ArrayOperator {
 				PSObject o = os.popObject();
 				a[i] = o;
 			}
-			/* PSMark mark = */ os.popMark();
+			/* PSMark mark = */os.popMark();
 
 			os.push(new PSArray(a));
 		}

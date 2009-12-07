@@ -15,7 +15,6 @@ import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSName;
 import org.freehep.postscript.types.PSNumber;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSPaint;
 
@@ -24,20 +23,23 @@ import org.freehep.postscript.types.PSPaint;
  * 
  * @author Mark Donszelmann
  */
-public abstract class GraphicsStateOperator extends PSOperator {
+public abstract class GraphicsStateOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { GSave.class, GRestore.class,
-			ClipSave.class, ClipRestore.class, GRestoreAll.class,
-			InitGraphics.class, GState.class, SetGState.class,
-			CurrentGState.class, SetLineWidth.class, CurrentLineWidth.class,
-			SetLineCap.class, CurrentLineCap.class, SetLineJoin.class,
-			CurrentLineJoin.class, SetMiterLimit.class,
-			CurrentMiterLimit.class, SetStrokeAdjust.class,
-			CurrentStrokeAdjust.class, SetDash.class, CurrentDash.class,
-			SetColorSpace.class, CurrentColorSpace.class, SetColor.class,
-			CurrentColor.class, SetGray.class, CurrentGray.class,
-			SetHSBColor.class, CurrentHSBColor.class, SetRGBColor.class,
-			CurrentRGBColor.class, SetCMYKColor.class, CurrentCMYKColor.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { GSave.class,
+				GRestore.class, ClipSave.class, ClipRestore.class,
+				GRestoreAll.class, InitGraphics.class, GState.class,
+				SetGState.class, CurrentGState.class, SetLineWidth.class,
+				CurrentLineWidth.class, SetLineCap.class, CurrentLineCap.class,
+				SetLineJoin.class, CurrentLineJoin.class, SetMiterLimit.class,
+				CurrentMiterLimit.class, SetStrokeAdjust.class,
+				CurrentStrokeAdjust.class, SetDash.class, CurrentDash.class,
+				SetColorSpace.class, CurrentColorSpace.class, SetColor.class,
+				CurrentColor.class, SetGray.class, CurrentGray.class,
+				SetHSBColor.class, CurrentHSBColor.class, SetRGBColor.class,
+				CurrentRGBColor.class, SetCMYKColor.class,
+				CurrentCMYKColor.class });
+	}
 }
 
 class GSave extends GraphicsStateOperator {
@@ -352,7 +354,7 @@ class SetColor extends GraphicsStateOperator {
 			if ((patternType == 1) && (paintType == 2)) {
 				int n = os.gstate().getNumberOfColorSpaceComponents();
 				PSObject[] params = new PSObject[n];
-				for (int i=n-1; i>=0; i--) {
+				for (int i = n - 1; i >= 0; i--) {
 					params[i] = os.popNumber();
 				}
 				os.gstate().setColor(paint.getValue(), params);

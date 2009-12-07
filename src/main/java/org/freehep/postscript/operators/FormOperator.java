@@ -12,7 +12,6 @@ import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSPaint;
 import org.freehep.postscript.viewer.FixedTexturePaint;
@@ -22,10 +21,12 @@ import org.freehep.postscript.viewer.FixedTexturePaint;
  * 
  * @author Mark Donszelmann
  */
-public abstract class FormOperator extends PSOperator {
+public abstract class FormOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { MakePattern.class, SetPattern.class,
-			ExecForm.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { MakePattern.class,
+				SetPattern.class, ExecForm.class });
+	}
 
 }
 
@@ -66,7 +67,8 @@ class MakePattern extends FormOperator {
 				double yStep = d.getNumber("YStep").getDouble();
 				int paintType = d.getInteger("PaintType");
 				// FIXME: ignored
-				/* int tilingType = */ d.getInteger("TilingType");
+				/* int tilingType = */
+				d.getInteger("TilingType");
 
 				// gsave, create image, set modified gstate
 				os.push(d);
@@ -88,7 +90,8 @@ class MakePattern extends FormOperator {
 						yStep), null);
 				int biWidth = (int) biSize.getX();
 				int biHeight = (int) biSize.getY();
-				BufferedImage bi = os.gstate().convertToImage(biWidth, biHeight);
+				BufferedImage bi = os.gstate()
+						.convertToImage(biWidth, biHeight);
 
 				AffineTransform ctm = os.gstate().getTransform();
 

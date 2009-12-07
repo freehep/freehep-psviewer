@@ -8,20 +8,21 @@ import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSMark;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 
 /**
  * Dictionary Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
  */
-public abstract class DictionaryOperator extends PSOperator {
+public abstract class DictionaryOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { Dict.class, StartDictionary.class,
-			EndDictionary.class, MaxLength.class, Begin.class, End.class,
-			Def.class, Load.class, Store.class, Undef.class, Known.class,
-			Where.class, CurrentDict.class, CountDictStack.class,
-			DictStack.class, ClearDictStack.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { Dict.class,
+				StartDictionary.class, EndDictionary.class, MaxLength.class,
+				Begin.class, End.class, Def.class, Load.class, Store.class,
+				Undef.class, Known.class, Where.class, CurrentDict.class,
+				CountDictStack.class, DictStack.class, ClearDictStack.class });
+	}
 }
 
 class Dict extends DictionaryOperator {
@@ -80,7 +81,7 @@ class EndDictionary extends DictionaryOperator {
 
 				d.put(key, value);
 			}
-			/* PSMark mark = */ os.popMark();
+			/* PSMark mark = */os.popMark();
 
 			os.push(d);
 		}

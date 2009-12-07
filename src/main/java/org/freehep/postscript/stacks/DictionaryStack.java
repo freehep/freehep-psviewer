@@ -1,9 +1,6 @@
 // Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript.stacks;
 
-import java.lang.reflect.Field;
-import java.util.logging.Level;
-
 import org.freehep.postscript.operators.ArithmeticOperator;
 import org.freehep.postscript.operators.ArrayOperator;
 import org.freehep.postscript.operators.ControlOperator;
@@ -34,7 +31,6 @@ import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSName;
 import org.freehep.postscript.types.PSNull;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 
 /**
  * OperandStack for PostScript Processor
@@ -42,23 +38,14 @@ import org.freehep.postscript.types.PSOperator;
  * @author Mark Donszelmann
  */
 public class DictionaryStack extends PostScriptStack implements NameLookup {
-	private Class<?>[] operators = { GeneralOperator.class,
-			StackOperator.class, ArithmeticOperator.class, ArrayOperator.class,
-			PackedArrayOperator.class, DictionaryOperator.class,
-			StringOperator.class, RelationalOperator.class,
-			ControlOperator.class, ConversionOperator.class,
-			FileOperator.class, GraphicsStateOperator.class,
-			DeviceOperator.class, MatrixOperator.class, MemoryOperator.class,
-			MiscellaneousOperator.class, PathOperator.class,
-			PaintingOperator.class, FormOperator.class, OutputOperator.class,
-			FontOperator.class, ExtraOperator.class };
-
-	private static String[] standardEncodingArray = { ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
+	private static final String notdef = ".notdef";
+	
+	private static String[] standardEncodingArray = { notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
 			"space", "exclam", "quotedbl", "numbersign", "dollar", "percent",
 			"ampersand", "quoteright", "parenleft", "parenright", "asterisk",
 			"plus", "comma", "minus", "period", "slash", "zero", "one", "two",
@@ -70,37 +57,37 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 			"underscore", "quoteleft", "a", "b", "c", "d", "e", "f", "g", "h",
 			"i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u",
 			"v", "w", "x", "y", "z", "braceleft", "bar", "braceright",
-			"asciitilde", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
+			"asciitilde", notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
 			"exclamdown", "cent", "sterling", "fraction", "yen", "florin",
 			"section", "currency", "quotesingle", "quotedblleft",
 			"guillemotleft", "guilsinglleft", "guilsinglright", "fi", "fl",
-			".notdef", "endash", "dagger", "daggerdbl", "periodcentered",
-			".notdef", "paragraph", "bullet", "quotesinglbase", "quotedblbase",
+			notdef, "endash", "dagger", "daggerdbl", "periodcentered",
+			notdef, "paragraph", "bullet", "quotesinglbase", "quotedblbase",
 			"quotedblright", "guillemotright", "ellipsis", "perthousand",
-			".notdef", "questiondown", ".notdef", "grave", "acute",
+			notdef, "questiondown", notdef, "grave", "acute",
 			"circonflex", "tilde", "macron", "breve", "dotaccent", "dieresis",
-			".notdef", "ring", "cedilla", ".notdef", "hungarumlaut", "ogonek",
-			"caron", "emdash", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			"AE", ".notdef", "ordfeminine", ".notdef", ".notdef", ".notdef",
-			".notdef", "Lslash", "Oslash", "OE", "ordmasculine", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", "ae", ".notdef",
-			".notdef", ".notdef", "dotlessi", ".notdef", ".notdef", "lslash",
-			"oslash", "oe", "germandbls", ".notdef", ".notdef", ".notdef",
-			".notdef" };
+			notdef, "ring", "cedilla", notdef, "hungarumlaut", "ogonek",
+			"caron", "emdash", notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			"AE", notdef, "ordfeminine", notdef, notdef, notdef,
+			notdef, "Lslash", "Oslash", "OE", "ordmasculine", notdef,
+			notdef, notdef, notdef, notdef, "ae", notdef,
+			notdef, notdef, "dotlessi", notdef, notdef, "lslash",
+			"oslash", "oe", "germandbls", notdef, notdef, notdef,
+			notdef };
 
-	private static String[] isoLatin1EncodingArray = { ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
+	private static String[] isoLatin1EncodingArray = { notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
 			"space", "exclam", "quotedbl", "numbersign", "dollar", "percent",
 			"ampersand", "quoteright", "parenleft", "parenright", "asterisk",
 			"plus", "comma", "minus", "period", "slash", "zero", "one", "two",
@@ -112,12 +99,12 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 			"underscore", "quoteleft", "a", "b", "c", "d", "e", "f", "g", "h",
 			"i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u",
 			"v", "w", "x", "y", "z", "braceleft", "bar", "braceright",
-			"asciitilde", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", ".notdef", ".notdef", ".notdef", ".notdef", ".notdef",
-			".notdef", "dotlessi", "grave", "acute", "circumflex", "tilde",
-			"macron", "breve", "dotaccent", "dieresis", ".notdef", "ring",
-			"cedilla", ".notdef", "hungarumlaut", "ogonek", "caron", "space",
+			"asciitilde", notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, notdef, notdef, notdef, notdef, notdef,
+			notdef, "dotlessi", "grave", "acute", "circumflex", "tilde",
+			"macron", "breve", "dotaccent", "dieresis", notdef, "ring",
+			"cedilla", notdef, "hungarumlaut", "ogonek", "caron", "space",
 			"exclamdown", "cent", "sterling", "currency", "yen", "brokenbar",
 			"section", "dieresis", "copyright", "ordfeminine", "guillemotleft",
 			"logicalnot", "hyphen", "registered", "macron", "degree",
@@ -154,10 +141,7 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 		// fill error dictionary
 		PSDictionary error = new PSDictionary();
 		error.setName("errordict");
-		Class<?>[] errorClass = ErrorOperator.operators;
-		for (int i = 0; i < errorClass.length; i++) {
-			addOperator(error, errorClass[i]);
-		}
+		ErrorOperator.register(error);
 
 		// fill $error dictionary
 		PSDictionary dollarErrorDict = new PSDictionary();
@@ -190,21 +174,30 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 		system.put(userdict, user);
 		system.put(statusdict, status);
 		system.put(globaldict, global);
-		for (int i = 0; i < operators.length; i++) {
-			try {
-				Field f = operators[i].getField("operators");
-				Class<?>[] opClass = (Class[]) f.get(null);
-				for (int j = 0; j < opClass.length; j++) {
-					addOperator(system, opClass[j]);
-				}
-			} catch (NoSuchFieldException e) {
-				log.log(Level.WARNING, "Error: " + operators[i]
-						+ " does not have 'operators' field.", e);
-			} catch (IllegalAccessException e) {
-				log.log(Level.WARNING, "Error: " + operators[i]
-						+ ", no access to 'operators' field.", e);
-			}
-		}
+
+		// register all operator groups
+		GeneralOperator.register(system);
+		StackOperator.register(system);
+		ArithmeticOperator.register(system);
+		ArrayOperator.register(system);
+		PackedArrayOperator.register(system);
+		DictionaryOperator.register(system);
+		StringOperator.register(system);
+		RelationalOperator.register(system);
+		ControlOperator.register(system);
+		ConversionOperator.register(system);
+		FileOperator.register(system);
+		GraphicsStateOperator.register(system);
+		DeviceOperator.register(system);
+		MatrixOperator.register(system);
+		MemoryOperator.register(system);
+		MiscellaneousOperator.register(system);
+		PathOperator.register(system);
+		PaintingOperator.register(system);
+		FormOperator.register(system);
+		OutputOperator.register(system);
+		FontOperator.register(system);
+		ExtraOperator.register(system);
 
 		// add encodings
 		system.put(standardEncoding, standardEncodingArray);
@@ -223,30 +216,6 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 		push(system);
 		push(global);
 		push(user);
-	}
-
-	private void addOperator(PSDictionary dict, Class<?> clazz) {
-		try {
-			PSOperator op = (PSOperator) clazz.newInstance();
-			PSName key = new PSName(op.getName());
-			if (dict.get(key) == null) {
-				dict.put(key, op);
-				op.setName(key.cvs());
-			} else {
-				log.severe("Duplicate operator '" + key + "'");
-				System.exit(1);
-			}
-
-		} catch (ClassCastException e) {
-			log.log(Level.WARNING, "Error: " + clazz
-					+ " does not inherit from PSOperator.\n", e);
-		} catch (IllegalAccessException e) {
-			log.log(Level.WARNING, "Error: " + clazz
-					+ " cannot be instantiated.\n", e);
-		} catch (InstantiationException e) {
-			log.log(Level.WARNING, "Error: " + clazz
-					+ " cannot be instantiated.\n", e);
-		}
 	}
 
 	public Object push(Object o) {

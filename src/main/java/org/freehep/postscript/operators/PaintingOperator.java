@@ -19,7 +19,6 @@ import org.freehep.postscript.types.PSGState;
 import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSNumber;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSString;
 
@@ -28,12 +27,15 @@ import org.freehep.postscript.types.PSString;
  * 
  * @author Mark Donszelmann
  */
-public abstract class PaintingOperator extends PSOperator {
+public abstract class PaintingOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { ErasePage.class, Stroke.class,
-			Fill.class, EOFill.class, RectStroke.class, RectFill.class,
-			UStroke.class, UFill.class, UEOFill.class, ShFill.class,
-			PaintImage.class, ColorImage.class, ImageMask.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { ErasePage.class,
+				Stroke.class, Fill.class, EOFill.class, RectStroke.class,
+				RectFill.class, UStroke.class, UFill.class, UEOFill.class,
+				ShFill.class, PaintImage.class, ColorImage.class,
+				ImageMask.class });
+	}
 }
 
 class ErasePage extends PaintingOperator {

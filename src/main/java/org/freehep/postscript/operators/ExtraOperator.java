@@ -3,16 +3,18 @@ package org.freehep.postscript.operators;
 
 import org.freehep.postscript.errors.BreakException;
 import org.freehep.postscript.stacks.OperandStack;
-import org.freehep.postscript.types.PSOperator;
+import org.freehep.postscript.types.PSDictionary;
 
 /**
  * Extra Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
  */
-public abstract class ExtraOperator extends PSOperator {
+public abstract class ExtraOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { Break.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { Break.class });
+	}
 }
 
 class Break extends ExtraOperator {

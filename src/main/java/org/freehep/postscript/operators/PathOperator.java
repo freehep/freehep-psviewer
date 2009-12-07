@@ -19,11 +19,11 @@ import org.freehep.postscript.errors.Undefined;
 import org.freehep.postscript.processor.LoopingContext;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSBoolean;
+import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSGState;
 import org.freehep.postscript.types.PSName;
 import org.freehep.postscript.types.PSNumber;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSReal;
 import org.freehep.postscript.types.PSSimple;
@@ -34,23 +34,26 @@ import org.freehep.postscript.types.PSString;
  * 
  * @author Mark Donszelmann
  */
-public abstract class PathOperator extends PSOperator {
+public abstract class PathOperator extends AbstractOperator {
 
-    static final int MATRIX_SIZE = 6;
-    static final int PATH_SIZE = 6;
+	static final int MATRIX_SIZE = 6;
+	static final int PATH_SIZE = 6;
 	static final int FULL_CIRCLE = 360;
-	
-	public static Class<?>[] operators = { NewPath.class, CurrentPoint.class,
-			MoveTo.class, RMoveTo.class, LineTo.class, RLineTo.class,
-			Arc.class, ArcN.class, ArcT.class, ArcTo.class, CurveTo.class,
-			RCurveTo.class, ClosePath.class, FlattenPath.class,
-			ReversePath.class, StrokePath.class, UStrokePath.class,
-			CharPath.class, UAppend.class, ClipPath.class, SetBBox.class,
-			PathBBox.class, PathForAll.class, UPath.class, InitClip.class,
-			Clip.class, EOClip.class, RectClip.class, UCache.class,
-			// type 1 font
-			HLineTo.class, VLineTo.class, HMoveTo.class, VMoveTo.class,
-			RRCurveTo.class, VHCurveTo.class, HVCurveTo.class, };
+
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { NewPath.class,
+				CurrentPoint.class, MoveTo.class, RMoveTo.class, LineTo.class,
+				RLineTo.class, Arc.class, ArcN.class, ArcT.class, ArcTo.class,
+				CurveTo.class, RCurveTo.class, ClosePath.class,
+				FlattenPath.class, ReversePath.class, StrokePath.class,
+				UStrokePath.class, CharPath.class, UAppend.class,
+				ClipPath.class, SetBBox.class, PathBBox.class,
+				PathForAll.class, UPath.class, InitClip.class, Clip.class,
+				EOClip.class, RectClip.class, UCache.class,
+				// type 1 font
+				HLineTo.class, VLineTo.class, HMoveTo.class, VMoveTo.class,
+				RRCurveTo.class, VHCurveTo.class, HVCurveTo.class });
+	}
 }
 
 class NewPath extends PathOperator {

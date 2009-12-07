@@ -3,9 +3,9 @@ package org.freehep.postscript.operators;
 
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSBoolean;
+import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSPackedArray;
 
 /**
@@ -13,10 +13,12 @@ import org.freehep.postscript.types.PSPackedArray;
  * 
  * @author Mark Donszelmann
  */
-public abstract class PackedArrayOperator extends PSOperator {
+public abstract class PackedArrayOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { PackedArray.class, SetPacking.class,
-			CurrentPacking.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { PackedArray.class,
+				SetPacking.class, CurrentPacking.class });
+	}
 }
 
 class PackedArray extends PackedArrayOperator {

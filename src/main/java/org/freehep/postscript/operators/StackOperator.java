@@ -3,21 +3,23 @@ package org.freehep.postscript.operators;
 
 import org.freehep.postscript.errors.StackUnderflow;
 import org.freehep.postscript.stacks.OperandStack;
+import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSMark;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 
 /**
  * Stack Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
  */
-public abstract class StackOperator extends PSOperator {
+public abstract class StackOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { Pop.class, Exch.class, Dup.class,
-			Index.class, Roll.class, Clear.class, Count.class, Mark.class,
-			ClearToMark.class, CountToMark.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { Pop.class, Exch.class,
+				Dup.class, Index.class, Roll.class, Clear.class, Count.class,
+				Mark.class, ClearToMark.class, CountToMark.class });
+	}
 }
 
 class Pop extends StackOperator {

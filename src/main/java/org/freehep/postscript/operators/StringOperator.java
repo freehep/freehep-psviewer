@@ -2,8 +2,8 @@
 package org.freehep.postscript.operators;
 
 import org.freehep.postscript.stacks.OperandStack;
+import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSInteger;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSString;
 
 /**
@@ -11,10 +11,12 @@ import org.freehep.postscript.types.PSString;
  * 
  * @author Mark Donszelmann
  */
-public abstract class StringOperator extends PSOperator {
+public abstract class StringOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { StringString.class,
-			AnchorSearch.class, Search.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { StringString.class,
+				AnchorSearch.class, Search.class });
+	}
 }
 
 class StringString extends StringOperator {

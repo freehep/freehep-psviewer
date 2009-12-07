@@ -9,11 +9,11 @@ import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSArray;
 import org.freehep.postscript.types.PSBoolean;
 import org.freehep.postscript.types.PSDataSource;
+import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSInputFile;
 import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSNumber;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSReal;
 import org.freehep.util.io.EEXECConstants;
@@ -24,12 +24,14 @@ import org.freehep.util.io.EEXECDecryption;
  * 
  * @author Mark Donszelmann
  */
-public abstract class ControlOperator extends PSOperator {
+public abstract class ControlOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { Exec.class, If.class, IfElse.class,
-			For.class, Repeat.class, Loop.class, Exit.class, Stop.class,
-			Stopped.class, CountExecStack.class, ExecStack.class, Quit.class,
-			Start.class, EExec.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { Exec.class, If.class,
+				IfElse.class, For.class, Repeat.class, Loop.class, Exit.class,
+				Stop.class, Stopped.class, CountExecStack.class,
+				ExecStack.class, Quit.class, Start.class, EExec.class });
+	}
 }
 
 class Exec extends ControlOperator {

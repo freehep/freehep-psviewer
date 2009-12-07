@@ -3,17 +3,19 @@ package org.freehep.postscript.operators;
 
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSDictionary;
-import org.freehep.postscript.types.PSOperator;
 
 /**
  * Device Setup and Output Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
  */
-public abstract class OutputOperator extends PSOperator {
+public abstract class OutputOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { ShowPage.class, CopyPage.class,
-			SetPageDevice.class, CurrentPageDevice.class, NullDevice.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { ShowPage.class,
+				CopyPage.class, SetPageDevice.class, CurrentPageDevice.class,
+				NullDevice.class });
+	}
 }
 
 class CopyPage extends OutputOperator {

@@ -19,7 +19,6 @@ import org.freehep.postscript.types.PSInputFile;
 import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSName;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSString;
 
@@ -28,11 +27,13 @@ import org.freehep.postscript.types.PSString;
  * 
  * @author Mark Donszelmann
  */
-public abstract class GeneralOperator extends PSOperator {
+public abstract class GeneralOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { Length.class, Get.class, Put.class,
-			GetInterval.class, PutInterval.class, ALoad.class, Copy.class,
-			ForAll.class, Token.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { Length.class,
+				Get.class, Put.class, GetInterval.class, PutInterval.class,
+				ALoad.class, Copy.class, ForAll.class, Token.class });
+	}
 }
 
 class Length extends GeneralOperator {

@@ -5,11 +5,11 @@ import org.freehep.postscript.errors.RangeException;
 import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSComposite;
+import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSName;
 import org.freehep.postscript.types.PSNumber;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSString;
 import org.freehep.postscript.types.PSUtils;
 
@@ -18,12 +18,14 @@ import org.freehep.postscript.types.PSUtils;
  * 
  * @author Mark Donszelmann
  */
-public abstract class ConversionOperator extends PSOperator {
+public abstract class ConversionOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { Type.class, CvLit.class, CvX.class,
-			XCheck.class, ExecuteOnly.class, NoAccess.class, ReadOnly.class,
-			RCheck.class, WCheck.class, CvI.class, CvN.class, CvR.class,
-			CvRS.class, CvS.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { Type.class,
+				CvLit.class, CvX.class, XCheck.class, ExecuteOnly.class,
+				NoAccess.class, ReadOnly.class, RCheck.class, WCheck.class,
+				CvI.class, CvN.class, CvR.class, CvRS.class, CvS.class });
+	}
 }
 
 class Type extends ConversionOperator {

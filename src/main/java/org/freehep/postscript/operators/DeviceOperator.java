@@ -7,7 +7,6 @@ import org.freehep.postscript.types.PSBoolean;
 import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSNumber;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSPackedArray;
 
 /**
@@ -15,9 +14,9 @@ import org.freehep.postscript.types.PSPackedArray;
  * 
  * @author Mark Donszelmann
  */
-public abstract class DeviceOperator extends PSOperator {
+public abstract class DeviceOperator extends AbstractOperator {
 
-	// FIXME: most of these should be part of GSTate
+	// FIXME: most of these should be part of GState
 	// FIXME: all are fake and ignored, just implemented as dummies
 	PSDictionary halftone = new PSDictionary();
 	{
@@ -28,16 +27,19 @@ public abstract class DeviceOperator extends PSOperator {
 	}
 	boolean overprint = true;
 
-	public static Class<?>[] operators = { SetHalftone.class,
-			CurrentHalftone.class, SetScreen.class, CurrentScreen.class,
-			SetColorScreen.class, CurrentColorScreen.class, SetTransfer.class,
-			CurrentTransfer.class, SetColorTransfer.class,
-			CurrentColorTransfer.class, SetBlackGeneration.class,
-			CurrentBlackGeneration.class, SetUnderColorRemoval.class,
-			CurrentUnderColorRemoval.class, SetColorRendering.class,
-			CurrentColorRendering.class, SetFlat.class, CurrentFlat.class,
-			SetOverprint.class, CurrentOverprint.class, SetSmoothness.class,
-			CurrentSmoothness.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { SetHalftone.class,
+				CurrentHalftone.class, SetScreen.class, CurrentScreen.class,
+				SetColorScreen.class, CurrentColorScreen.class,
+				SetTransfer.class, CurrentTransfer.class,
+				SetColorTransfer.class, CurrentColorTransfer.class,
+				SetBlackGeneration.class, CurrentBlackGeneration.class,
+				SetUnderColorRemoval.class, CurrentUnderColorRemoval.class,
+				SetColorRendering.class, CurrentColorRendering.class,
+				SetFlat.class, CurrentFlat.class, SetOverprint.class,
+				CurrentOverprint.class, SetSmoothness.class,
+				CurrentSmoothness.class });
+	}
 }
 
 class SetHalftone extends DeviceOperator {

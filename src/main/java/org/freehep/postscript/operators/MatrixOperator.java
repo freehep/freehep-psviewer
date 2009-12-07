@@ -8,9 +8,9 @@ import java.awt.geom.Point2D;
 import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSArray;
+import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSNumber;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSPackedArray;
 
 /**
@@ -18,14 +18,16 @@ import org.freehep.postscript.types.PSPackedArray;
  * 
  * @author Mark Donszelmann
  */
-public abstract class MatrixOperator extends PSOperator {
+public abstract class MatrixOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { Matrix.class, InitMatrix.class,
-			IdentMatrix.class, DefaultMatrix.class, CurrentMatrix.class,
-			SetMatrix.class, Translate.class, Scale.class, Rotate.class,
-			Concat.class, ConcatMatrix.class, Transform.class,
-			DTransform.class, ITransform.class, IDTransform.class,
-			InvertMatrix.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { Matrix.class,
+				InitMatrix.class, IdentMatrix.class, DefaultMatrix.class,
+				CurrentMatrix.class, SetMatrix.class, Translate.class,
+				Scale.class, Rotate.class, Concat.class, ConcatMatrix.class,
+				Transform.class, DTransform.class, ITransform.class,
+				IDTransform.class, InvertMatrix.class });
+	}
 }
 
 class Matrix extends MatrixOperator {

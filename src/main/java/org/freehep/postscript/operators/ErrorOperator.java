@@ -15,27 +15,30 @@ import org.freehep.postscript.types.PSBoolean;
 import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSName;
 import org.freehep.postscript.types.PSNull;
-import org.freehep.postscript.types.PSOperator;
 
 /**
  * Error Operators for PostScript Processor
  * 
  * @author Mark Donszelmann
  */
-public abstract class ErrorOperator extends PSOperator {
+public abstract class ErrorOperator extends AbstractOperator {
 	protected Logger log = Logger.getLogger("org.freehep.postscript");
 
-	public static Class<?>[] operators = { ConfigurationError.class,
-			DictFull.class, DictStackOverflow.class, DictStackUnderflow.class,
-			ExecStackOverflow.class, HandleError.class, Interrupt.class,
-			InvalidAccess.class, InvalidExit.class, InvalidFileAccess.class,
-			InvalidFont.class, InvalidRestore.class, IOError.class,
-			LimitCheck.class, NoCurrentPoint.class, RangeCheck.class,
-			StackOverflow.class, StackUnderflow.class, SyntaxError.class,
-			Timeout.class, TypeCheck.class, Undefined.class,
-			UndefinedFileName.class, UndefinedResource.class,
-			UndefinedResult.class, UnmatchedMark.class, Unregistered.class,
-			VMError.class, Unimplemented.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] {
+				ConfigurationError.class, DictFull.class,
+				DictStackOverflow.class, DictStackUnderflow.class,
+				ExecStackOverflow.class, HandleError.class, Interrupt.class,
+				InvalidAccess.class, InvalidExit.class,
+				InvalidFileAccess.class, InvalidFont.class,
+				InvalidRestore.class, IOError.class, LimitCheck.class,
+				NoCurrentPoint.class, RangeCheck.class, StackOverflow.class,
+				StackUnderflow.class, SyntaxError.class, Timeout.class,
+				TypeCheck.class, Undefined.class, UndefinedFileName.class,
+				UndefinedResource.class, UndefinedResult.class,
+				UnmatchedMark.class, Unregistered.class, VMError.class,
+				Unimplemented.class });
+	}
 
 	// default error handler
 	@Override
@@ -154,11 +157,11 @@ class NoCurrentPoint extends ErrorOperator {
 class RangeCheck extends ErrorOperator {
 	private String msg;
 
-    RangeCheck() {
+	RangeCheck() {
 		this.msg = null;
 	}
 
-    RangeCheck(String msg) {
+	RangeCheck(String msg) {
 		this.msg = msg;
 	}
 

@@ -23,7 +23,6 @@ import org.freehep.postscript.types.PSJavaGlyph;
 import org.freehep.postscript.types.PSName;
 import org.freehep.postscript.types.PSNumber;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSString;
 import org.freehep.postscript.types.PSType1Glyph;
@@ -34,7 +33,7 @@ import org.freehep.postscript.viewer.FontCache;
  * 
  * @author Mark Donszelmann
  */
-public abstract class FontOperator extends PSOperator {
+public abstract class FontOperator extends AbstractOperator {
 
 	protected static FontCache fontCache;
 
@@ -85,14 +84,16 @@ public abstract class FontOperator extends PSOperator {
 		 */
 	}
 
-	public static Class<?>[] operators = { DefineFont.class, ComposeFont.class,
-			UndefineFont.class, FindFont.class, ScaleFont.class,
-			MakeFont.class, SetFont.class, RootFont.class, CurrentFont.class,
-			SelectFont.class, Show.class, AShow.class, WidthShow.class,
-			AWidthShow.class, XShow.class, XYShow.class, YShow.class,
-			GlyphShow.class, StringWidth.class, CShow.class, KShow.class,
-			FindEncoding.class, SetCacheDevice.class, SetCacheDevice2.class,
-			SetCharWidth.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { DefineFont.class,
+				ComposeFont.class, UndefineFont.class, FindFont.class,
+				ScaleFont.class, MakeFont.class, SetFont.class, RootFont.class,
+				CurrentFont.class, SelectFont.class, Show.class, AShow.class,
+				WidthShow.class, AWidthShow.class, XShow.class, XYShow.class,
+				YShow.class, GlyphShow.class, StringWidth.class, CShow.class,
+				KShow.class, FindEncoding.class, SetCacheDevice.class,
+				SetCacheDevice2.class, SetCharWidth.class });
+	}
 
 	protected PSDictionary findFont(PSDictionary fontDirectory, PSName key) {
 		PSDictionary font = (PSDictionary) fontDirectory.get(key);
@@ -101,8 +102,10 @@ public abstract class FontOperator extends PSOperator {
 			String encoding = "STDLatin";
 			if (fontName.equals("Symbol")) {
 				encoding = "Symbol";
-				// FIXME, next line creates blocks on MacOS X, see PSVIEWER-57...
-//				fontName = "SansSerif.plain"; // 31 chars missing, mainly math
+				// FIXME, next line creates blocks on MacOS X, see
+				// PSVIEWER-57...
+				// fontName = "SansSerif.plain"; // 31 chars missing, mainly
+				// math
 			} else if (fontName.equals("ZapfDingbats")) {
 				encoding = "Zapfdingbats";
 				fontName = "SansSerif.plain";
@@ -697,7 +700,8 @@ class AShow extends FontOperator {
 		}
 
 		if (index >= 0) {
-			os.gstate().translate(currentGlyph.getWx() + ax, currentGlyph.getWy() + ay);
+			os.gstate().translate(currentGlyph.getWx() + ax,
+					currentGlyph.getWy() + ay);
 		}
 
 		index++;
@@ -1268,7 +1272,7 @@ class SetCacheDevice2 extends FontOperator {
 	}
 
 	public boolean execute(OperandStack os) {
-		/* PSGlyph g = (PSGlyph) */ os.gstate().font().get("_CurrentGlyph");
+		/* PSGlyph g = (PSGlyph) */os.gstate().font().get("_CurrentGlyph");
 		// FIXME
 		error(os, new Unimplemented());
 		return true;

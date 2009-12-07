@@ -2,9 +2,9 @@
 package org.freehep.postscript.operators;
 
 import org.freehep.postscript.stacks.OperandStack;
+import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSNumber;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSRandom;
 import org.freehep.postscript.types.PSReal;
 
@@ -13,18 +13,15 @@ import org.freehep.postscript.types.PSReal;
  * 
  * @author Mark Donszelmann
  */
-public class ArithmeticOperator extends PSOperator {
+public abstract class ArithmeticOperator extends AbstractOperator {
 	protected PSRandom random = new PSRandom();
 
-	public static Class<?>[] operators = { Add.class, Div.class, IDiv.class,
-			Mod.class, Mul.class, Sub.class, Abs.class, Neg.class,
-			Ceiling.class, Floor.class, Round.class, Truncate.class,
-			Sqrt.class, Atan.class, Cos.class, Sin.class, Exp.class, Ln.class,
-			Log.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new IllegalArgumentException("Cannot execute class: " + getClass());
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { Add.class, Div.class, IDiv.class,
+				Mod.class, Mul.class, Sub.class, Abs.class, Neg.class,
+				Ceiling.class, Floor.class, Round.class, Truncate.class,
+				Sqrt.class, Atan.class, Cos.class, Sin.class, Exp.class,
+				Ln.class, Log.class });
 	}
 }
 

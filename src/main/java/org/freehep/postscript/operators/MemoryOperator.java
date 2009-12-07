@@ -3,9 +3,9 @@ package org.freehep.postscript.operators;
 
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSBoolean;
+import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSSave;
 import org.freehep.postscript.types.PSString;
 
@@ -14,17 +14,16 @@ import org.freehep.postscript.types.PSString;
  * 
  * @author Mark Donszelmann
  */
-public class MemoryOperator extends PSOperator {
+public abstract class MemoryOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { Save.class, Restore.class,
-			SetGlobal.class, CurrentGlobal.class, GCheck.class, StartJob.class,
-			DefineUserObject.class, ExecUserObject.class,
-			UndefineUserObject.class, UserObjects.class };
-
-	@Override
-	public boolean execute(OperandStack os) {
-		throw new RuntimeException("Cannot execute class: " + getClass());
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { Save.class,
+				Restore.class, SetGlobal.class, CurrentGlobal.class,
+				GCheck.class, StartJob.class, DefineUserObject.class,
+				ExecUserObject.class, UndefineUserObject.class,
+				UserObjects.class });
 	}
+
 }
 
 class Save extends MemoryOperator {
@@ -94,8 +93,8 @@ class StartJob extends MemoryOperator {
 	@Override
 	public boolean execute(OperandStack os) {
 		// ignored
-		/* PSString password = */ os.popString();
-		/* PSBoolean state = */ os.popBoolean();
+		/* PSString password = */os.popString();
+		/* PSBoolean state = */os.popBoolean();
 		os.push(false);
 		return true;
 	}

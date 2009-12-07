@@ -8,6 +8,7 @@ import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSArray;
 import org.freehep.postscript.types.PSBoolean;
 import org.freehep.postscript.types.PSComposite;
+import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSName;
 import org.freehep.postscript.types.PSObject;
 import org.freehep.postscript.types.PSOperator;
@@ -19,11 +20,14 @@ import org.freehep.postscript.types.PSString;
  * 
  * @author Mark Donszelmann
  */
-public abstract class MiscellaneousOperator extends PSOperator {
+public abstract class MiscellaneousOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { Bind.class, Version.class,
-			RealTime.class, UserTime.class, Product.class, Revision.class,
-			SerialNumber.class, Executive.class, Echo.class, Prompt.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { Bind.class,
+				Version.class, RealTime.class, UserTime.class, Product.class,
+				Revision.class, SerialNumber.class, Executive.class,
+				Echo.class, Prompt.class });
+	}
 }
 
 class Bind extends MiscellaneousOperator {

@@ -4,10 +4,10 @@ package org.freehep.postscript.operators;
 import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSBoolean;
+import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSInteger;
 import org.freehep.postscript.types.PSNumber;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.types.PSOperator;
 import org.freehep.postscript.types.PSString;
 
 /**
@@ -15,11 +15,13 @@ import org.freehep.postscript.types.PSString;
  * 
  * @author Mark Donszelmann
  */
-public abstract class RelationalOperator extends PSOperator {
+public abstract class RelationalOperator extends AbstractOperator {
 
-	public static Class<?>[] operators = { EQ.class, NE.class, GE.class,
-			GT.class, LE.class, LT.class, And.class, Not.class, Or.class,
-			Xor.class, True.class, False.class, BitShift.class };
+	public static void register(PSDictionary dict) {
+		AbstractOperator.register(dict, new Class<?>[] { EQ.class, NE.class,
+				GE.class, GT.class, LE.class, LT.class, And.class, Not.class,
+				Or.class, Xor.class, True.class, False.class, BitShift.class });
+	}
 }
 
 class EQ extends RelationalOperator {

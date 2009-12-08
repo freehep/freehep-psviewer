@@ -8,6 +8,7 @@ import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.TexturePaint;
 import java.awt.color.ColorSpace;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
@@ -22,6 +23,7 @@ import java.awt.image.RenderedImage;
 import org.freehep.postscript.device.ImageDevice;
 import org.freehep.postscript.stacks.DictionaryStack;
 import org.freehep.postscript.stacks.OperandStack;
+import org.freehep.postscript.viewer.FixedTexturePaint;
 
 /**
  * Graphics State Object for PostScript Processor, as defined in 4.2 Graphics
@@ -514,21 +516,27 @@ public class PSGState extends PSComposite {
 	}
 
 	public void setColor(Paint paint, Object[] params) {
-		/*
-		 * if (params != null) { FixedTexturePaint ftp = (FixedTexturePaint)
-		 * paint; BufferedImage image = ftp.getImage(); ColorConvertOp convert =
-		 * new ColorConvertOp(ColorSpace .getInstance(ColorSpace.CS_sRGB),
-		 * null); // SinglePixelPackedSampleModel sm = //
-		 * (SinglePixelPackedSampleModel)image.getSampleModel(); // sm =
-		 * sm.createCompatibleSampleModel(sm.getWidth(), // sm.getHeight()); //
-		 * ColorModel cm = new ComponentColorModel(colorSpace, ); //
-		 * BufferedImage dstImage = convert.createCompatibleDestImage(image, //
-		 * null);
-		 * log.warning("PSGState.setColor(): "+paint.getClass()+" "+image.
-		 * getSampleModel().getNumBands()); BufferedImage filteredImage =
-		 * convert.filter(image, null); // FIXME: copy & set this into paint }
-		 */
-		log.warning("PSGState.setColor(): " + paint.getClass());
+		if (params != null && params.length > 0) {
+			// rebuild paint with new color
+			Color c;
+			switch (params.length) {
+			case 1:
+				float d = ((PSNumber)params[0]).getFloat();
+				c = new Color(d, d, d);
+				break;
+			case 3:
+				float r = ((PSNumber)params[0]).getFloat();
+				float g = ((PSNumber)params[0]).getFloat();
+				float b = ((PSNumber)params[0]).getFloat();
+				c = new Color(r, g, b);
+				break;
+			default:
+				log.warning("Number of params not handled " + params.length);
+				c = Color.BLACK;
+				break;
+			}
+			paint = ((FixedTexturePaint) paint).inColor(c);
+		}
 		device.getGraphics().setPaint(paint);
 	}
 

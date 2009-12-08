@@ -162,8 +162,12 @@ class SetPattern extends FormOperator {
 				os.gstate().setColor(paint);
 				break;
 			case 2:
-				// FIXME: parameters
-				os.gstate().setColor(paint, new PSObject[0]);
+				int n = os.gstate().getNumberOfColorSpaceComponents();
+				PSObject[] params = new PSObject[n];
+				for (int i = n - 1; i >= 0; i--) {
+					params[i] = os.popNumber();
+				}
+				os.gstate().setColor(paint, params);
 				break;
 			default:
 				error(os, new RangeCheck());

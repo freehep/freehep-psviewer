@@ -1,0 +1,22 @@
+/Helvetica findfont
+dup length dict begin
+	{	1 index /FID ne
+		{def}
+		{pop pop}
+		ifelse
+	} forall
+	/Encoding ISOLatin1Encoding def
+	currentdict
+end
+/Helvetica-ISOLatin1 exch definefont pop
+
+/Helvetica findfont
+48 scalefont setfont
+200 400 moveto
+(ABC\2555) show
+
+/Helvetica-ISOLatin1 findfont
+48 scalefont setfont
+200 200 moveto
+(ABC\2555) show
+

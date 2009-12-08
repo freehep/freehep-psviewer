@@ -1,6 +1,7 @@
 // Copyright 2001-2009, FreeHEP.
 package org.freehep.postscript.viewer;
 
+import java.awt.Color;
 import java.awt.PaintContext;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -11,6 +12,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.freehep.postscript.stacks.OperandStack;
@@ -25,6 +28,8 @@ public class FixedTexturePaint extends TexturePaint {
 
 	private OperandStack os;
 	private AffineTransform matrix;
+	private Map<Color, TexturePaint> byColor = new HashMap<Color, TexturePaint>(
+			2);
 
 	public FixedTexturePaint(OperandStack os, AffineTransform m,
 			BufferedImage texture, Rectangle2D anchor) {
@@ -51,16 +56,15 @@ public class FixedTexturePaint extends TexturePaint {
 		at.preConcatenate(mirror);
 		return super.createContext(cm, deviceBounds, userBounds, at, hints);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.TexturePaint#getImage()
-	 */
-	@Override
-	public BufferedImage getImage() {
-		System.err.println("getImage");
-		return changeColor(super.getImage(), 0xFF000000, 0xFFFFFFFF);
+
+	public TexturePaint inColor(Color color) {
+		TexturePaint paint = byColor.get(color);
+		if (paint == null) {
+			paint = new TexturePaint(changeColor(super.getImage(), 0xFF000000,
+					color.getRGB()), getAnchorRect());
+			byColor.put(color, paint);
+		}
+		return paint;
 	}
 
 	private BufferedImage changeColor(BufferedImage src, int oldColor,
@@ -71,30 +75,19 @@ public class FixedTexturePaint extends TexturePaint {
 		WritableRaster srcRaster = src.getRaster();
 
 		ColorModel dstColorModel = src.getColorModel();
-		BufferedImage dst = new BufferedImage(dstColorModel,
-				dstColorModel.createCompatibleWritableRaster(src.getWidth(),
-						src.getHeight()), dstColorModel.isAlphaPremultiplied(),
-				null);
+		BufferedImage dst = new BufferedImage(src.getWidth(), src.getHeight(),
+				BufferedImage.TYPE_INT_ARGB);
 		WritableRaster dstRaster = dst.getRaster();
 
+		// replace oldcolor with newcolor and make others transparent
 		int[] inPixels = new int[width];
 		for (int y = 0; y < height; y++) {
-			// We try to avoid calling getRGB on images as it causes them to
-			// become unmanaged, causing horrible performance problems.
-			if ((type == BufferedImage.TYPE_INT_ARGB)
-					|| (type == BufferedImage.TYPE_INT_RGB)) {
-				srcRaster.getDataElements(0, y, width, 1, inPixels);
-				for (int x = 0; x < width; x++) {
-					inPixels[x] = inPixels[x] == oldColor ? newColor : inPixels[x];
-				}
-				dstRaster.setDataElements(0, y, width, 1, inPixels);
-			} else {
-				src.getRGB(0, y, width, 1, inPixels, 0, width);
-				for (int x = 0; x < width; x++) {
-					inPixels[x] = inPixels[x] == oldColor ? newColor : inPixels[x];
-				}
-				dst.setRGB(0, y, width, 1, inPixels, 0, width);
+			srcRaster.getDataElements(0, y, width, 1, inPixels);
+			for (int x = 0; x < width; x++) {
+				inPixels[x] = inPixels[x] == oldColor ? newColor
+						: inPixels[x] & 0x00FFFFFF;
 			}
+			dstRaster.setDataElements(0, y, width, 1, inPixels);
 		}
 
 		return dst;

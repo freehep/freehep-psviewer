@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 
 import org.freehep.postscript.device.ImageDevice;
+import org.freehep.postscript.stacks.DictionaryStack;
 import org.freehep.postscript.stacks.OperandStack;
 
 /**
@@ -55,11 +56,13 @@ public class PSGState extends PSComposite {
 		super("gstate", true);
 	}
 
-	public PSGState(PSDevice device) {
+	public PSGState(PSDevice device, DictionaryStack dictStack) {
 		super("gstate", true);
 		this.device = device;
 
-		font = new PSFontDictionary(device.getGraphics().getFont(), "STDLatin");
+		font = new PSFontDictionary(device.getGraphics().getFont(), dictStack
+				.systemDictionary().getArray(
+						DictionaryStack.standardEncoding.getValue()));
 		flat = 0.5; // FIXME: is device dependent
 		transfer = new PSPackedArray(new PSObject[0]);
 		transfer.setExecutable();
@@ -86,12 +89,12 @@ public class PSGState extends PSComposite {
 		dashPhase = 0.0f;
 		setStroke();
 	}
-	
+
 	public BufferedImage convertToImage(int width, int height) {
 		if (!(device instanceof ImageDevice)) {
 			device = device.createImageDevice(width, height);
 		}
-		return ((ImageDevice)device).getImage();
+		return ((ImageDevice) device).getImage();
 	}
 
 	public void erasePage() {
@@ -511,25 +514,21 @@ public class PSGState extends PSComposite {
 	}
 
 	public void setColor(Paint paint, Object[] params) {
-/*
-		if (params != null) {
-			FixedTexturePaint ftp = (FixedTexturePaint) paint;
-			BufferedImage image = ftp.getImage();
-			ColorConvertOp convert = new ColorConvertOp(ColorSpace
-					.getInstance(ColorSpace.CS_sRGB), null);
-			// SinglePixelPackedSampleModel sm =
-			// (SinglePixelPackedSampleModel)image.getSampleModel();
-			// sm = sm.createCompatibleSampleModel(sm.getWidth(),
-			// sm.getHeight());
-			// ColorModel cm = new ComponentColorModel(colorSpace, );
-			// BufferedImage dstImage = convert.createCompatibleDestImage(image,
-			// null);
-  		    log.warning("PSGState.setColor(): "+paint.getClass()+" "+image.getSampleModel().getNumBands());
-			BufferedImage filteredImage = convert.filter(image, null);
-			// FIXME: copy & set this into paint
-		}
-*/
-		log.warning("PSGState.setColor(): "+paint.getClass());
+		/*
+		 * if (params != null) { FixedTexturePaint ftp = (FixedTexturePaint)
+		 * paint; BufferedImage image = ftp.getImage(); ColorConvertOp convert =
+		 * new ColorConvertOp(ColorSpace .getInstance(ColorSpace.CS_sRGB),
+		 * null); // SinglePixelPackedSampleModel sm = //
+		 * (SinglePixelPackedSampleModel)image.getSampleModel(); // sm =
+		 * sm.createCompatibleSampleModel(sm.getWidth(), // sm.getHeight()); //
+		 * ColorModel cm = new ComponentColorModel(colorSpace, ); //
+		 * BufferedImage dstImage = convert.createCompatibleDestImage(image, //
+		 * null);
+		 * log.warning("PSGState.setColor(): "+paint.getClass()+" "+image.
+		 * getSampleModel().getNumBands()); BufferedImage filteredImage =
+		 * convert.filter(image, null); // FIXME: copy & set this into paint }
+		 */
+		log.warning("PSGState.setColor(): " + paint.getClass());
 		device.getGraphics().setPaint(paint);
 	}
 
@@ -663,7 +662,7 @@ public class PSGState extends PSComposite {
 	// FIXME: not implemented
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		throw new CloneNotSupportedException(getClass()+" Not implemented");
+		throw new CloneNotSupportedException(getClass() + " Not implemented");
 	}
 
 	@Override

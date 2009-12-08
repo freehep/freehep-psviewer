@@ -64,12 +64,10 @@ public class UnicodeGlyphList {
 	}
 	
 	private static void init() {
-		long t0 = System.currentTimeMillis();
-		list = new HashMap<String, Character>(4200);
+		list = new HashMap<String, Character>(4500);
+		// NOTE: method longer than 64K, split into two
 		initAI();
 		initJZ();
-		System.err.println(list.size());
-		System.err.println(System.currentTimeMillis() - t0);					
 	}
 	
 	private static void initAI() {

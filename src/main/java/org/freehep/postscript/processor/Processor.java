@@ -106,8 +106,8 @@ public class Processor implements DebuggerListener {
 			return;
 		}
 		
-		PSGState gstate = new PSGState(device);
 		dictStack = new DictionaryStack();
+		PSGState gstate = new PSGState(device, dictStack);
 		execStack = new ExecutableStack();
 		operandStack = new OperandStack(this, gstate, secure);
 		gstateStack = new GStateStack();

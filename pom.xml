@@ -126,6 +126,7 @@
               <exclude>junit:junit</exclude>
             </excludes>
           </artifactSet>
+<!--
           <filters>
             <filter>
               <artifact>org.freehep:freehep-graphics-base</artifact>
@@ -142,6 +143,7 @@
               </includes>
             </filter>
           </filters>
+-->
         </configuration>
       </plugin>
     </plugins>
@@ -172,11 +174,13 @@
       <artifactId>freehep-io</artifactId>
       <version>2.1</version>
     </dependency>
+<!--
     <dependency>
       <groupId>org.freehep</groupId>
       <artifactId>freehep-graphics2d</artifactId>
       <version>2.2-SNAPSHOT</version>
     </dependency>
+-->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

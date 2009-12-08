@@ -47,7 +47,7 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 			notdef, notdef, notdef, notdef, notdef, "space", "exclam",
 			"quotedbl", "numbersign", "dollar", "percent", "ampersand",
 			"quoteright", "parenleft", "parenright", "asterisk", "plus",
-			"comma", "minus", "period", "slash", "zero", "one", "two", "three",
+			"comma", "hyphen", "period", "slash", "zero", "one", "two", "three",
 			"four", "five", "six", "seven", "eight", "nine", "colon",
 			"semicolon", "less", "equal", "greater", "question", "at", "A",
 			"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
@@ -67,7 +67,7 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 			"periodcentered", notdef, "paragraph", "bullet", "quotesinglbase",
 			"quotedblbase", "quotedblright", "guillemotright", "ellipsis",
 			"perthousand", notdef, "questiondown", notdef, "grave", "acute",
-			"circonflex", "tilde", "macron", "breve", "dotaccent", "dieresis",
+			"circumflex", "tilde", "macron", "breve", "dotaccent", "dieresis",
 			notdef, "ring", "cedilla", notdef, "hungarumlaut", "ogonek",
 			"caron", "emdash", notdef, notdef, notdef, notdef, notdef, notdef,
 			notdef, notdef, notdef, notdef, notdef, notdef, notdef, notdef,
@@ -194,8 +194,7 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 			"a175", "a176", "a177", "a178", "a179", "a193", "a180", "a199",
 			"a181", "a200", "a182", notdef, "a201", "a183", "a184", "a197",
 			"a185", "a194", "a198", "a186", "a195", "a187", "a188", "a189",
-			"a190", "a191", notdef
-	};
+			"a190", "a191", notdef };
 
 	private PSName errordict = new PSName("errordict");
 	private PSName dollarerror = new PSName("$error");
@@ -203,10 +202,12 @@ public class DictionaryStack extends PostScriptStack implements NameLookup {
 	private PSName userdict = new PSName("userdict");
 	private PSName globaldict = new PSName("globaldict");
 	private PSName statusdict = new PSName("statusdict");
-	private PSName standardEncoding = new PSName("StandardEncoding");
-	private PSName isoLatin1Encoding = new PSName("ISOLatin1Encoding");
-	private PSName symbolEncoding = new PSName("SymbolEncoding");
-	private PSName zapfDingbatsEncoding = new PSName("ZapfDingbatsEncoding");
+	public static final PSName standardEncoding = new PSName("StandardEncoding");
+	public static final PSName isoLatin1Encoding = new PSName(
+			"ISOLatin1Encoding");
+	public static final PSName symbolEncoding = new PSName("SymbolEncoding");
+	public static final PSName zapfDingbatsEncoding = new PSName(
+			"ZapfDingbatsEncoding");
 	private PSName fontDirectory = new PSName("FontDirectory");
 	private PSName globalFontDirectory = new PSName("GlobalFontDirectory");
 

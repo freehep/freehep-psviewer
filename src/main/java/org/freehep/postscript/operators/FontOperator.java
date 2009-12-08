@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 import org.freehep.postscript.errors.TypeCheck;
+import org.freehep.postscript.stacks.DictionaryStack;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSArray;
 import org.freehep.postscript.types.PSCharStringDecoder;
@@ -95,22 +96,24 @@ public abstract class FontOperator extends AbstractOperator {
 				SetCacheDevice2.class, SetCharWidth.class });
 	}
 
-	protected PSDictionary findFont(PSDictionary fontDirectory, PSName key) {
+	protected PSDictionary findFont(DictionaryStack dictStack, PSName key) {
+		PSDictionary fontDirectory = dictStack.fontDirectory();
 		PSDictionary font = (PSDictionary) fontDirectory.get(key);
 		if (font == null) {
 			String fontName = key.getValue();
-			String encoding = "STDLatin";
+			String encodingName = DictionaryStack.standardEncoding.getValue();
 			if (fontName.equals("Symbol")) {
-				encoding = "Symbol";
+				encodingName = DictionaryStack.symbolEncoding.getValue();
 				// FIXME, next line creates blocks on MacOS X, see
 				// PSVIEWER-57...
 				// fontName = "SansSerif.plain"; // 31 chars missing, mainly
 				// math
 			} else if (fontName.equals("ZapfDingbats")) {
-				encoding = "Zapfdingbats";
+				encodingName = DictionaryStack.zapfDingbatsEncoding.getValue();
 				fontName = "SansSerif.plain";
 			}
 
+			PSArray encoding = dictStack.systemDictionary().getArray(encodingName);
 			Font javaFont = fontCache.get(fontName);
 			font = new PSFontDictionary(javaFont, encoding);
 		}
@@ -129,6 +132,7 @@ public abstract class FontOperator extends AbstractOperator {
 	protected PSDictionary makeFont(PSDictionary font, double[] matrix) {
 		PSJavaFont psfont = (PSJavaFont) font.get("javafont");
 		if (psfont == null) {
+			// when does this happen ?
 			double[] cfm = font.getPackedArray("FontMatrix").toDoubles();
 			AffineTransform at = new AffineTransform(cfm);
 			at.concatenate(new AffineTransform(matrix));
@@ -137,7 +141,6 @@ public abstract class FontOperator extends AbstractOperator {
 			fontCopy.put("FontMatrix", new PSArray(cfm));
 			return fontCopy;
 		} else {
-			String encoding = font.getString("javaEncoding");
 			Font javaFont = psfont.getFont();
 			AffineTransform at = new AffineTransform(matrix);
 			at.concatenate(javaFont.getTransform());
@@ -477,7 +480,7 @@ class FindFont extends FontOperator {
 	@Override
 	public boolean execute(OperandStack os) {
 		PSName name = os.popName();
-		PSDictionary font = findFont(os.dictStack().fontDirectory(), name);
+		PSDictionary font = findFont(os.dictStack(), name);
 		if (font == null) {
 			error(os, new InvalidFont());
 		} else {
@@ -568,7 +571,7 @@ class SelectFont extends FontOperator {
 			return true;
 		}
 
-		PSDictionary font = findFont(os.dictStack().fontDirectory(), key);
+		PSDictionary font = findFont(os.dictStack(), key);
 		if (font == null) {
 			error(os, new InvalidFont());
 			return true;

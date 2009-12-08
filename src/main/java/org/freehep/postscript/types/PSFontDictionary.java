@@ -65,7 +65,7 @@ public class PSFontDictionary extends PSDictionary {
 		char[] uc = new char[1];
 		for (int cc = 0; cc < 256; cc++) {
 			String name = encoding.getName(cc).getValue();
-			uc[0] = name.equals(".notdef") ? box : UnicodeGlyphList.get(name);
+			uc[0] = name.equals(".notdef") ? box : UnicodeShortGlyphList.get(name);
 			
 			// System.out.println(cc+" "+name+" "+uc[0]);
 			GlyphVector gv = font.createGlyphVector(fontRenderContext, uc);

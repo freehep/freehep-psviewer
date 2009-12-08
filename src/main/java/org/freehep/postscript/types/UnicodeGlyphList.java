@@ -1,3 +1,4 @@
+// Copyright FreeHEP, 2009
 package org.freehep.postscript.types;
 
 import java.util.HashMap;
@@ -8,6 +9,7 @@ public class UnicodeGlyphList {
 	private static Map<String, Character> list;
 
 	static {
+//		System.err.println("LongList");
 		list = new HashMap<String, Character>(4500);
 		// NOTE: method longer than 64K, split into two
 		initAI();

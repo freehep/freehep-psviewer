@@ -8,7 +8,6 @@ import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
-import java.awt.TexturePaint;
 import java.awt.color.ColorSpace;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;

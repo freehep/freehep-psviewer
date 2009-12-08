@@ -3,73 +3,71 @@ package org.freehep.postscript.types;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
- http://www.adobe.com/devnet/opentype/archives/glyphlist.txt
- # ###################################################################################
- # Copyright (c) 1997,1998,2002,2007 Adobe Systems Incorporated
- # 
- # Permission is hereby granted, free of charge, to any person obtaining a
- # copy of this documentation file to use, copy, publish, distribute,
- # sublicense, and/or sell copies of the documentation, and to permit
- # others to do the same, provided that:
- # - No modification, editing or other alteration of this document is
- # allowed, new Character((char)0x and
- # - The above copyright notice and this permission notice shall be
- # included in all copies of the documentation.
- # 
- # Permission is hereby granted, free of charge, to any person obtaining a
- # copy of this documentation file, to create their own derivative works
- # from the content of this document to use, copy, publish, distribute,
- # sublicense, and/or sell the derivative works, and to permit others to do
- # the same, provided that the derived work is not represented as being a
- # copy or version of this document.
- # 
- # Adobe shall not be liable to any party for any loss of revenue or profit
- # or for indirect, incidental, special, consequential, or other similar
- # damages, whether based on tort (including without limitation negligence
- # or strict liability), contract or other legal or equitable grounds even
- # if Adobe has been advised or had reason to know of the possibility of
- # such damages.Ê The Adobe materials are provided on an "AS IS" basis.Ê
- # Adobe specifically disclaims all express, statutory, or implied
- # warranties relating to the Adobe materials, including but not limited to
- # those concerning merchantability or fitness for a particular purpose or
- # non-infringement of any third party rights regarding the Adobe
- # materials.
- # ###################################################################################
- # Name:          Adobe Glyph List
- # Table version: 2.0
- # Date:          September 20, 2002
- #
- # See http://partners.adobe.com/asn/developer/typeforum/unicodegn.html
- #
- # Format: Semicolon-delimited fields:
- #            (1) glyph name
- #            (2) Unicode scalar value
- */
-
 public class UnicodeGlyphList {
 
 	private static Map<String, Character> list;
 
+	static {
+		list = new HashMap<String, Character>(4500);
+		// NOTE: method longer than 64K, split into two
+		initAI();
+		initJZ();
+		initZapfDingbats();
+//		System.err.println("L "+list.size());
+	}
+	
 	private UnicodeGlyphList() {
 	}
 	
 	public static char get(String name) {
-		if (list == null) {
-			init();
-		}
 		Character c = list.get(name);
 		if (c == null) throw new IllegalArgumentException("Character '"+name+"' not defined in UnicodeGlyphList");
 		return c.charValue();
 	}
 	
-	private static void init() {
-		list = new HashMap<String, Character>(4500);
-		// NOTE: method longer than 64K, split into two
-		initAI();
-		initJZ();
-	}
-	
+	/*
+	 http://www.adobe.com/devnet/opentype/archives/glyphlist.txt
+	 # ###################################################################################
+	 # Copyright (c) 1997,1998,2002,2007 Adobe Systems Incorporated
+	 # 
+	 # Permission is hereby granted, free of charge, to any person obtaining a
+	 # copy of this documentation file to use, copy, publish, distribute,
+	 # sublicense, and/or sell copies of the documentation, and to permit
+	 # others to do the same, provided that:
+	 # - No modification, editing or other alteration of this document is
+	 # allowed, new Character((char)0x and
+	 # - The above copyright notice and this permission notice shall be
+	 # included in all copies of the documentation.
+	 # 
+	 # Permission is hereby granted, free of charge, to any person obtaining a
+	 # copy of this documentation file, to create their own derivative works
+	 # from the content of this document to use, copy, publish, distribute,
+	 # sublicense, and/or sell the derivative works, and to permit others to do
+	 # the same, provided that the derived work is not represented as being a
+	 # copy or version of this document.
+	 # 
+	 # Adobe shall not be liable to any party for any loss of revenue or profit
+	 # or for indirect, incidental, special, consequential, or other similar
+	 # damages, whether based on tort (including without limitation negligence
+	 # or strict liability), contract or other legal or equitable grounds even
+	 # if Adobe has been advised or had reason to know of the possibility of
+	 # such damages.Ê The Adobe materials are provided on an "AS IS" basis.Ê
+	 # Adobe specifically disclaims all express, statutory, or implied
+	 # warranties relating to the Adobe materials, including but not limited to
+	 # those concerning merchantability or fitness for a particular purpose or
+	 # non-infringement of any third party rights regarding the Adobe
+	 # materials.
+	 # ###################################################################################
+	 # Name:          Adobe Glyph List
+	 # Table version: 2.0
+	 # Date:          September 20, 2002
+	 #
+	 # See http://partners.adobe.com/asn/developer/typeforum/unicodegn.html
+	 #
+	 # Format: Semicolon-delimited fields:
+	 #            (1) glyph name
+	 #            (2) Unicode scalar value
+	 */
 	private static void initAI() {
 		list.put("A", new Character((char) 0x0041));
 		list.put("AE", new Character((char) 0x00C6));
@@ -4392,5 +4390,214 @@ public class UnicodeGlyphList {
 		list.put("zstroke", new Character((char) 0x01B6));
 		list.put("zuhiragana", new Character((char) 0x305A));
 		list.put("zukatakana", new Character((char) 0x30BA));
+	}
+	
+	private static void initZapfDingbats() {
+		list.put("a1", new Character((char) 0x2701));
+		list.put("a2", new Character((char) 0x2702));
+		list.put("a3", new Character((char) 0x2704));
+		list.put("a4", new Character((char) 0x260E));
+		list.put("a5", new Character((char) 0x2706));
+		list.put("a6", new Character((char) 0x271D));
+		list.put("a7", new Character((char) 0x271E));
+		list.put("a8", new Character((char) 0x271F));
+		list.put("a9", new Character((char) 0x2720));
+		list.put("a10", new Character((char) 0x2721));
+		list.put("a11", new Character((char) 0x261B));
+		list.put("a12", new Character((char) 0x261E));
+		list.put("a13", new Character((char) 0x270C));
+		list.put("a14", new Character((char) 0x270D));
+		list.put("a15", new Character((char) 0x270E));
+		list.put("a16", new Character((char) 0x270F));
+		list.put("a17", new Character((char) 0x2711));
+		list.put("a18", new Character((char) 0x2712));
+		list.put("a19", new Character((char) 0x2713));
+		list.put("a20", new Character((char) 0x2714));
+		list.put("a21", new Character((char) 0x2715));
+		list.put("a22", new Character((char) 0x2716));
+		list.put("a23", new Character((char) 0x2717));
+		list.put("a24", new Character((char) 0x2718));
+		list.put("a25", new Character((char) 0x2719));
+		list.put("a26", new Character((char) 0x271A));
+		list.put("a27", new Character((char) 0x271B));
+		list.put("a28", new Character((char) 0x271C));
+		list.put("a29", new Character((char) 0x2722));
+		list.put("a30", new Character((char) 0x2723));
+		list.put("a31", new Character((char) 0x2724));
+		list.put("a32", new Character((char) 0x2725));
+		list.put("a33", new Character((char) 0x2726));
+		list.put("a34", new Character((char) 0x2727));
+		list.put("a35", new Character((char) 0x2728));
+		list.put("a36", new Character((char) 0x2729));
+		list.put("a37", new Character((char) 0x272A));
+		list.put("a38", new Character((char) 0x272B));
+		list.put("a39", new Character((char) 0x272C));
+		list.put("a40", new Character((char) 0x272D));
+		list.put("a41", new Character((char) 0x272E));
+		list.put("a42", new Character((char) 0x272F));
+		list.put("a43", new Character((char) 0x2730));
+		list.put("a44", new Character((char) 0x2731));
+		list.put("a45", new Character((char) 0x2732));
+		list.put("a46", new Character((char) 0x2733));
+		list.put("a47", new Character((char) 0x2734));
+		list.put("a48", new Character((char) 0x2735));
+		list.put("a49", new Character((char) 0x2736));
+		list.put("a50", new Character((char) 0x2737));
+		list.put("a51", new Character((char) 0x2738));
+		list.put("a52", new Character((char) 0x2739));
+		list.put("a53", new Character((char) 0x273A));
+		list.put("a54", new Character((char) 0x273B));
+		list.put("a55", new Character((char) 0x273C));
+		list.put("a56", new Character((char) 0x273D));
+		list.put("a57", new Character((char) 0x273E));
+		list.put("a58", new Character((char) 0x273F));
+		list.put("a59", new Character((char) 0x2740));
+		list.put("a60", new Character((char) 0x2741));
+		list.put("a61", new Character((char) 0x2742));
+		list.put("a62", new Character((char) 0x2743));
+		list.put("a63", new Character((char) 0x2744));
+		list.put("a64", new Character((char) 0x2745));
+		list.put("a65", new Character((char) 0x2746));
+		list.put("a66", new Character((char) 0x2747));
+		list.put("a67", new Character((char) 0x2748));
+		list.put("a68", new Character((char) 0x2749));
+		list.put("a69", new Character((char) 0x274A));
+		list.put("a70", new Character((char) 0x274B));
+		list.put("a71", new Character((char) 0x25CF));
+		list.put("a72", new Character((char) 0x274D));
+		list.put("a73", new Character((char) 0x25A0));
+		list.put("a74", new Character((char) 0x274F));
+		list.put("a75", new Character((char) 0x2751));
+		list.put("a76", new Character((char) 0x25B2));
+		list.put("a77", new Character((char) 0x25BC));
+		list.put("a78", new Character((char) 0x25C6));
+		list.put("a79", new Character((char) 0x2756));
+//		list.put("a80", new Character((char) 0x27--));
+		list.put("a81", new Character((char) 0x25D7));
+		list.put("a82", new Character((char) 0x2758));
+		list.put("a83", new Character((char) 0x2759));
+		list.put("a84", new Character((char) 0x275A));
+		list.put("a85", new Character((char) 0xF8DE));
+		list.put("a86", new Character((char) 0xF8E0));
+		list.put("a87", new Character((char) 0xF8E1));
+		list.put("a88", new Character((char) 0xF8E2));
+		list.put("a89", new Character((char) 0xF8D7));
+		list.put("a90", new Character((char) 0xF8D8));
+		list.put("a91", new Character((char) 0xF8DB));
+		list.put("a92", new Character((char) 0xF8DC));
+		list.put("a93", new Character((char) 0xF8D9));
+		list.put("a94", new Character((char) 0xF8DA));
+		list.put("a95", new Character((char) 0xF8E3));
+		list.put("a96", new Character((char) 0xF8E4));
+		list.put("a97", new Character((char) 0x275B));
+		list.put("a98", new Character((char) 0x275C));
+		list.put("a99", new Character((char) 0x275D));
+		list.put("a100", new Character((char) 0x275E));
+		list.put("a101", new Character((char) 0x2761));
+		list.put("a102", new Character((char) 0x2762));
+		list.put("a103", new Character((char) 0x2763));
+		list.put("a104", new Character((char) 0x2764));
+		list.put("a105", new Character((char) 0x2710));
+		list.put("a106", new Character((char) 0x2765));
+		list.put("a107", new Character((char) 0x2766));
+		list.put("a108", new Character((char) 0x2767));
+		list.put("a109", new Character((char) 0x2660));
+		list.put("a110", new Character((char) 0x2665));
+		list.put("a111", new Character((char) 0x2666));
+		list.put("a112", new Character((char) 0x2663));
+//		list.put("a113", new Character((char) 0x27--));
+//		list.put("a114", new Character((char) 0x27--));
+//		list.put("a115", new Character((char) 0x27--));
+//		list.put("a116", new Character((char) 0x27--));
+		list.put("a117", new Character((char) 0x2709));
+		list.put("a118", new Character((char) 0x2708));
+		list.put("a119", new Character((char) 0x2707));
+		list.put("a120", new Character((char) 0x2460));
+		list.put("a121", new Character((char) 0x2461));
+		list.put("a122", new Character((char) 0x2462));
+		list.put("a123", new Character((char) 0x2463));
+		list.put("a124", new Character((char) 0x2464));
+		list.put("a125", new Character((char) 0x2465));
+		list.put("a126", new Character((char) 0x2466));
+		list.put("a127", new Character((char) 0x2467));
+		list.put("a128", new Character((char) 0x2468));
+		list.put("a129", new Character((char) 0x2469));
+		list.put("a130", new Character((char) 0x2776));
+		list.put("a131", new Character((char) 0x2777));
+		list.put("a132", new Character((char) 0x2778));
+		list.put("a133", new Character((char) 0x2779));
+		list.put("a134", new Character((char) 0x277A));
+		list.put("a135", new Character((char) 0x277B));
+		list.put("a136", new Character((char) 0x277C));
+		list.put("a137", new Character((char) 0x277D));
+		list.put("a138", new Character((char) 0x277E));
+		list.put("a139", new Character((char) 0x277F));
+		list.put("a140", new Character((char) 0x2780));
+		list.put("a141", new Character((char) 0x2781));
+		list.put("a142", new Character((char) 0x2782));
+		list.put("a143", new Character((char) 0x2783));
+		list.put("a144", new Character((char) 0x2784));
+		list.put("a145", new Character((char) 0x2785));
+		list.put("a146", new Character((char) 0x2786));
+		list.put("a147", new Character((char) 0x2787));
+		list.put("a148", new Character((char) 0x2788));
+		list.put("a149", new Character((char) 0x2789));
+		list.put("a150", new Character((char) 0x278A));
+		list.put("a151", new Character((char) 0x278B));
+		list.put("a152", new Character((char) 0x278C));
+		list.put("a153", new Character((char) 0x278D));
+		list.put("a154", new Character((char) 0x278E));
+		list.put("a155", new Character((char) 0x278F));
+		list.put("a156", new Character((char) 0x2790));
+		list.put("a157", new Character((char) 0x2791));
+		list.put("a158", new Character((char) 0x2792));
+		list.put("a159", new Character((char) 0x2793));
+		list.put("a160", new Character((char) 0x2794));
+		list.put("a161", new Character((char) 0x2192));
+		list.put("a162", new Character((char) 0x27A3));
+		list.put("a163", new Character((char) 0x2194));
+		list.put("a164", new Character((char) 0x2195));
+		list.put("a165", new Character((char) 0x2799));
+		list.put("a166", new Character((char) 0x279B));
+		list.put("a167", new Character((char) 0x279C));
+		list.put("a168", new Character((char) 0x279D));
+		list.put("a169", new Character((char) 0x279E));
+		list.put("a170", new Character((char) 0x279F));
+		list.put("a171", new Character((char) 0x27A0));
+		list.put("a172", new Character((char) 0x27A1));
+		list.put("a173", new Character((char) 0x27A2));
+		list.put("a174", new Character((char) 0x27A4));
+		list.put("a175", new Character((char) 0x27A5));
+		list.put("a176", new Character((char) 0x27A6));
+		list.put("a177", new Character((char) 0x27A7));
+		list.put("a178", new Character((char) 0x27A8));
+		list.put("a179", new Character((char) 0x27A9));
+		list.put("a180", new Character((char) 0x27AB));
+		list.put("a181", new Character((char) 0x27AD));
+		list.put("a182", new Character((char) 0x27AF));
+		list.put("a183", new Character((char) 0x27B2));
+		list.put("a184", new Character((char) 0x27B3));
+		list.put("a185", new Character((char) 0x27B5));
+		list.put("a186", new Character((char) 0x27B8));
+		list.put("a187", new Character((char) 0x27BA));
+		list.put("a188", new Character((char) 0x27BB));
+		list.put("a189", new Character((char) 0x27BC));
+		list.put("a190", new Character((char) 0x27BD));
+		list.put("a191", new Character((char) 0x27BE));
+		list.put("a192", new Character((char) 0x279A));
+		list.put("a193", new Character((char) 0x27AA));
+		list.put("a194", new Character((char) 0x27B6));
+		list.put("a195", new Character((char) 0x27B9));
+		list.put("a196", new Character((char) 0x2798));
+		list.put("a197", new Character((char) 0x27B4));
+		list.put("a198", new Character((char) 0x27B7));
+		list.put("a199", new Character((char) 0x27AC));
+		list.put("a200", new Character((char) 0x27AE));
+		list.put("a201", new Character((char) 0x27B1));
+		list.put("a202", new Character((char) 0x2703));
+		list.put("a203", new Character((char) 0x2750));
+		list.put("a204", new Character((char) 0x2752));
+		list.put("a205", new Character((char) 0xF8DD));
+		list.put("a206", new Character((char) 0xF8DF));
 	}
 }

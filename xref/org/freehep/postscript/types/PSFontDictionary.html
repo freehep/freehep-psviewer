@@ -75,7 +75,7 @@
 <a name="65" href="#65">65</a>  		<strong class="jxr_keyword">char</strong>[] uc = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">char</strong>[1];
 <a name="66" href="#66">66</a>  		<strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> cc = 0; cc &lt; 256; cc++) {
 <a name="67" href="#67">67</a>  			String name = encoding.getName(cc).getValue();
-<a name="68" href="#68">68</a>  			uc[0] = name.equals(<span class="jxr_string">".notdef"</span>) ? box : UnicodeGlyphList.get(name);
+<a name="68" href="#68">68</a>  			uc[0] = name.equals(<span class="jxr_string">".notdef"</span>) ? box : UnicodeShortGlyphList.get(name);
 <a name="69" href="#69">69</a>  			
 <a name="70" href="#70">70</a>  			<em class="jxr_comment">// System.out.println(cc+" "+name+" "+uc[0]);</em>
 <a name="71" href="#71">71</a>  			GlyphVector gv = font.createGlyphVector(fontRenderContext, uc);

@@ -1,0 +1,42 @@
+%%BoundingBox: 99 199 209 273
+
+/Helvetica-Bold findfont 27 scalefont setfont
+
+/fourpops {
+    4 {pop} repeat
+} def
+
+/background {
+    0 18 moveto
+    0 72 108 72 18 arcto fourpops
+    108 72 108 0 18 arcto fourpops
+    108 0 0 0 18 arcto fourpops
+    0 0 0 72 18 arcto fourpops
+    fill
+} def
+
+/moon {
+    .6 setgray
+    81 45 18 0 360 arc
+    fill
+} def
+
+/omaha {
+    1 setgray
+    0 -1 moveto
+    1 2 scale
+    (OMAHA) stringwidth pop
+    108 exch sub 2 div
+    0 rmoveto
+    (OMAHA) show
+} def
+
+100 200 translate
+
+background
+moon
+omaha
+
+showpage
+
+    

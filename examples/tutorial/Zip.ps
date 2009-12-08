@@ -1,0 +1,23 @@
+%%BoundingBox: 281 293 340 329
+
+%
+% Zip
+%
+/Times-Italic findfont 30 scalefont setfont
+
+/printZip {
+    0 0 moveto
+    (Zip) show
+} def
+
+300 300 translate
+.95 -.05 0 {
+    setgray
+    printZip
+    -1 .5 translate
+} for
+
+1 setgray
+printZip
+
+showpage

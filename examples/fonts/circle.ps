@@ -1,0 +1,141 @@
+%!PS
+%%BoundingBox: 0 97 602 700
+
+%	This example appears in section "Using Your User-Defined Font"
+%	in Chapter 10 - "Fonts".
+%
+%	Notes:		This example uses the font contained
+%			in the file "suitfont.ps".
+
+12 dict						%  create font dictionary
+begin						%  font dictionary on stack
+	/FontName /Card-Suits def		%  name of font--optional
+	/FontType 3 def				%  user-defined font
+						%  overall font bounding box
+	/FontBBox [ -20 -30 870 830 ] def
+						%  font transformation matrix
+	/FontMatrix [ 0.001 0 0 0.001 0 0 ] def
+	/Encoding 256 array def			%  define encoding vector
+	0 1 255 {				%  for 256 characters
+		Encoding exch /.notdef put	%  make not defined entry
+	} for
+	Encoding (C) 0 get /Club put		%  fill in name for Club
+	Encoding (D) 0 get /Diamond put		%  fill in name for Diamond
+	Encoding (H) 0 get /Heart put		%  fill in name for Heart
+	Encoding (S) 0 get /Spade put		%  fill in name for Spade
+	/BoundingBoxes 5 dict def		%  bounding box information
+	BoundingBoxes begin			%  put on dictionary stack
+		/.notdef { 0    0   0   0 }   def
+		/Club    [   0   0 870 830 ] def
+		/Diamond [   0 -30 640 840 ] def
+		/Heart   [ -20 -20 780 850 ] def
+		/Spade   [   0   0 680 850 ] def
+	end					%  remove from stack
+	/Metrics 5 dict def			%  character width information
+	Metrics begin				%  put on dictionary stack
+		/.notdef   0 def
+		/Club    870 def
+		/Diamond 640 def
+		/Heart   780 def
+		/Spade   680 def
+	end					%  remove from stack
+	/UniqueID 1 def	%  unique ID for font
+	/CharProcs 5 dict def			%  char building procedures
+	CharProcs begin				%  place on dictionary stack
+		/.notdef {			%  do nothing procedure
+		} def
+		/Club {
+			690 580 moveto    660 580 620 560 590 550 curveto
+			610 590 620 630 620 660 curveto
+			630 770 530 830 430 830 curveto
+			330 830 240 780 240 670 curveto
+			240 640 250 590 280 550 curveto
+			250 560 210 570 180 570 curveto
+			80 570 0 510 10 360 curveto
+			20 260 110 190 200 190 curveto
+			270 190 360 230 420 330 curveto
+			420 120 280 40 150 30 curveto
+			150 0 lineto    200 0 lineto
+			340 30 540 30 680 0 curveto
+			730 0 lineto    720 30 lineto
+			530 40 450 210 450 330 curveto
+			510 230 590 180 660 180 curveto
+			760 180 850 260 860 370 curveto
+			870 470 790 580 690 580 curveto
+			closepath
+		} def
+		/Diamond {
+			320 840 moveto    0 420 lineto
+			320 -30 lineto
+			640 420 lineto
+			320 840 lineto
+			closepath
+		} def
+		/Heart {
+			570 850 moveto    490 850 400 800 380 690 curveto
+			350 800 260 850 180 850 curveto
+			80 850 -20 750 0 610 curveto
+			20 480 270 270 370 -20 curveto
+			460 260 690 400 750 610 curveto
+			780 750 670 850 570 850 curveto
+			closepath
+		} def
+		/Spade {
+			340 850 moveto    320 660 0 470 0 350 curveto
+			0 250 80 190 160 190 curveto
+			210 190 280 220 330 300 curveto
+			330 80 190 40 70 30 curveto
+			60 0 lineto    110 0 lineto
+			250 30 430 30 580 0 curveto
+			620 0 lineto    620 30 lineto
+			390 50 360 180 360 300 curveto
+			390 220 460 190 520 190 curveto
+			600 190 680 250 680 340 curveto
+			680 490 390 620 340 850 curveto
+			closepath
+		} def
+	end
+	/BuildGlyph {				%  stack = dictionary name
+		exch				%  font dictionary to top
+		begin				%  put on dictionary stack
+			dup			%  need copy of character name
+			Metrics			%  metrics dictionary on stack
+			exch get		%  obtain x displacement
+			0			%  y displacement to stack
+			2 index			%  character name to stack top
+			BoundingBoxes		%  bounding box dict on stack
+			exch get aload pop	%  bbox data onto stack
+			setcachedevice		%  tell font machinery
+			CharProcs exch get	%  get char drawing procedure
+			exec			%  execute drawing procedure
+			fill			%  fill shape
+		end				%  remove font dictionary
+	} def					%  end of BuildGlyph
+	/BuildChar {				%  stack = dictionary  code
+		1 index /Encoding get		%  encoding vector
+		exch get			%  get character name
+		1 index /BuildGlyph get		%  BuildGlyph proc to stack
+		exec				%  execute BuildGlyph
+	} def					%  end of BuildGlyph
+	currentdict				%  font dict to operand stack
+end						%  pop font from dict stack
+/Card-Suits exch definefont			%  define the font
+pop						%  pop font dictionary
+
+
+/Card-Suits findfont		%  find required font
+120 scalefont			%  scale to required size
+setfont				%  make it current font
+/Radius 200 def			%  define radius of circle
+/Letters [			%  define card letters
+	(C) (D) (H) (S)
+] def
+300 400 translate		%  origin to center of page
+0 1 11 {			%  start for loop
+	4 mod			%  normalize to modulo 4
+	0 Radius moveto		%  set current point
+	Letters exch get	%  get current show string
+	show 			%  image character
+	30 rotate		%  rotate coordinate system
+} for				%  end for loop
+showpage			%  display page

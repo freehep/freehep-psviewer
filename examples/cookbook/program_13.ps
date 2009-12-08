@@ -1,0 +1,68 @@
+%!PS-Adobe-2.0
+%%BoundingBox: 44 134 576 738
+%%Title: Blue Book Program 13, on page 183
+%%Creator: Adobe Systems Incorporated 
+%%CreationDate: Thu Dec 28 18:05:28 PST 1989
+%%EndComments
+
+/printposter
+  { /rows exch def
+	/columns exch def
+	/bigpictureproc exch def
+
+	newpath
+	  leftmargin botmargin moveto
+	  0 pageheight rlineto
+	  pagewidth 0 rlineto
+	  0 pageheight neg rlineto
+	closepath clip
+
+	leftmargin botmargin translate
+	
+	0 1 rows 1 sub
+	  { /rowcount exch def
+		0 1 columns 1 sub
+		  { /colcount exch def
+			gsave
+			  pagewidth colcount mul neg
+			  pageheight rowcount mul neg
+			  translate
+
+			  bigpictureproc
+			gsave showpage grestore
+			grestore
+		  } for
+	  } for
+  } def
+  
+/inch { 72 mul } def
+
+/leftmargin .5 inch def
+/botmargin .25 inch def
+/pagewidth 7.5 inch def
+/pageheight 10 inch def
+
+/salesign
+  { gsave
+  
+	  /Times-Roman findfont 500 scalefont setfont
+	  2.5 inch 11 inch moveto
+	  (SALE) show
+	  /Times-Roman findfont 350 scalefont setfont
+	  1.45 inch 4 inch moveto
+	  .5 setgray (50%) show
+	  0 setgray ( OFF) show
+	  newpath
+	    .5 inch 18 inch moveto
+	    22 inch 18 inch lineto
+        22 inch 2 inch lineto
+	    .5 inch 2 inch lineto
+	  closepath
+	  gsave
+	    .75 inch setlinewidth stroke
+	  grestore
+	  10 setlinewidth 1 setgray stroke
+	grestore
+  } def
+
+{salesign} 3 2 printposter

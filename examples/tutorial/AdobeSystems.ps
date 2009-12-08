@@ -1,0 +1,38 @@
+%
+% Adobe Systems
+%
+
+%%BoundingBox: 61 261 524 539
+
+/Helvetica-Bold findfont 45 scalefont setfont
+
+/oshow {
+    true
+    charpath
+    stroke
+} def
+
+/circleOfAdobe {
+    15 15 345 {
+        gsave
+            rotate
+            0 0 moveto
+            (Adobe) oshow
+        grestore
+    } for
+} def
+
+200 400 translate
+
+.5 setlinewidth
+circleOfAdobe
+
+0 0 moveto
+(AdobeSystems) true charpath
+gsave
+    1 setgray
+    fill
+grestore
+stroke
+
+showpage

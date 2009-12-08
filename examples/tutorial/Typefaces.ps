@@ -1,0 +1,32 @@
+%%BoundingBox: 72 309 166 561
+
+/vpos 550 def
+/word (Typefaces) def
+/choosefont { findfont 15 scalefont setfont } def
+/newline { /vpos vpos 15 sub def 72 vpos moveto } def
+/printword { choosefont word show newline } def
+
+72 vpos moveto
+/Times-Roman printword
+/Times-Bold printword
+/Times-Italic printword
+/Times-BoldItalic printword
+newline
+
+/Helvetica printword
+/Helvetica-Bold printword
+/Helvetica-Oblique printword
+/Helvetica-BoldOblique printword
+newline
+
+/Courier printword
+/Courier-Bold printword
+/Courier-Oblique printword
+/Courier-BoldOblique printword
+newline
+
+/Symbol printword
+/ZapfDingbats printword
+
+showpage
+

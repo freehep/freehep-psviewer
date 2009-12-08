@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>freehep-psviewer - FreeHEP PostScript Viewer - Usage</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+      </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="" id="bannerLeft">
+    
+            FreeHEP PostScript Viewer
+    
+            </a>
+                        <a href="http://java.freehep.org/" id="bannerRight">
+    
+                                    <img src="http://java.freehep.org/images/sm-freehep.gif" alt="" />
+    
+            </a>
+            <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        Last Published: 2009-12-08
+                      </div>
+            <div class="xright">            <a href="http://java.freehep.org/" class="externalLink">FreeHEP</a>
+            
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                   <h5>General</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="index.html">Introduction</a>
+          </li>
+              
+    <li class="none">
+                    <a href="license.html">License</a>
+          </li>
+              
+    <li class="none">
+                    <a href="team-list.html">Team</a>
+          </li>
+          </ul>
+              <h5>Examples</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="cookbook.html">Cookbook</a>
+          </li>
+              
+    <li class="none">
+                    <a href="tutorial.html">Tutorial</a>
+          </li>
+              
+    <li class="none">
+                    <a href="fonts.html">Fonts</a>
+          </li>
+              
+    <li class="none">
+                    <a href="freehep.html">FreeHEP</a>
+          </li>
+              
+    <li class="none">
+                    <a href="wired.html">WIRED</a>
+          </li>
+              
+    <li class="none">
+                    <a href="plots.html">Plots</a>
+          </li>
+          </ul>
+              <h5>User Info</h5>
+            <ul>
+              
+    <li class="none">
+              <strong>Usage</strong>
+        </li>
+              
+    <li class="none">
+                    <a href="project-summary.html">Summary</a>
+          </li>
+              
+    <li class="none">
+                    <a href="http://repo1.maven.org/maven2/org/freehep/freehep-psviewer/" class="externalLink">Jar File(s)</a>
+          </li>
+              
+    <li class="none">
+                    <a href="ReleaseNotes.html">Release Notes</a>
+          </li>
+              
+    <li class="none">
+                    <a href="dependencies.html">Dependencies</a>
+          </li>
+              
+    <li class="none">
+                    <a href="http://forum.freehep.org/" class="externalLink">Forum</a>
+          </li>
+              
+    <li class="none">
+                    <a href="http://bugs.freehep.org/browse/PSVIEWER" class="externalLink">Bug Reports</a>
+          </li>
+          </ul>
+              <h5>Developer Info</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="apidocs/index.html">ApiDocs</a>
+          </li>
+              
+    <li class="none">
+                    <a href="source-repository.html">Source Code</a>
+          </li>
+          </ul>
+                                           <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div class="section"><h2>Usage</h2>
+<p>You can use the PostScript Viewer in three forms: Stand-alone as an Application, as an Applet in a WebPage, or Embedded as a JPanel in an Application. Examples of how to do so are given below.</p>
+<div class="section"><h3>Stand-alone Application</h3>
+<p>Download the freehep-psviewer-{version}-standalone.jar, save the file and run it as:</p>
+<div class="source"><pre>java -jar freehep-psviewer-{version}-standalone.jar File.ps</pre>
+</div>
+<p>to open and show File.ps. Optional parameters can be given. Try:</p>
+<div class="source"><pre>java -jar freehep-psviewer-{version}-standalone.jar -h</pre>
+</div>
+</div>
+<div class="section"><h3>Applet</h3>
+<p>To use the viewer as an Applet, download the freehep-psviewer-{version}-standalone.jar and store it in the same directory as your postscript files. Then embed the following tag inside an html page:</p>
+<div class="source"><pre>    &lt;applet code = &quot;org.freehep.postscript.PSApplet.class&quot;
+        archive = &quot;freehep-psviewer-{version}-standalone.jar.jar&quot;
+        width = &quot;300&quot; 
+        height = &quot;300&quot;&gt;
+      &lt;param name=&quot;file&quot; value=&quot;File.ps&quot; /&gt;
+    &lt;/applet&gt;</pre>
+</div>
+<p>other examples are available from the <a href="index.html">introduction page</a>.</p>
+</div>
+<div class="section"><h3>Embedded in an Application</h3>
+<p>Add the freehep-psviewer-{version}-standalone.jar to your classpath and use the following code to embed the PSPanel into your application. You can also have a look at the sourcecode of PSViewer.</p>
+<div class="source"><pre>import java.awt.GridLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import org.freehep.postscript.PSInputFile;
+import org.freehep.postscript.PSPanel;
+import org.freehep.postscript.Processor;
+
+public class EmbeddedPSViewer {
+
+    public static void main(String[] args) throws Exception{
+        if (args.length != 2) {
+            System.out.println(&quot;Usage: EmbeddedPSViewer file1.ps file2.ps&quot;);
+            System.exit(1);
+        }
+                
+        // Create Panels
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(1,2));
+        PSPanel ps1 = new PSPanel();
+        panel.add(ps1);
+        PSPanel ps2 = new PSPanel();
+        panel.add(ps2);
+        
+        // Show Panel
+        JFrame frame = new JFrame(&quot;Embedded PSViewer&quot;);
+        frame.getContentPane().add(panel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1024, 800);
+        frame.setVisible(true);
+        
+        // Create processors and associate to panels and input files
+        Processor processor1 = new Processor(ps1);
+        processor1.setData(new PSInputFile(args[0]));
+        Processor processor2 = new Processor(ps2);
+        processor2.setData(new PSInputFile(args[1]));
+        
+        // Process
+        processor1.process();
+        processor2.process();
+    }
+}</pre>
+</div>
+</div>
+</div>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2001-2009
+    
+          FreeHEP
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>

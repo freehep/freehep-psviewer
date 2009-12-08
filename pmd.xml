@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="4.2.2" timestamp="2009-12-08T11:36:52.389">
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/dsc/DSC.java">
+<violation beginline="355" endline="355" begincolumn="46" endcolumn="52" rule="AvoidDuplicateLiterals" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.dsc" class="DSC" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#AvoidDuplicateLiterals" priority="3">
+The String literal &quot;[ \t]&quot; appears 6 times in this file; the first occurrence is on line 355
+</violation>
+<violation beginline="373" endline="373" begincolumn="43" endcolumn="59" rule="BooleanInstantiation" ruleset="Basic Rules" package="org.freehep.postscript.dsc" class="DSC" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#BooleanInstantiation" priority="3">
+Avoid instantiating Boolean objects; reference Boolean.TRUE or Boolean.FALSE or call Boolean.valueOf() instead.
+</violation>
+<violation beginline="417" endline="417" begincolumn="32" endcolumn="48" rule="BooleanInstantiation" ruleset="Basic Rules" package="org.freehep.postscript.dsc" class="DSC$NoArgs" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#BooleanInstantiation" priority="3">
+Avoid instantiating Boolean objects; reference Boolean.TRUE or Boolean.FALSE or call Boolean.valueOf() instead.
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/operators/FontOperator.java">
+<violation beginline="136" endline="136" begincolumn="60" endcolumn="71" rule="AvoidDuplicateLiterals" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.operators" class="FontOperator" method="makeFont" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#AvoidDuplicateLiterals" priority="3">
+The String literal &quot;FontMatrix&quot; appears 10 times in this file; the first occurrence is on line 136
+</violation>
+<violation beginline="170" endline="170" begincolumn="26" endcolumn="40" rule="AvoidDuplicateLiterals" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.operators" class="FontOperator" method="getCachedGlyph" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#AvoidDuplicateLiterals" priority="3">
+The String literal &quot;_CurrentGlyph&quot; appears 4 times in this file; the first occurrence is on line 170
+</violation>
+<violation beginline="188" endline="370" begincolumn="19" endcolumn="9" rule="NcssMethodCount" ruleset="Code Size Rules" package="org.freehep.postscript.operators" class="FontOperator" externalInfoUrl="http://pmd.sourceforge.net/rules/codesize.html#NcssMethodCount" priority="3">
+The method show() has an NCSS line count of 126
+</violation>
+<violation beginline="209" endline="209" begincolumn="79" endcolumn="91" rule="AvoidDuplicateLiterals" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.operators" class="FontOperator" method="show" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#AvoidDuplicateLiterals" priority="3">
+The String literal &quot;_ChangeFont&quot; appears 9 times in this file; the first occurrence is on line 209
+</violation>
+<violation beginline="244" endline="244" begincolumn="50" endcolumn="62" rule="AvoidDuplicateLiterals" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.operators" class="FontOperator" method="show" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#AvoidDuplicateLiterals" priority="3">
+The String literal &quot;_FontOffset&quot; appears 5 times in this file; the first occurrence is on line 244
+</violation>
+<violation beginline="429" endline="429" begincolumn="17" endcolumn="29" rule="UnnecessaryLocalBeforeReturn" ruleset="Design Rules" package="org.freehep.postscript.operators" class="FontOperator" method="stringWidth" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#UnnecessaryLocalBeforeReturn" priority="3">
+Consider simply returning the value vs storing it in local variable 'width'
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/operators/FormOperator.java">
+<violation beginline="47" endline="141" begincolumn="16" endcolumn="9" rule="NcssMethodCount" ruleset="Code Size Rules" package="org.freehep.postscript.operators" class="MakePattern" externalInfoUrl="http://pmd.sourceforge.net/rules/codesize.html#NcssMethodCount" priority="3">
+The method execute() has an NCSS line count of 58
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/operators/GeneralOperator.java">
+<violation beginline="316" endline="376" begincolumn="16" endcolumn="9" rule="NcssMethodCount" ruleset="Code Size Rules" package="org.freehep.postscript.operators" class="ForAll" externalInfoUrl="http://pmd.sourceforge.net/rules/codesize.html#NcssMethodCount" priority="3">
+The method execute() has an NCSS line count of 57
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/operators/GraphicsStateOperator.java">
+<violation beginline="424" endline="424" begincolumn="43" endcolumn="53" rule="AvoidDuplicateLiterals" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.operators" class="SetHSBColor" method="execute" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#AvoidDuplicateLiterals" priority="3">
+The String literal &quot;DeviceRGB&quot; appears 4 times in this file; the first occurrence is on line 424
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/operators/PaintingOperator.java">
+<violation beginline="340" endline="340" begincolumn="25" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.freehep.postscript.operators" class="ImageOperator" variable="interpolate" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'interpolate'.
+</violation>
+<violation beginline="340" endline="340" begincolumn="17" endcolumn="36" rule="SingularField" ruleset="Design Rules" package="org.freehep.postscript.operators" class="ImageOperator" variable="interpolate" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#SingularField" priority="4">
+Perhaps 'interpolate' could be replaced by a local variable.
+</violation>
+<violation beginline="342" endline="342" begincolumn="38" endcolumn="38" rule="FinalFieldCouldBeStatic" ruleset="Design Rules" package="org.freehep.postscript.operators" class="ImageOperator" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#FinalFieldCouldBeStatic" priority="4">
+This final field could be made static
+</violation>
+<violation beginline="348" endline="348" begincolumn="17" endcolumn="42" rule="SingularField" ruleset="Design Rules" package="org.freehep.postscript.operators" class="ImageOperator" variable="pixels" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#SingularField" priority="4">
+Perhaps 'pixels' could be replaced by a local variable.
+</violation>
+<violation beginline="403" endline="503" begincolumn="16" endcolumn="9" rule="NcssMethodCount" ruleset="Code Size Rules" package="org.freehep.postscript.operators" class="ImageOperator" externalInfoUrl="http://pmd.sourceforge.net/rules/codesize.html#NcssMethodCount" priority="3">
+The method handleImageParameters() has an NCSS line count of 74
+</violation>
+<violation beginline="433" endline="437" begincolumn="49" endcolumn="49" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.freehep.postscript.operators" class="ImageOperator" method="handleImageParameters" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="4">
+These nested if statements could be combined
+</violation>
+<violation beginline="454" endline="454" begincolumn="34" endcolumn="53" rule="AvoidCatchingNPE" ruleset="Strict Exception Rules" package="org.freehep.postscript.operators" class="ImageOperator" method="handleImageParameters" externalInfoUrl="http://pmd.sourceforge.net/rules/strictexception.html#AvoidCatchingNPE" priority="3">
+Avoid catching NullPointerException; consider removing the cause of the NPE.
+</violation>
+<violation beginline="506" endline="623" begincolumn="16" endcolumn="9" rule="NcssMethodCount" ruleset="Code Size Rules" package="org.freehep.postscript.operators" class="ImageOperator" externalInfoUrl="http://pmd.sourceforge.net/rules/codesize.html#NcssMethodCount" priority="3">
+The method execute() has an NCSS line count of 79
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/operators/PathOperator.java">
+<violation beginline="694" endline="760" begincolumn="16" endcolumn="9" rule="NcssMethodCount" ruleset="Code Size Rules" package="org.freehep.postscript.operators" class="UPath" externalInfoUrl="http://pmd.sourceforge.net/rules/codesize.html#NcssMethodCount" priority="3">
+The method execute() has an NCSS line count of 50
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/processor/ByteBuffer.java">
+<violation beginline="20" endline="20" begincolumn="17" endcolumn="23" rule="ConstructorCallsOverridableMethod" ruleset="Design Rules" package="org.freehep.postscript.processor" class="ByteBuffer" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#ConstructorCallsOverridableMethod" priority="3">
+Overridable method 'reset' called during object construction
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/processor/Processor.java">
+<violation beginline="52" endline="52" begincolumn="25" endcolumn="29" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.freehep.postscript.processor" class="Processor" variable="debug" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'debug'.
+</violation>
+<violation beginline="59" endline="59" begincolumn="32" endcolumn="39" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.freehep.postscript.processor" class="Processor" variable="listener" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'listener'.
+</violation>
+<violation beginline="192" endline="197" begincolumn="33" endcolumn="33" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.freehep.postscript.processor" class="Processor" method="step" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="4">
+These nested if statements could be combined
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/processor/Scanner.java">
+<violation beginline="74" endline="199" begincolumn="17" endcolumn="9" rule="NcssMethodCount" ruleset="Code Size Rules" package="org.freehep.postscript.processor" class="Scanner" externalInfoUrl="http://pmd.sourceforge.net/rules/codesize.html#NcssMethodCount" priority="3">
+The method nextObject() has an NCSS line count of 85
+</violation>
+<violation beginline="254" endline="330" begincolumn="17" endcolumn="9" rule="NcssMethodCount" ruleset="Code Size Rules" package="org.freehep.postscript.processor" class="Scanner" externalInfoUrl="http://pmd.sourceforge.net/rules/codesize.html#NcssMethodCount" priority="3">
+The method escapeChar() has an NCSS line count of 66
+</violation>
+<violation beginline="288" endline="288" begincolumn="38" endcolumn="47" rule="InefficientStringBuffering" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.processor" class="Scanner" method="escapeChar" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#InefficientStringBuffering" priority="3">
+Avoid concatenating nonliterals in a StringBuffer constructor or append().
+</violation>
+<violation beginline="294" endline="294" begincolumn="46" endcolumn="55" rule="InefficientStringBuffering" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.processor" class="Scanner" method="escapeChar" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#InefficientStringBuffering" priority="3">
+Avoid concatenating nonliterals in a StringBuffer constructor or append().
+</violation>
+<violation beginline="300" endline="300" begincolumn="54" endcolumn="63" rule="InefficientStringBuffering" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.processor" class="Scanner" method="escapeChar" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#InefficientStringBuffering" priority="3">
+Avoid concatenating nonliterals in a StringBuffer constructor or append().
+</violation>
+<violation beginline="450" endline="450" begincolumn="17" endcolumn="28" rule="UnnecessaryLocalBeforeReturn" ruleset="Design Rules" package="org.freehep.postscript.processor" class="Scanner" method="readName" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#UnnecessaryLocalBeforeReturn" priority="3">
+Consider simply returning the value vs storing it in local variable 'name'
+</violation>
+<violation beginline="477" endline="477" begincolumn="33" endcolumn="41" rule="PreserveStackTrace" ruleset="Design Rules" package="org.freehep.postscript.processor" class="Scanner" method="readEncoding" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#PreserveStackTrace" priority="3">
+Caught exception is rethrown, original stack trace may be lost
+</violation>
+<violation beginline="499" endline="499" begincolumn="33" endcolumn="41" rule="PreserveStackTrace" ruleset="Design Rules" package="org.freehep.postscript.processor" class="Scanner" method="readEncoding" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#PreserveStackTrace" priority="3">
+Caught exception is rethrown, original stack trace may be lost
+</violation>
+<violation beginline="538" endline="538" begincolumn="55" endcolumn="63" rule="SignatureDeclareThrowsException" ruleset="Strict Exception Rules" package="org.freehep.postscript.processor" class="Scanner" method="main" externalInfoUrl="http://pmd.sourceforge.net/rules/strictexception.html#SignatureDeclareThrowsException" priority="3">
+A method/constructor shouldn't explicitly throw java.lang.Exception
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/stacks/DictionaryStack.java">
+<violation beginline="47" endline="47" begincolumn="65" endcolumn="71" rule="AvoidDuplicateLiterals" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.stacks" class="DictionaryStack" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#AvoidDuplicateLiterals" priority="3">
+The String literal &quot;space&quot; appears 5 times in this file; the first occurrence is on line 47
+</violation>
+<violation beginline="294" endline="294" begincolumn="17" endcolumn="28" rule="ConstructorCallsOverridableMethod" ruleset="Design Rules" package="org.freehep.postscript.stacks" class="DictionaryStack" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#ConstructorCallsOverridableMethod" priority="3">
+Overridable method 'push' called during object construction
+</violation>
+<violation beginline="294" endline="294" begincolumn="17" endcolumn="28" rule="ConstructorCallsOverridableMethod" ruleset="Design Rules" package="org.freehep.postscript.stacks" class="DictionaryStack" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#ConstructorCallsOverridableMethod" priority="3">
+Overridable method 'push' called during object construction
+</violation>
+<violation beginline="295" endline="295" begincolumn="17" endcolumn="28" rule="ConstructorCallsOverridableMethod" ruleset="Design Rules" package="org.freehep.postscript.stacks" class="DictionaryStack" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#ConstructorCallsOverridableMethod" priority="3">
+Overridable method 'push' called during object construction
+</violation>
+<violation beginline="295" endline="295" begincolumn="17" endcolumn="28" rule="ConstructorCallsOverridableMethod" ruleset="Design Rules" package="org.freehep.postscript.stacks" class="DictionaryStack" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#ConstructorCallsOverridableMethod" priority="3">
+Overridable method 'push' called during object construction
+</violation>
+<violation beginline="296" endline="296" begincolumn="17" endcolumn="26" rule="ConstructorCallsOverridableMethod" ruleset="Design Rules" package="org.freehep.postscript.stacks" class="DictionaryStack" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#ConstructorCallsOverridableMethod" priority="3">
+Overridable method 'push' called during object construction
+</violation>
+<violation beginline="296" endline="296" begincolumn="17" endcolumn="26" rule="ConstructorCallsOverridableMethod" ruleset="Design Rules" package="org.freehep.postscript.stacks" class="DictionaryStack" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#ConstructorCallsOverridableMethod" priority="3">
+Overridable method 'push' called during object construction
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/types/PSCharStringDecoder.java">
+<violation beginline="22" endline="22" begincolumn="21" endcolumn="28" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.freehep.postscript.types" class="PSCharStringDecoder" variable="currentX" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'currentX'.
+</violation>
+<violation beginline="22" endline="22" begincolumn="31" endcolumn="38" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.freehep.postscript.types" class="PSCharStringDecoder" variable="currentY" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'currentY'.
+</violation>
+<violation beginline="22" endline="22" begincolumn="17" endcolumn="39" rule="SingularField" ruleset="Design Rules" package="org.freehep.postscript.types" class="PSCharStringDecoder" variable="currentX" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#SingularField" priority="4">
+Perhaps 'currentX' could be replaced by a local variable.
+</violation>
+<violation beginline="28" endline="28" begincolumn="26" endcolumn="28" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.freehep.postscript.types" class="PSCharStringDecoder" variable="sbY" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'sbY'.
+</violation>
+<violation beginline="28" endline="28" begincolumn="39" endcolumn="44" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.freehep.postscript.types" class="PSCharStringDecoder" variable="widthY" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'widthY'.
+</violation>
+<violation beginline="30" endline="30" begincolumn="17" endcolumn="36" rule="SingularField" ruleset="Design Rules" package="org.freehep.postscript.types" class="PSCharStringDecoder" variable="array" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#SingularField" priority="4">
+Perhaps 'array' could be replaced by a local variable.
+</violation>
+<violation beginline="38" endline="142" begincolumn="16" endcolumn="9" rule="NcssMethodCount" ruleset="Code Size Rules" package="org.freehep.postscript.types" class="PSCharStringDecoder" externalInfoUrl="http://pmd.sourceforge.net/rules/codesize.html#NcssMethodCount" priority="3">
+The method decode() has an NCSS line count of 91
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/types/PSDebugger.java">
+<violation beginline="39" endline="39" begincolumn="17" endcolumn="34" rule="SingularField" ruleset="Design Rules" package="org.freehep.postscript.types" class="PSDebugger" variable="stackPanel" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#SingularField" priority="4">
+Perhaps 'stackPanel' could be replaced by a local variable.
+</violation>
+<violation beginline="40" endline="40" begincolumn="17" endcolumn="35" rule="SingularField" ruleset="Design Rules" package="org.freehep.postscript.types" class="PSDebugger" variable="buttonPanel" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#SingularField" priority="4">
+Perhaps 'buttonPanel' could be replaced by a local variable.
+</violation>
+<violation beginline="91" endline="91" begincolumn="49" endcolumn="69" rule="AvoidPrintStackTrace" ruleset="Java Logging Rules" package="org.freehep.postscript.types" class="PSDebugger" method="actionPerformed" externalInfoUrl="http://pmd.sourceforge.net/rules/logging-java.html#AvoidPrintStackTrace" priority="3">
+Avoid printStackTrace(); use a logger call instead.
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/types/PSGState.java">
+<violation beginline="76" endline="76" begincolumn="17" endcolumn="30" rule="ConstructorCallsOverridableMethod" ruleset="Design Rules" package="org.freehep.postscript.types" class="PSGState" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#ConstructorCallsOverridableMethod" priority="3">
+Overridable method 'initGraphics' called during object construction
+</violation>
+<violation beginline="77" endline="77" begincolumn="17" endcolumn="27" rule="ConstructorCallsOverridableMethod" ruleset="Design Rules" package="org.freehep.postscript.types" class="PSGState" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#ConstructorCallsOverridableMethod" priority="3">
+Overridable method 'erasePage' called during object construction
+</violation>
+<violation beginline="359" endline="359" begincolumn="29" endcolumn="40" rule="ArrayIsStoredDirectly" ruleset="Security Code Guidelines" package="org.freehep.postscript.types" class="PSGState" method="setDash" externalInfoUrl="http://pmd.sourceforge.net/rules/sunsecure.html#ArrayIsStoredDirectly" priority="2">
+The user-supplied array 'dash' is stored directly.
+</violation>
+<violation beginline="359" endline="359" begincolumn="29" endcolumn="40" rule="ArrayIsStoredDirectly" ruleset="Security Code Guidelines" package="org.freehep.postscript.types" class="PSGState" method="setDash" externalInfoUrl="http://pmd.sourceforge.net/rules/sunsecure.html#ArrayIsStoredDirectly" priority="2">
+The user-supplied array 'dash' is stored directly.
+</violation>
+<violation beginline="466" endline="473" begincolumn="25" endcolumn="25" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.freehep.postscript.types" class="PSGState" method="setColorSpace" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="4">
+These nested if statements could be combined
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/types/PSInputFile.java">
+<violation beginline="79" endline="79" begincolumn="25" endcolumn="35" rule="PreserveStackTrace" ruleset="Design Rules" package="org.freehep.postscript.types" class="PSInputFile" method="init" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#PreserveStackTrace" priority="3">
+Caught exception is rethrown, original stack trace may be lost
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/types/PSRandom.java">
+<violation beginline="25" endline="25" begincolumn="17" endcolumn="29" rule="ConstructorCallsOverridableMethod" ruleset="Design Rules" package="org.freehep.postscript.types" class="PSRandom" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#ConstructorCallsOverridableMethod" priority="3">
+Overridable method 'setSeed' called during object construction
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/types/Pattern.java">
+<violation beginline="13" endline="13" begincolumn="24" endcolumn="26" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.freehep.postscript.types" class="Pattern" variable="log" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'log'.
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/types/UnicodeGlyphList.java">
+<violation beginline="50" endline="4396" begincolumn="1" endcolumn="1" rule="NcssTypeCount" ruleset="Code Size Rules" package="org.freehep.postscript.types" externalInfoUrl="http://pmd.sourceforge.net/rules/codesize.html#NcssTypeCount" priority="3">
+The type has an NCSS line count of 4216
+</violation>
+<violation beginline="62" endline="62" begincolumn="17" endcolumn="122" rule="IfStmtsMustUseBraces" ruleset="Braces Rules" package="org.freehep.postscript.types" class="UnicodeGlyphList" method="get" externalInfoUrl="http://pmd.sourceforge.net/rules/braces.html#IfStmtsMustUseBraces" priority="3">
+Avoid using if statements without curly braces
+</violation>
+<violation beginline="73" endline="2386" begincolumn="24" endcolumn="9" rule="NcssMethodCount" ruleset="Code Size Rules" package="org.freehep.postscript.types" class="UnicodeGlyphList" externalInfoUrl="http://pmd.sourceforge.net/rules/codesize.html#NcssMethodCount" priority="3">
+The method initAI() has an NCSS line count of 2275
+</violation>
+<violation beginline="2388" endline="4395" begincolumn="24" endcolumn="9" rule="NcssMethodCount" ruleset="Code Size Rules" package="org.freehep.postscript.types" class="UnicodeGlyphList" externalInfoUrl="http://pmd.sourceforge.net/rules/codesize.html#NcssMethodCount" priority="3">
+The method initJZ() has an NCSS line count of 1927
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/viewer/DebugTransformGraphics2D.java">
+<violation beginline="116" endline="116" begincolumn="26" endcolumn="40" rule="AvoidDuplicateLiterals" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.viewer" class="DebugTransformGraphics2D" method="setClip" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#AvoidDuplicateLiterals" priority="3">
+The String literal &quot;Clipped to : &quot; appears 4 times in this file; the first occurrence is on line 116
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/viewer/FixedTexturePaint.java">
+<violation beginline="74" endline="74" begincolumn="21" endcolumn="24" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="org.freehep.postscript.viewer" class="FixedTexturePaint" method="changeColor" variable="type" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
+Avoid unused local variables such as 'type'.
+</violation>
+<violation beginline="77" endline="77" begincolumn="28" endcolumn="40" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="org.freehep.postscript.viewer" class="FixedTexturePaint" method="changeColor" variable="dstColorModel" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
+Avoid unused local variables such as 'dstColorModel'.
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/viewer/FontCache.java">
+<violation beginline="32" endline="32" begincolumn="50" endcolumn="61" rule="AvoidDuplicateLiterals" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.viewer" class="FontCache" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#AvoidDuplicateLiterals" priority="3">
+The String literal &quot;Monospaced&quot; appears 4 times in this file; the first occurrence is on line 32
+</violation>
+<violation beginline="37" endline="37" begincolumn="49" endcolumn="59" rule="AvoidDuplicateLiterals" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.viewer" class="FontCache" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#AvoidDuplicateLiterals" priority="3">
+The String literal &quot;SansSerif&quot; appears 4 times in this file; the first occurrence is on line 37
+</violation>
+<violation beginline="42" endline="42" begincolumn="45" endcolumn="51" rule="AvoidDuplicateLiterals" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.viewer" class="FontCache" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#AvoidDuplicateLiterals" priority="3">
+The String literal &quot;Serif&quot; appears 4 times in this file; the first occurrence is on line 42
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/viewer/PSApplet.java">
+<violation beginline="80" endline="80" begincolumn="39" endcolumn="46" rule="AvoidDuplicateLiterals" ruleset="String and StringBuffer Rules" package="org.freehep.postscript.viewer" class="PSApplet" method="getParameterInfo" externalInfoUrl="http://pmd.sourceforge.net/rules/strings.html#AvoidDuplicateLiterals" priority="3">
+The String literal &quot;double&quot; appears 4 times in this file; the first occurrence is on line 80
+</violation>
+</file>
+<file name="/Users/duns/freehep/git/freehep-psviewer/src/main/java/org/freehep/postscript/viewer/PSViewer.java">
+<violation beginline="62" endline="62" begincolumn="55" endcolumn="63" rule="SignatureDeclareThrowsException" ruleset="Strict Exception Rules" package="org.freehep.postscript.viewer" class="PSViewer" method="main" externalInfoUrl="http://pmd.sourceforge.net/rules/strictexception.html#SignatureDeclareThrowsException" priority="3">
+A method/constructor shouldn't explicitly throw java.lang.Exception
+</violation>
+</file>
+</pmd>

@@ -1,0 +1,61 @@
+%!PS
+
+%%BoundingBox: 18 35 595 753
+
+%	This example appears in section "Listing Characters in a Font"
+%	in Chapter 14 - "PostScript Nine to Five".
+%
+
+/inch { 72 mul } def				%  define inch procedure
+/WhatFont /Symbol def			%  font to display
+/DisplaySize 24 def				%  size of displayed characters
+/Left    0.75 inch  def				%  left margin
+/Right   8.25 inch  def				%  right margin
+/Top     9.50 inch  def				%  top margin
+/Bottom  0.50 inch  def				%  bottom margin
+/BoxWidth  Right Left sub 16 div def
+/BoxHeight  Top Bottom sub 16 div def
+/Glyph 1 string def				%  string for one character
+/ColString 1 string def				%  column number
+/RowString (00) def				%  row base
+/LowerHex (0123456789abcdef) def		%  for translations
+0 1 16 {					%  draw grid of boxes
+	dup BoxWidth mul Left add Bottom moveto
+	dup BoxWidth mul Left add Top lineto
+	dup BoxHeight mul Bottom add Left exch moveto
+	dup BoxHeight mul Bottom add Right exch lineto
+} for
+stroke						%  stroke all the lines
+0.0 setgray					%  back to black
+/Courier findfont 16 scalefont setfont		%  font for addresses
+0 1 15 {					%  place addresses
+	/RowCol exch def
+	RowCol BoxWidth mul BoxWidth 4 div add Left add
+	Top 0.125 inch add moveto
+	ColString dup 0 LowerHex RowCol get put show
+	RowCol Top exch BoxHeight mul
+	BoxHeight 3 div 2 mul add sub
+	Left 0.5 inch sub exch moveto
+	RowString dup 0 LowerHex RowCol get put show
+} for
+/Courier-Bold findfont				%  font for title
+DisplaySize scalefont				%  scale to required size
+setfont						%  make current font
+WhatFont 128 string cvs dup			%  convert name of font
+stringwidth pop 8.5 inch exch sub 2 div		%  center title
+Top 0.75 inch add moveto show			%  display title
+WhatFont findfont				%  get font to display
+DisplaySize scalefont				%  scale to required size
+setfont						%  make current font
+0 1 15 {					%  work down the rows
+	/Row exch def
+	0 1 15 {				%  work across the columns
+		/Col exch def
+		Row 16 mul Col add		%  character number
+		Glyph exch 0 exch put		%  insert that character
+		Col BoxWidth mul BoxWidth 4 div add Left add
+		Top Row BoxHeight mul BoxHeight 3 div 2 mul add sub
+		moveto Glyph show		%  display glyph
+	} for
+} for
+showpage					%  display page

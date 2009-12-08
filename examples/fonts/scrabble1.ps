@@ -1,0 +1,112 @@
+%!PS
+
+%%BoundingBox: 29 209 587 697
+
+%	This example appears in section "A Derived Font with Color"
+%	in Chapter 10 - "Fonts".
+%
+%	Notes:		This example uses the font contained
+%			in the file "scrabble.ps".
+
+
+12 dict						%  create dictionary
+begin						%  place on dictionary stack
+	/FontName /ScrabbleTiles def		%  name of font
+	/LanguageLevel 2 def			%  uses Level 2 features
+	/TileSize 950 def			%  size of tile
+	/FontType 3 def				%  user-defined font
+						%  font transformation matrix
+	/FontMatrix [ 0.001 0 0 0.001 0 0 ] def
+						%  font bounding box
+	/FontBBox [0 0 TileSize TileSize] def
+	/Encoding 256 array def			%  define encoding vector
+	0 1 255 {
+		Encoding exch /.notdef put
+	} for
+	Encoding 65 [
+		/A /B /C /D /E
+		/F /G /H /I /J
+		/K /L /M /N /O
+		/P /Q /R /S /T
+		/U /V /W /X /Y /Z
+	] putinterval
+	/TileSize 950 def			%  define size of tile
+	/DrawTile {				%  stack = number letter
+		0.6666 setgray			%  do gray drawing first
+		0 0 TileSize TileSize rectfill
+		1.0 setgray			%  then white
+		0 0 30 TileSize rectfill
+		0 TileSize 30 sub TileSize 30 rectfill
+		0.0 setgray			%  then black
+    						%  image large letter
+		/Optima findfont 700 scalefont setfont
+		200 300 moveto show
+		0 0 TileSize TileSize rectstroke
+		0 0 TileSize 20 rectfill
+		TileSize 20 sub 0 20 TileSize rectfill
+    						%  image small number
+		/Palatino-Bold findfont 180 scalefont setfont
+		dup length			%  decide on placement
+		2 eq {
+			720 70 moveto show	%  two character number
+		} {
+			800 70 moveto show	%  one character number
+		} ifelse
+		0.3333 setgray			%  then dark gray
+		20 20 TileSize 40 sub 20 rectfill
+		TileSize 40 sub 20 20 TileSize 40 sub rectfill
+	} def
+	/CharProcs 27 dict def			%  character drawing procs
+	CharProcs begin				%  put on dictionary stack
+	/.notdef {} def
+	/A {  (1) (A) DrawTile } def  /B {  (2) (B) DrawTile } def
+	/C {  (3) (C) DrawTile } def  /D {  (3) (D) DrawTile } def
+	/E {  (1) (E) DrawTile } def  /F {  (3) (F) DrawTile } def
+	/G {  (4) (G) DrawTile } def  /H {  (3) (H) DrawTile } def
+	/I {  (1) (I) DrawTile } def  /J {  (8) (J) DrawTile } def
+	/K {  (4) (K) DrawTile } def  /L {  (1) (L) DrawTile } def
+	/M {  (3) (M) DrawTile } def  /N {  (1) (N) DrawTile } def
+	/O {  (1) (O) DrawTile } def  /P {  (3) (P) DrawTile } def
+	/Q { (10) (Q) DrawTile } def  /R {  (1) (R) DrawTile } def
+	/S {  (1) (S) DrawTile } def  /T {  (1) (T) DrawTile } def
+	/U {  (1) (U) DrawTile } def  /V {  (4) (V) DrawTile } def
+	/W {  (3) (W) DrawTile } def  /X {  (8) (X) DrawTile } def
+	/Y {  (3) (Y) DrawTile } def  /Z { (10) (Z) DrawTile } def
+	end					%  remove from dict stack
+	/BuildGlyph {
+		exch				%  font dict to top of stack
+		begin				%  place on dictionary stack
+			CharProcs		%  character procedures dict
+			exch			%  character name to stack
+			get			%  get character drawing proc
+			1000 0 setcharwidth 	%  set char width information
+			exec			%  execute drawing procedure
+		end 				%  remove font dictionary
+	} def
+	/BuildChar {				%  for compatibility
+		1 index				%  font dict to top of stack
+		/Encoding get			%  get encoding vector
+		exch				%  character code of stack
+		get				%  get character name
+		1 index				%  font dictionary of stack
+		/BuildGlyph get			%  get char interface proc
+		exec				%  execute it
+	} def
+	currentdict				%  font to operand stack
+end						%  remove from dict stack
+/ScrabbleTiles					%  name of font
+exch						%  get in correct order
+definefont					%  define the font
+pop						%  remove font dictionary
+
+/ScrabbleTiles findfont			%  obtain required font
+70 scalefont setfont			%  scale and make current
+30 0 translate				%  set origin
+0 350 moveto (SCRA) show
+(BBLE) show		%  show tiles
+					%  show other tiles
+0 630 moveto (F) show    0 560 moveto (O) show
+0 490 moveto (N) show    0 420 moveto (T) show
+420 490 moveto (T) show    420 420 moveto (I) show
+420 280 moveto (E) show    420 210 moveto (S) show
+showpage				%  display page

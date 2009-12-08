@@ -1,0 +1,8 @@
+org.freehep.postscript.device
+org.freehep.postscript.dsc
+org.freehep.postscript.errors
+org.freehep.postscript.operators
+org.freehep.postscript.processor
+org.freehep.postscript.stacks
+org.freehep.postscript.types
+org.freehep.postscript.viewer

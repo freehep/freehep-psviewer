@@ -1,0 +1,312 @@
+%!PS
+%%BoundingBox: 47 26 566 764
+
+%	This example appears in section "A Playing Cards Font"
+%	in Chapter 10 - "Fonts".
+%
+%	Notes:		This example uses the font contained
+%			in the file "spade.ps".
+
+12 dict						%  create font dictionary
+begin						%  font dict on dictionary stack
+	/FontName /Spades-Suit def		%  name of font--optional
+	/FontType 3 def				%  user-defined font
+						%  overall font bounding box
+	/FontBBox [ 50 50 950 750 ] def
+						%  font transformation matrix
+	/FontMatrix [ 0.001 0 0 0.001 0 0 ] def
+	/Encoding 256 array def			%  encoding vector
+	/Encoding 256 array def	%  define encoding vector
+	0 1 255 {				%  for 256 characters
+		Encoding exch /.notdef put	%  make not defined entry
+	} for
+	(0) 0 get				%  find code for "0"
+	Encoding exch				%  get Encoding
+	[
+		/Ten /.notdef /Two /Three /Four
+		/Five /Six /Seven /Eight /Nine
+	]
+	putinterval				%  insert ten names
+	(A) 0 get				%  find code for "A"
+	Encoding exch				%  get Encoding
+	/Ace put				%  Insert /Ace
+	/UniqueID 1 def				%  unique ID for font
+	/CardShape {
+	    0 425 moveto
+	    -20 235 -340 45 -340 -75 curveto
+	    -340 -175 -260 -235 -180 -235 curveto
+	    -130 -235 -60 -205 -10 -125 curveto
+	    -10 -345 -150 -385 -270 -395 curveto
+	    -280 -425 lineto
+	    -230 -425 lineto
+	    -90 -395 90 -395 240 -425 curveto
+	    280 -425 lineto
+	    280 -395 lineto
+	    50 -375 20 -245 20 -125 curveto
+	    50 -205 120 -235 180 -235 curveto
+	    260 -235 340 -175 340 -85 curveto
+	    340 65 50 195 0 425 curveto
+	    closepath
+	} def
+	/CharProcs 23 dict def			%  create dictionary
+	CharProcs begin				%  put on dictionary stack
+	/CardWidth  650 def
+	/CardHeight 900 def
+	/LeftEdge 750 CardWidth sub 2 div def
+	/RightEdge LeftEdge CardWidth add def
+	/BottomEdge 1000 CardHeight sub 2 div def
+	/TopEdge BottomEdge CardHeight add def
+	/VertMiddle 500 def
+	/HorMiddle 375 def
+	/Radius 72 def				%  radius for corners
+	/.notdef { } def			%  very important!!!
+	/NineTen     {  internal procedure    } def
+	/CardOutline {				%  define outline procedure
+		mark				%  push mark for later cleanup
+		HorMiddle BottomEdge moveto	%  set current point
+		RightEdge BottomEdge RightEdge VertMiddle Radius arcto
+		RightEdge TopEdge HorMiddle TopEdge Radius arcto
+		LeftEdge TopEdge LeftEdge VertMiddle Radius arcto
+		LeftEdge BottomEdge HorMiddle BottomEdge Radius arcto
+		closepath			%  finish shape
+		16 setlinewidth			%  fat line width
+		stroke				%  paint outline
+		cleartomark			%  remove jetsam from stack
+		PutSmall			%  place spots at corners
+	} def					%  end of definition
+	/PutSmall {				%  define procedure
+		gsave				%  remember graphics state
+			LeftEdge TopEdge translate  %  set origin
+			0.100 dup scale		%  scale small
+			500 -700 translate	%  move origin to middle
+			CardShape fill		%  fill the shape
+		grestore			%  restore graphics state
+		gsave				%  remember graphics state
+			RightEdge BottomEdge translate	%  set origin
+			0.100 dup scale		%  scale small
+			-500 700 translate	%  move origin to middle
+			1 -1 scale		%  flip coordinate system
+			CardShape fill		%  fill the shape
+		grestore			%  restore graphics state
+	} def					%  end of definition
+	/Ace {					%  define Ace procedure
+		CardOutline			%  draw card border
+		HorMiddle VertMiddle translate	%  origin to center of card
+		0.75 dup scale			%  set scale factor
+		CardShape fill			%  fill CardShape outline
+	} def
+	/Two {					%  define two procedure
+		CardOutline			%  draw card border
+		gsave				%  remember graphics state
+			HorMiddle		%  x position
+			TopEdge 160 sub		%  y position
+			translate		%  set origin
+			0.20 dup scale		%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+		gsave				%  remember graphics state
+			HorMiddle		%  x position
+			BottomEdge 160 add	%  y position
+			translate		%  set origin
+			0.20 dup neg scale	%  set scale for upside-down
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+	} def
+	/Three {				%  define Three procedure
+		Two				%  execute Two definition
+		gsave				%  remember graphics state
+			HorMiddle		%  x position
+			VertMiddle		%  y position
+			translate		%  set origin
+			0.20 dup scale		%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+	} def
+	/Four {					%  define Four procedure
+		CardOutline			%  draw card border
+		gsave				%  remember graphics state
+			LeftEdge CardWidth 4 div add  %  x position
+			TopEdge 160 sub translate  %  y position
+			0.20 dup scale		%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+		gsave				%  remember graphics state
+			RightEdge CardWidth 4 div sub  %  x position
+			TopEdge 160 sub translate  %  y position
+			0.20 dup scale		%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+		gsave				%  remember graphics state
+			LeftEdge CardWidth 4 div add  %  x position
+			BottomEdge 160 add translate  %  y position
+			0.20 dup neg scale	%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+		gsave				%  remember graphics state
+			LeftEdge CardWidth 4 div 3 mul add  %  x position
+			BottomEdge 160 add translate  %  y position
+			0.20 dup neg scale	%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+	} def
+	/Five {					%  define Five procedure
+		Four				%  execute Four definition
+		gsave				%  remember graphics state
+			HorMiddle		%  x position
+			VertMiddle		%  y position
+			translate		%  set origin
+			0.20 dup scale		%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+	} def
+	/Six {					%  define Six procedure
+		Four				%  execute Four definition
+		gsave				%  remember graphics state
+			LeftEdge CardWidth 4 div add  %  x position
+			VertMiddle 		%  y position
+			translate 		%  set origin
+			0.20 dup scale		%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+		gsave				%  remember graphics state
+			RightEdge CardWidth 4 div sub  %  x position
+			VertMiddle 		%  y position
+			translate 		%  set origin
+			0.20 dup scale		%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+	} def
+	/Seven {				%  define Seven procedure
+		Six				%  execute Six definition
+		gsave				%  remember graphics state
+			HorMiddle 		%  x position
+			TopEdge CardHeight 3 div sub  %  y position
+			translate 		%  set origin
+			0.20 dup scale		%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+	} def
+	/Eight {				%  define Eight procedure
+		Seven				%  execute Seven definition
+		gsave				%  remember graphics state
+			HorMiddle 		%  x position
+			BottomEdge CardHeight 3 div add  %  y position
+			translate 		%  set origin
+			0.20 dup neg scale	%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+			grestore		%  restore graphics state
+	} def
+	/NineTen {				%  define NineTen procedure
+		Four				%  execute Four definition
+		gsave				%  remember graphics state
+			LeftEdge CardWidth 4 div add  %  x position
+			TopEdge 350 sub		%  y position
+			translate		%  set origin
+			0.20 dup scale		%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+		gsave				%  remember graphics state
+			RightEdge CardWidth 4 div sub  %  x position
+			TopEdge 350 sub		%  y position
+			translate		%  set origin
+			0.20 dup scale		%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+		gsave				%  remember graphics state
+			LeftEdge CardWidth 4 div add  %  x position
+			BottomEdge 350 add	%  y position
+			translate		%  set origin
+			0.20 dup neg scale	%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+		gsave				%  remember graphics state
+			RightEdge CardWidth 4 div sub  %  x position
+			BottomEdge 350 add	%  y position
+			translate		%  set origin
+			0.20 dup neg scale	%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+	} def
+	/Nine {					%  define Nine procedure
+		NineTen				%  execute NineTen definition
+		gsave				%  remember graphics state
+			HorMiddle VertMiddle translate  %  translate middle spot
+			0.20 dup scale		%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+	} def
+	/Ten {					%  define Ten procedure
+		NineTen				%  execute NineTen definition
+		gsave				%  remember graphics state
+			HorMiddle		%  x position
+			TopEdge CardHeight 4 div sub  %  y position
+			translate		%  translate for middle spot
+			0.20 dup scale		%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+		gsave				%  remember graphics state
+			HorMiddle		%  x position
+			BottomEdge CardHeight 4 div add  %  y position
+			translate		%  translate for middle spot
+			0.20 dup neg scale	%  set scale factor
+			CardShape fill		%  draw and fill CardShape
+		grestore			%  restore graphics state
+	} def
+	end					%  remove from dict stack
+	/BuildGlyph {				%  stack = dictionary name
+	exch					%  font dictionary to top
+	begin					%  put on dictionary stack
+		dup /.notdef eq {		%  if /.notdef
+			0 0 0 0 0 0 setcachedevice  %  zero size character
+		} {
+			CharProcs exch get	%  get character procedure
+			750 0			%  width and height
+			0 0 750 1000		%  bounding box
+			setcachedevice		%  tell font machinery
+		} ifelse
+		CharProcs begin			%  put on dictionary stack
+			exec			%  execute character procedure
+		end				%  remove CharProcs
+	end					%  remove font dictionary
+	} def					%  end of BuildGlyph
+	/BuildChar {				%  stack = dictionary code
+	exch					%  font dictionary to top
+	begin					%  put on dictionary stack
+		Encoding			%  get encoding vector
+		exch				%  swap with character code
+		get				%  get character name
+		dup /.notdef eq {		%  if /.notdef
+			0 0 0 0 0 0 setcachedevice  %  zero size character
+		} {
+			CharProcs exch get	%  get character procedure
+			750 0			%  width and height
+			0 0 750 1000		%  bounding box
+			setcachedevice		%  tell font machinery
+		} ifelse
+		CharProcs begin			%  put on dictionary stack
+			exec			%  execute character procedure
+		end				%  remove CharProcs
+	end					%  remove font dictionary
+	} def					%  end BuildChar
+	currentdict				%  font dict to operand stack
+end						%  pop font from dict stack
+/Spades-Suit exch definefont			%  define the font
+pop						%  pop font dict from operand stack
+
+
+/CardChar [ (A) (2) (3) (4) (5) (6) (7) (8) (9) (0) ] def
+/Spades-Suit findfont			%  find required font
+150 scalefont				%  scale to required size
+setfont					%  make it current font
+250 320 translate			%  move origin for showing
+0 1 9 {					%  start for loop
+	dup				%  copy multiplier
+	360 10 div mul neg 54 add	%  compute angle
+	dup				%  copy angle
+	cos 220 mul			%  compute x position
+	exch sin 300 mul		%  compute y position
+	moveto				%  set current point
+	CardChar exch get		%  get character to image
+	show				%  show that character
+} for					%  end loop
+showpage				%  display page

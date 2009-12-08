@@ -1,0 +1,22 @@
+%%BoundingBox: 245 185 355 455
+
+/doACircle {
+    0 0 54 0 360 arc 
+    stroke        
+} def
+
+/doAnEllipse {
+    1 .75 scale
+    doACircle
+    stroke
+} def
+
+300 400 translate
+doACircle
+
+4 {
+   0 -72 translate
+   doAnEllipse
+} repeat
+
+showpage

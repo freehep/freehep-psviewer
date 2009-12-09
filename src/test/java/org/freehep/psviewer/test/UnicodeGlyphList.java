@@ -1,21 +1,22 @@
 // Copyright FreeHEP, 2009
-package org.freehep.postscript.types;
+package org.freehep.psviewer.test;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class UnicodeGlyphList {
-
 	private static Map<String, Character> list;
-
+	
 	static {
-//		System.err.println("LongList");
-		list = new HashMap<String, Character>(4500);
+		System.err.println("LongList");
+
+		list = new TreeMap<String, Character>();
 		// NOTE: method longer than 64K, split into two
 		initAI();
 		initJZ();
 		initZapfDingbats();
-//		System.err.println("L "+list.size());
+//		System.err.println("L "+list.size());		
 	}
 	
 	private UnicodeGlyphList() {
@@ -27,6 +28,13 @@ public class UnicodeGlyphList {
 		return c.charValue();
 	}
 	
+	/**
+	 * @return
+	 */
+	public static Set<String> keySet() {
+		return list.keySet();
+	}
+
 	/*
 	 http://www.adobe.com/devnet/opentype/archives/glyphlist.txt
 	 # ###################################################################################

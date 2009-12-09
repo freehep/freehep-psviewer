@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * 
  * @author Mark Donszelmann (Mark.Donszelmann@gmail.com)
  */
 public class UnicodeShortGlyphList {
@@ -13,17 +13,21 @@ public class UnicodeShortGlyphList {
 	private static Map<String, Character> list;
 
 	static {
-//		System.err.println("ShortList");
+		// System.err.println("ShortList");
 		list = new HashMap<String, Character>(600);
 		init();
 	}
 
 	private UnicodeShortGlyphList() {
 	}
-	
+
 	public static char get(String name) {
 		Character c = list.get(name);
-		return c != null ? c.charValue() : UnicodeGlyphList.get(name);
+		if (c == null) {
+			c = new Character(UnicodeGlyphProperties.get(name));
+			list.put(name, c);
+		}
+		return c.charValue();
 	}
 
 	private static void init() {

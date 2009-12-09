@@ -8,7 +8,6 @@ import java.util.TreeMap;
 import org.freehep.postscript.stacks.DictionaryStack;
 import org.freehep.postscript.types.PSArray;
 import org.freehep.postscript.types.PSDictionary;
-import org.freehep.postscript.types.UnicodeGlyphList;
 
 /**
  * 

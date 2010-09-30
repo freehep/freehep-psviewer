@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to="postscript">
+	<inherits name='com.google.gwt.user.User' />
+
+	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+
+	<!-- This will give us shorter obfuscated CSS class names. We guarantee 
+		that there will be no class names that will conflict with /M.+/ -->
+	<set-configuration-property name="CssResource.obfuscationPrefix"
+		value="M" />
+
+	<entry-point class='org.freehep.postscript.gwt.PostScript' />
+
+	<source path='gwt' />
+</module>

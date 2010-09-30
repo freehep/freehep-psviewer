@@ -64,6 +64,7 @@
 		<mavenVersion>2.0.9</mavenVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<gwt.version>2.0.4</gwt.version>
 		<maven.compiler.source>1.5</maven.compiler.source>
 		<maven.compiler.target>1.5</maven.compiler.target>
 	</properties>
@@ -90,6 +91,7 @@
 
 	<build>
 		<defaultGoal>install</defaultGoal>
+		<outputDirectory>target/${project.artifactId}-${project.version}/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -106,32 +108,21 @@
 				<version>2.0</version>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>1.4</version>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>1.2</version>
 				<executions>
 					<execution>
 						<goals>
-							<goal>shade</goal>
+							<goal>compile</goal>
+							<goal>generateAsync</goal>
+							<!-- <goal>test</goal> -->
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<shadedArtifactAttached>true</shadedArtifactAttached>
-					<shadedClassifierName>standalone</shadedClassifierName>
-					<transformers>
-						<transformer
-							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-							<manifestEntries>
-								<Main-Class>org.freehep.postscript.viewer.PSViewer</Main-Class>
-							</manifestEntries>
-						</transformer>
-					</transformers>
-					<artifactSet>
-						<excludes>
-							<exclude>junit:junit</exclude>
-						</excludes>
-					</artifactSet>
+					<module>org.freehep.postscript.gwt.PostScript</module>
+					<runTarget>org.freehep.postscript/PostScript.html</runTarget>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -169,6 +160,19 @@
 			<artifactId>junit</artifactId>
 			<version>4.8.1</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>${gwt.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

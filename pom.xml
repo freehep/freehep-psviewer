@@ -63,6 +63,7 @@
 	<properties>
 		<mavenVersion>2.0.9</mavenVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<gwt.version>2.0.4</gwt.version>
 		<maven.compiler.source>1.5</maven.compiler.source>
 		<maven.compiler.target>1.5</maven.compiler.target>
@@ -129,8 +130,9 @@
 					</transformers>
 					<artifactSet>
 						<excludes>
-                            <exclude>junit:junit</exclude>
-                            <exclude>com.google.gwt:gwt-servlet</exclude>
+							<exclude>junit:junit</exclude>
+							<exclude>com.google.gwt:gwt-user</exclude>
+							<exclude>com.google.gwt:gwt-servlet</exclude>
 						</excludes>
 					</artifactSet>
 				</configuration>
@@ -190,6 +192,29 @@
 		<profile>
 			<id>gwt</id>
 			<build>
+<!--
+				<outputDirectory>target/${project.artifactId}-${project.version}/WEB-INF/classes</outputDirectory>
+-->
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<version>1.2</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>compile</goal>
+									<goal>generateAsync</goal>
+									<!-- <goal>test</goal> -->
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<module>org.freehep.postscript.gwt.PostScript</module>
+							<runTarget>org.freehep.postscript/PostScript.html</runTarget>
+						</configuration>
+					</plugin>
+				</plugins>
 			</build>
 		</profile>
 		<profile>

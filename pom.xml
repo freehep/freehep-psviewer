@@ -64,6 +64,7 @@
 		<mavenVersion>2.0.9</mavenVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<gwt.version>2.0.4</gwt.version>
 		<maven.compiler.source>1.5</maven.compiler.source>
 		<maven.compiler.target>1.5</maven.compiler.target>
 	</properties>
@@ -130,6 +131,9 @@
 					<artifactSet>
 						<excludes>
 							<exclude>junit:junit</exclude>
+							<!-- to be removed when GWT moves to its own module -->
+                            <exclude>com.google.gwt:gwt-user</exclude>
+                            <exclude>com.google.gwt:gwt-servlet</exclude>
 						</excludes>
 					</artifactSet>
 				</configuration>
@@ -170,6 +174,21 @@
 			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- to be removed when gwt goes in its own module -->
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>${gwt.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 	<profiles>

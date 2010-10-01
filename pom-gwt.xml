@@ -121,7 +121,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<module>org.freehep.postscript.gwt.PostScript</module>
+					<module>org.freehep.postscript.PostScript</module>
 					<runTarget>org.freehep.postscript/PostScript.html</runTarget>
 				</configuration>
 			</plugin>

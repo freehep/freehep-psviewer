@@ -12,7 +12,5 @@
 -->
 	<entry-point class='org.freehep.postscript.gwt.PostScript' />
 
-<!-- 
 	<source path='gwt' />
--->
 </module>

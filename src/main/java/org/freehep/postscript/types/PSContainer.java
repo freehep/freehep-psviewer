@@ -1,4 +1,4 @@
-// Copyright FreeHEP 2009
+// Copyright FreeHEP 2009-2010
 package org.freehep.postscript.types;
 
 import java.awt.Graphics;

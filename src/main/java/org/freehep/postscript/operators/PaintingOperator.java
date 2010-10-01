@@ -1,4 +1,4 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.operators;
 
 import java.awt.geom.AffineTransform;
@@ -337,7 +337,7 @@ class ImageOperator extends PaintingOperator {
 	private boolean multi;
 	private int bitsPerComponent;
 	private PSPackedArray decode;
-	private boolean interpolate;
+	protected boolean interpolate;
 
 	private final int dataSize = 8;
 	private BufferedImage image;

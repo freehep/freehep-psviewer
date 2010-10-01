@@ -1,10 +1,9 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.processor;
 
 import java.applet.Applet;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -49,14 +48,12 @@ public class Processor implements DebuggerListener {
 	private double sy = 1.0;
 	private double tx = 0.0;
 	private double ty = 0.0;
-	private boolean debug = false;
 	private PSDebugger debugger;
 
 	private DictionaryStack dictStack;
 	private ExecutableStack execStack;
 	private OperandStack operandStack;
 	private GStateStack gstateStack;
-	private ActionListener listener;
 	private long currentPageNo;
 
 	public Processor(JPanel panel) {

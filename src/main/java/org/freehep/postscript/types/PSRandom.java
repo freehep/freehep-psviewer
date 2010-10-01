@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
 import java.util.Random;
@@ -11,7 +11,7 @@ import java.util.Random;
  *          2006/09/12 21:44:14 duns $
  */
 public class PSRandom extends Random {
-
+	private static final long serialVersionUID = 1L;
 	private long seed;
 	private final static long multiplier = 0x5DEECE66DL;
 	private final static long addend = 0xBL;

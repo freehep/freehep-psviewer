@@ -67,8 +67,8 @@
 		<gwt.version>2.0.4</gwt.version>
 		<gwt.graphics>/Users/duns/Dropbox/cern/gwt-graphics-0.9.7.jar</gwt.graphics>
 
-		<maven.compiler.source>1.5</maven.compiler.source>
-		<maven.compiler.target>1.5</maven.compiler.target>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
 	</properties>
 
 	<distributionManagement>

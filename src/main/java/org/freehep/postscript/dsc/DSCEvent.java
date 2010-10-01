@@ -1,4 +1,4 @@
-// Copyright 2004, FreeHEP.
+// Copyright 2004-2010, FreeHEP.
 package org.freehep.postscript.dsc;
 
 import java.util.EventObject;
@@ -11,6 +11,7 @@ import java.util.EventObject;
  *          2006/12/08 09:03:07 duns $
  */
 public class DSCEvent extends EventObject {
+	private static final long serialVersionUID = 1L;
 
 	public enum State {
 		PARSED, UNPARSED, ERROR

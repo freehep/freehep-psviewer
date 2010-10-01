@@ -1,4 +1,4 @@
-// Copyright (c) 2009, FreeHEP
+// Copyright (c) 2009-2010, FreeHEP
 package org.freehep.postscript.viewer;
 
 import java.applet.Applet;
@@ -15,6 +15,8 @@ import java.awt.print.PrinterGraphics;
  * @author Mark Donszelmann
  */
 public abstract class BufferedApplet extends Applet implements java.io.Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private Graphics offScreenGraphics;
 

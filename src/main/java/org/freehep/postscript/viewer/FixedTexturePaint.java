@@ -1,4 +1,4 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.viewer;
 
 import java.awt.Color;
@@ -71,10 +71,10 @@ public class FixedTexturePaint extends TexturePaint {
 			int newColor) {
 		int width = src.getWidth();
 		int height = src.getHeight();
-		int type = src.getType();
+//		int type = src.getType();
 		WritableRaster srcRaster = src.getRaster();
 
-		ColorModel dstColorModel = src.getColorModel();
+//		ColorModel dstColorModel = src.getColorModel();
 		BufferedImage dst = new BufferedImage(src.getWidth(), src.getHeight(),
 				BufferedImage.TYPE_INT_ARGB);
 		WritableRaster dstRaster = dst.getRaster();

@@ -1,4 +1,4 @@
-// Copyright 2009, FreeHEP.
+// Copyright 2009-2010, FreeHEP.
 package org.freehep.postscript.viewer;
 
 import java.awt.AWTEvent;
@@ -23,7 +23,7 @@ import org.freehep.postscript.types.PSContainer;
  * @author Mark Donszelmann
  */
 public class PSApplet extends BufferedApplet implements PSContainer {
-
+	private static final long serialVersionUID = 1L;
 	private static final String FILE = "file";
 	private static final String PAGE = "page";
 	private static final String SX = "sx";

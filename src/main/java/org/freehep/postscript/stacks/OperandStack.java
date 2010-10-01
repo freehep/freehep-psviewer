@@ -1,4 +1,4 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.stacks;
 
 import org.freehep.postscript.dsc.DSC;
@@ -28,6 +28,7 @@ import org.freehep.postscript.types.PSString;
  * @author Mark Donszelmann
  */
 public class OperandStack extends PostScriptStack {
+	private static final long serialVersionUID = 1L;
 	private Processor processor;
 	private PSGState gstate;
 	private final boolean secure;

@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.stacks;
 
 import org.freehep.postscript.types.PSGState;
@@ -11,6 +11,8 @@ import org.freehep.postscript.types.PSGState;
  *          829a8d93169a 2006/12/08 09:03:07 duns $
  */
 public class GStateStack extends PostScriptStack {
+
+	private static final long serialVersionUID = 1L;
 
 	public GStateStack() {
 		super();

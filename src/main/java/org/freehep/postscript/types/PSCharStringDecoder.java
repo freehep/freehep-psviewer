@@ -1,4 +1,4 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
 import java.io.IOException;
@@ -19,13 +19,13 @@ import org.freehep.util.io.EEXECDecryption;
 public class PSCharStringDecoder {
 	private Logger log = Logger.getLogger("org.freehep.postscript");
 
-	private int currentX, currentY;
+	protected int currentX, currentY;
 
 	private InputStream decryption;
 
 	private List<PSObject> charProc;
 
-	private int sbX, sbY, widthX, widthY;
+	protected int sbX, sbY, widthX, widthY;
 
 	private PSPackedArray array;
 

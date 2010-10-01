@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.stacks;
 
 import org.freehep.postscript.types.PSFile;
@@ -11,6 +11,7 @@ import org.freehep.postscript.types.PSFile;
  *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class ExecutableStack extends PostScriptStack {
+	private static final long serialVersionUID = 1L;
 
 	public PSFile getCurrentFile() {
 		for (int i = elementCount - 1; i >= 0; i--) {

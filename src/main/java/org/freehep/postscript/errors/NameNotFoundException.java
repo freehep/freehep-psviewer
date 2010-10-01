@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.errors;
 
 /**
@@ -9,6 +9,7 @@ package org.freehep.postscript.errors;
  *          17245790f2a9 2006/09/12 21:44:14 duns $
  */
 public class NameNotFoundException extends Exception {
+	private static final long serialVersionUID = 1L;
 
 	public NameNotFoundException(String msg) {
 		super(msg);

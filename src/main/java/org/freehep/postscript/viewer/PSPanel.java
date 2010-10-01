@@ -1,4 +1,4 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.viewer;
 
 import java.awt.Graphics;
@@ -15,6 +15,7 @@ import org.freehep.postscript.types.PSContainer;
  */
 public class PSPanel extends BufferedPanel implements PSContainer {
 
+	private static final long serialVersionUID = 1L;
 	private List<RefreshListener> listeners = new ArrayList<RefreshListener>();
 
 	public PSPanel() {

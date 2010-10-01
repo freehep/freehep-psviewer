@@ -1,4 +1,4 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.stacks;
 
 import java.util.Stack;
@@ -15,6 +15,7 @@ import org.freehep.postscript.types.PSObject;
  * @author Mark Donszelmann
  */
 public class PostScriptStack extends Stack<Object> {
+	private static final long serialVersionUID = 1L;
 	protected Logger log = Logger.getLogger("org.freehep.postscript");
 
 	protected int marker = -1;

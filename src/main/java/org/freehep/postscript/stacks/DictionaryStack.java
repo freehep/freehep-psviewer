@@ -1,4 +1,4 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.stacks;
 
 import org.freehep.postscript.operators.ArithmeticOperator;
@@ -38,6 +38,7 @@ import org.freehep.postscript.types.PSObject;
  * @author Mark Donszelmann
  */
 public class DictionaryStack extends PostScriptStack implements NameLookup {
+	private static final long serialVersionUID = 1L;
 	private static final String notdef = ".notdef";
 
 	private static String[] standardEncodingArray = { notdef, notdef, notdef,

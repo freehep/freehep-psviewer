@@ -3,6 +3,7 @@
 	<inherits name='com.google.gwt.user.User' />
 
 	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+	<inherits name='org.vaadin.gwtgraphics.GWTGraphics' />
 
 	<!-- This will give us shorter obfuscated CSS class names. We guarantee 
 		that there will be no class names that will conflict with /M.+/ -->

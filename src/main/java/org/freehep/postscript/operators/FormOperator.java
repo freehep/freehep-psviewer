@@ -1,13 +1,11 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.operators;
 
-import java.awt.Paint;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-
+import org.freehep.postscript.Image;
+import org.freehep.postscript.NoninvertibleTransformException;
+import org.freehep.postscript.Paint;
+import org.freehep.postscript.Point;
+import org.freehep.postscript.Rectangle;
 import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSDictionary;
@@ -51,8 +49,8 @@ class MakePattern extends FormOperator {
 				return true;
 			}
 
-			AffineTransform m = new AffineTransform(os.popPackedArray()
-					.toDoubles());
+			org.freehep.postscript.Transform m = os.gstate().device().createTransform(os
+					.popPackedArray().toDoubles());
 			PSDictionary d = os.popDictionary();
 
 			// FIXME: no checking
@@ -74,26 +72,26 @@ class MakePattern extends FormOperator {
 				os.push(d);
 				os.gsave();
 
-				AffineTransform inverse = new AffineTransform();
+				org.freehep.postscript.Transform inverse = os.gstate().device().createTransform();
 				try {
 					inverse = m.createInverse();
 				} catch (NoninvertibleTransformException e) {
 					log.warning("Internal MakePattern Error");
 				}
 
-				Point2D bb = inverse.deltaTransform(
-						new Point2D.Double(1.0, 1.0), null);
+				Point bb = inverse.deltaTransform(os.gstate().device().createPoint(1.0, 1.0),
+						null);
 				double w = bbox[2] - bbox[0] + bb.getX();
 				double h = bbox[3] - bbox[1] + bb.getY();
 
-				Point2D biSize = m.deltaTransform(new Point2D.Double(xStep,
-						yStep), null);
+				Point biSize = m.deltaTransform(
+						os.gstate().device().createPoint(xStep, yStep), null);
 				int biWidth = (int) biSize.getX();
 				int biHeight = (int) biSize.getY();
-				BufferedImage bi = os.gstate()
+				Image bi = os.gstate()
 						.convertToImage(biWidth, biHeight);
 
-				AffineTransform ctm = os.gstate().getTransform();
+				org.freehep.postscript.Transform ctm = os.gstate().getTransform();
 
 				os.gstate().setTransform(m);
 				// FIXME: offset may not be completely correct (HEART2)
@@ -101,11 +99,11 @@ class MakePattern extends FormOperator {
 
 				os.gstate().newPath();
 				os.gstate()
-						.clip(new Rectangle2D.Double(bbox[0], bbox[1], w, h));
-				Point2D offset = inverse.transform(new Point2D.Double(bbox[0],
-						bbox[1]), null);
-				Rectangle2D box = new Rectangle2D.Double(offset.getX(), offset
-						.getY(), biWidth, biHeight);
+						.clip(os.gstate().device().createRectangle(bbox[0], bbox[1], w, h));
+				Point offset = inverse.transform(
+						os.gstate().device().createPoint(bbox[0], bbox[1]), null);
+				Rectangle box = os.gstate().device().createRectangle(offset.getX(),
+						offset.getY(), biWidth, biHeight);
 				Paint p = new FixedTexturePaint(os, ctm, bi, box);
 
 				os.execStack().pop();
@@ -207,7 +205,7 @@ class ExecForm extends FormOperator {
 					return true;
 				}
 
-				AffineTransform matrix = new AffineTransform(form
+				org.freehep.postscript.Transform matrix = os.gstate().device().createTransform(form
 						.getPackedArray("Matrix").toDoubles());
 				double[] bbox = form.getPackedArray("BBox").toDoubles();
 				PSPackedArray proc = (PSPackedArray) form.getPackedArray(
@@ -217,8 +215,7 @@ class ExecForm extends FormOperator {
 				// gsave, concat matrix, rectclip bbox
 				os.gsave();
 				os.gstate().transform(matrix);
-				os.gstate().clip(
-						new Rectangle2D.Double(bbox[0], bbox[1], bbox[2]
+				os.gstate().clip(os.gstate().device().createRectangle(bbox[0], bbox[1], bbox[2]
 								- bbox[0], bbox[3] - bbox[1]));
 
 				os.execStack().pop();

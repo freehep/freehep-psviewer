@@ -1,8 +1,7 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
-import java.awt.Paint;
-
+import org.freehep.postscript.Paint;
 import org.freehep.postscript.stacks.OperandStack;
 
 /**

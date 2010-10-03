@@ -1,16 +1,13 @@
-// Copyright 2004-2009, FreeHEP.
+// Copyright 2004-2010, FreeHEP.
 package org.freehep.postscript.types;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.freehep.postscript.device.ImageDevice;
+import org.freehep.postscript.Device;
+import org.freehep.postscript.GraphicsContext;
+import org.freehep.postscript.Transform;
 import org.freehep.postscript.dsc.DSCEvent;
 import org.freehep.postscript.dsc.DSCEventListener;
 import org.freehep.postscript.viewer.RefreshListener;
@@ -18,16 +15,21 @@ import org.freehep.postscript.viewer.RefreshListener;
 /*
  * @author Mark Donszelmann
  */
-public abstract class PSDevice implements DSCEventListener {
+public abstract class PSDevice implements Device, DSCEventListener {
 
 	private boolean valid = false;
-	private AffineTransform mirror = null;
-	private AffineTransform boundingBox = new AffineTransform();
-	private AffineTransform pageBoundingBox = null;
-	private AffineTransform transform = new AffineTransform();
-	private Graphics2D graphics;
+	private Transform mirror = null;
+	private Transform boundingBox = null;
+	private Transform pageBoundingBox = null;
+	private Transform transform = null;
+	private GraphicsContext graphics;
 
 	private List<RefreshListener> listeners = new ArrayList<RefreshListener>();
+
+	public PSDevice() {
+		boundingBox = createTransform();
+		transform = createTransform();
+	}
 
 	public void addComponentRefreshListener(RefreshListener l) {
 		listeners.add(l);
@@ -39,7 +41,7 @@ public abstract class PSDevice implements DSCEventListener {
 
 	protected void fireComponentRefreshed() {
 		valid = false;
-		mirror = new AffineTransform(1, 0, 0, -1, 0, getHeight());
+		mirror = createTransform(1, 0, 0, -1, 0, getHeight());
 		for (Iterator<RefreshListener> i = listeners.iterator(); i.hasNext();) {
 			i.next().componentRefreshed();
 		}
@@ -47,18 +49,17 @@ public abstract class PSDevice implements DSCEventListener {
 
 	public void dscCommentFound(DSCEvent event) {
 		if (event.getComment().equals("BoundingBox:")) {
-			Rectangle bb = (Rectangle) event.getArgs();
-			double s = Math.min(getWidth() / bb.width, getHeight() / bb.height);
-			boundingBox = new AffineTransform(s, 0, 0, s, -bb.x * s, -bb.y * s);
+			int[] bb = (int[]) event.getArgs();
+			double s = Math.min(getWidth() / (bb[2] - bb[0]), getHeight() / (bb[3] - bb[1]));
+			boundingBox = createTransform(s, 0, 0, s, -bb[0] * s, -bb[1] * s);
 			pageBoundingBox = null;
 			valid = false;
 		}
 
 		if (event.getComment().equals("PageBoundingBox:")) {
-			Rectangle bb = (Rectangle) event.getArgs();
-			double s = Math.min(getWidth() / bb.width, getHeight() / bb.height);
-			pageBoundingBox = new AffineTransform(s, 0, 0, s, -bb.x * s, -bb.y
-					* s);
+			int[] bb = (int[]) event.getArgs();
+			double s = Math.min(getWidth() / (bb[2] - bb[0]), getHeight() / (bb[3] - bb[1]));
+			pageBoundingBox = createTransform(s, 0, 0, s, -bb[0] * s, -bb[1] * s);
 			valid = false;
 		}
 
@@ -68,24 +69,23 @@ public abstract class PSDevice implements DSCEventListener {
 		}
 	}
 
-	public void setTransform(AffineTransform transform) {
-		this.transform = (transform != null) ? transform
-				: new AffineTransform();
+	public void setTransform(Transform transform) {
+		this.transform = (transform != null) ? transform : createTransform();
 		valid = false;
 	}
 
-	public AffineTransform getTransform() {
+	public Transform getTransform() {
 		return transform;
 	}
 
-	public AffineTransform getMirrorTransform() {
+	public Transform getMirrorTransform() {
 		if (mirror == null) {
-			mirror = new AffineTransform(1, 0, 0, -1, 0, getHeight());
+			mirror = createTransform(1, 0, 0, -1, 0, getHeight());
 		}
 		return mirror;
 	}
 
-	public AffineTransform getBoundingBoxTransform() {
+	public Transform getBoundingBoxTransform() {
 		return (pageBoundingBox != null) ? pageBoundingBox : boundingBox;
 	}
 
@@ -93,38 +93,28 @@ public abstract class PSDevice implements DSCEventListener {
 	// for deviceGraphics to remain untouched, and to just add new transforms
 	// to graphics, BUT getDeviceGraphics().create() does not seem to work,
 	// presumably because BufferedPanel probably copies a different buffer...
-	public Graphics2D getGraphics() {
+	public GraphicsContext getGraphics() {
 		if (!valid) {
-			graphics = (Graphics2D) getDeviceGraphics();
+			graphics = getDeviceGraphics();
 			if (graphics != null) {
 				graphics.setTransform(getDeviceTransform());
 				graphics.transform(getTransform());
 				graphics.transform(getMirrorTransform());
 				graphics.transform(getBoundingBoxTransform());
 				valid = true;
-			}			
+			}
 		}
-		
+
 		return graphics;
 	}
 
 	public void erasePage() {
-		graphics = (Graphics2D) getDeviceGraphics();
-		graphics.setBackground(Color.WHITE);
+		graphics = getDeviceGraphics();
+		// WHITE
+		graphics.setBackground(createColor(1.0f, 1.0f, 1.0f));
 		graphics.setTransform(getDeviceTransform());
 		graphics.clearRect(0, 0, (int) getWidth(), (int) getHeight());
 		valid = false;
 	}
 
-	public abstract AffineTransform getDeviceTransform();
-
-	public abstract Graphics getDeviceGraphics();
-
-	public abstract double getWidth();
-
-	public abstract double getHeight();
-
-	public abstract void refresh();
-
-	public abstract ImageDevice createImageDevice(int width, int height);
 }

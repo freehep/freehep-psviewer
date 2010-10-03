@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.freehep.postscript.GraphicsContext;
+import org.freehep.postscript.awt.AWTGraphicsContext;
 import org.freehep.postscript.types.PSContainer;
 
 /**
@@ -17,7 +19,7 @@ public class PSPanel extends BufferedPanel implements PSContainer {
 
 	private static final long serialVersionUID = 1L;
 	private List<RefreshListener> listeners = new ArrayList<RefreshListener>();
-
+	
 	public PSPanel() {
 		super(false);
 	}
@@ -34,5 +36,10 @@ public class PSPanel extends BufferedPanel implements PSContainer {
 	 */
 	public void addRefreshListener(RefreshListener l) {
 		listeners.add(l);
+	}
+	
+	@Override
+	public GraphicsContext getGraphicsContext() {
+		return new AWTGraphicsContext(getOffscreenGraphics());
 	}
 }

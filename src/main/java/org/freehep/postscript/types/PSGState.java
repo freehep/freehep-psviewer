@@ -1,24 +1,21 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.color.ColorSpace;
-import java.awt.font.GlyphVector;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-
+import org.freehep.postscript.Color;
+import org.freehep.postscript.ColorSpace;
+import org.freehep.postscript.GlyphVector;
+import org.freehep.postscript.GraphicsContext;
+import org.freehep.postscript.Image;
+import org.freehep.postscript.NoninvertibleTransformException;
+import org.freehep.postscript.Paint;
+import org.freehep.postscript.Path;
+import org.freehep.postscript.PathIterator;
+import org.freehep.postscript.Point;
+import org.freehep.postscript.Rectangle;
+import org.freehep.postscript.RenderingHints;
+import org.freehep.postscript.Shape;
+import org.freehep.postscript.Stroke;
+import org.freehep.postscript.Transform;
 import org.freehep.postscript.device.ImageDevice;
 import org.freehep.postscript.stacks.DictionaryStack;
 import org.freehep.postscript.stacks.OperandStack;
@@ -35,9 +32,9 @@ import org.freehep.postscript.viewer.FixedTexturePaint;
 public class PSGState extends PSComposite {
 
 	private PSDevice device;
-	private AffineTransform ctm;
-	private GeneralPath path;
-	private GeneralPath clipPath;
+	private Transform ctm;
+	private Path path;
+	private Path clipPath;
 	private float lineWidth;
 	private int cap;
 	private int join;
@@ -51,7 +48,7 @@ public class PSGState extends PSComposite {
 	private String colorSpaceName;
 	private PSPackedArray blackGeneration;
 	private PSPackedArray underColorRemoval;
-	private Rectangle2D boundingBox;
+	private Rectangle boundingBox;
 
 	private PSGState() {
 		super("gstate", true);
@@ -61,7 +58,7 @@ public class PSGState extends PSComposite {
 		super("gstate", true);
 		this.device = device;
 
-		font = new PSFontDictionary(device.getGraphics().getFont(), dictStack
+		font = new PSFontDictionary(device, device.getGraphics().getFont(), dictStack
 				.systemDictionary().getArray(
 						DictionaryStack.standardEncoding.getValue()));
 		flat = 0.5; // FIXME: is device dependent
@@ -77,21 +74,25 @@ public class PSGState extends PSComposite {
 	}
 
 	public void initGraphics() {
-		ctm = new AffineTransform();
+		ctm = device.createTransform();
 		newPath();
 		initClip();
 		setColorSpace(Constants.DEVICE_GRAY);
 		setColor(new float[] { 0.0f });
 		lineWidth = 1.0f;
-		cap = BasicStroke.CAP_BUTT;
-		join = BasicStroke.JOIN_MITER;
+		cap = Stroke.CAP_BUTT;
+		join = Stroke.JOIN_MITER;
 		miterLimit = 10.0f;
 		dash = null;
 		dashPhase = 0.0f;
 		setStroke();
 	}
+	
+	public PSDevice device() {
+		return device;
+	}
 
-	public BufferedImage convertToImage(int width, int height) {
+	public Image convertToImage(int width, int height) {
 		if (!(device instanceof ImageDevice)) {
 			device = device.createImageDevice(width, height);
 		}
@@ -110,9 +111,9 @@ public class PSGState extends PSComposite {
 
 	public void copyInto(PSGState copy) {
 		copy.device = device;
-		copy.ctm = (AffineTransform) ctm.clone();
-		copy.path = (GeneralPath) path.clone();
-		copy.clipPath = (clipPath == null) ? null : (GeneralPath) clipPath
+		copy.ctm = (Transform) ctm.copy();
+		copy.path = (Path) path.clone();
+		copy.clipPath = (clipPath == null) ? null : (Path) clipPath
 				.clone();
 		copy.lineWidth = lineWidth;
 		copy.cap = cap;
@@ -144,7 +145,7 @@ public class PSGState extends PSComposite {
 	}
 
 	private void setStroke() {
-		BasicStroke stroke = new BasicStroke(lineWidth, cap, join, miterLimit,
+		Stroke stroke = device.createStroke(lineWidth, cap, join, miterLimit,
 				dash, dashPhase);
 		device.getGraphics().setStroke(stroke);
 	}
@@ -158,7 +159,7 @@ public class PSGState extends PSComposite {
 	}
 
 	public void strokePath() {
-		path = new GeneralPath(device.getGraphics().getStroke()
+		path = device.createPath(device.getGraphics().getStroke()
 				.createStrokedShape(path));
 	}
 
@@ -186,14 +187,14 @@ public class PSGState extends PSComposite {
 		}
 
 		if (strokePath) {
-			charPath = new GeneralPath(device.getGraphics().getStroke()
+			charPath = device.createPath(device.getGraphics().getStroke()
 					.createStrokedShape(charPath));
 		}
 		return charPath;
 	}
 
 	public void fill(Shape s) {
-		Graphics2D g = (Graphics2D) device.getGraphics().create();
+		GraphicsContext g = device.getGraphics().create();
 		g.transform(ctm);
 		g.fill(s);
 		g.dispose();
@@ -203,14 +204,14 @@ public class PSGState extends PSComposite {
 		stroke(s, null);
 	}
 
-	public void stroke(Shape s, AffineTransform m) {
-		AffineTransform at = (AffineTransform) ctm.clone();
-		GeneralPath p = new GeneralPath(s);
+	public void stroke(Shape s, Transform m) {
+		Transform at = ctm.copy();
+		Path p = device.createPath(s);
 
 		if (m != null) {
 			// apply AT-1 to s
 			try {
-				AffineTransform pt = m.createInverse();
+				Transform pt = m.createInverse();
 				p.transform(pt);
 			} catch (NoninvertibleTransformException e) {
 				log.warning(Constants.INTERNAL_GSTATE_ERROR);
@@ -220,22 +221,22 @@ public class PSGState extends PSComposite {
 			at.concatenate(m);
 		}
 
-		Graphics2D g = (Graphics2D) device.getGraphics().create();
+		GraphicsContext g = device.getGraphics().create();
 		g.transform(at);
 		g.draw(p);
 		g.dispose();
 	}
 
 	public void show(GlyphVector gv, float x, float y) {
-		Graphics2D g = (Graphics2D) device.getGraphics().create();
+		GraphicsContext g = device.getGraphics().create();
 		g.transform(ctm);
 
 		g.drawGlyphVector(gv, x, y);
 		g.dispose();
 	}
 
-	public void image(RenderedImage image, AffineTransform at) {
-		Graphics2D g = (Graphics2D) device.getGraphics().create();
+	public void image(Image image, Transform at) {
+		GraphicsContext g = device.getGraphics().create();
 		g.transform(ctm);
 
 		// map to unit space!
@@ -249,33 +250,36 @@ public class PSGState extends PSComposite {
 		g.dispose();
 	}
 
-	public Point2D position() {
+	public Point position() {
 		return (path == null) ? null : path.getCurrentPoint();
 	}
 
 	public void translate(double tx, double ty) {
-		AffineTransform at = AffineTransform.getTranslateInstance(-tx, -ty);
+		Transform at = device.createTransform();
+		at.setToTranslation(-tx, -ty);
 		path.transform(at);
 		ctm.translate(tx, ty);
 	}
 
 	public void rotate(double angle) {
-		AffineTransform at = AffineTransform.getRotateInstance(-angle);
+		Transform at = device.createTransform();
+		at.setToRotation(-angle);
 		path.transform(at);
-		ctm.rotate(angle);
+		ctm.rotate(angle);		
 	}
 
 	public void scale(double sx, double sy) {
-		AffineTransform at = AffineTransform.getScaleInstance(1 / sx, 1 / sy);
+		Transform at = device.createTransform();
+		at.setToScale(1 / sx, 1 / sy);
 		path.transform(at);
 		ctm.scale(sx, sy);
 	}
 
-	public void setTransform(AffineTransform at) {
+	public void setTransform(Transform at) {
 
 		// apply AT-1 * CTM to path
 		try {
-			AffineTransform pt = at.createInverse();
+			Transform pt = at.createInverse();
 			pt.concatenate(ctm);
 			path.transform(pt);
 		} catch (NoninvertibleTransformException e) {
@@ -286,11 +290,11 @@ public class PSGState extends PSComposite {
 		ctm.setTransform(at);
 	}
 
-	public void transform(AffineTransform at) {
+	public void transform(Transform at) {
 
 		// apply AT-1 to path
 		try {
-			AffineTransform pt = at.createInverse();
+			Transform pt = at.createInverse();
 			path.transform(pt);
 		} catch (NoninvertibleTransformException e) {
 			log.warning(Constants.INTERNAL_GSTATE_ERROR);
@@ -300,16 +304,16 @@ public class PSGState extends PSComposite {
 		ctm.concatenate(at);
 	}
 
-	public AffineTransform getTransform() {
-		return (AffineTransform) ctm.clone();
+	public Transform getTransform() {
+		return ctm.copy();
 	}
 
-	public GeneralPath path() {
+	public Path path() {
 		return path;
 	}
 
-	public GeneralPath newPath() {
-		path = new GeneralPath();
+	public Path newPath() {
+		path = device.createPath();
 		path.transform(ctm);
 		return path;
 	}
@@ -317,10 +321,10 @@ public class PSGState extends PSComposite {
 	public void initClip() {
 		device.getGraphics().setClip(null);
 		try {
-			AffineTransform inverse = ctm.createInverse();
+			Transform inverse = ctm.createInverse();
 
-			clipPath = new GeneralPath(new Rectangle(0, 0, (int) device
-					.getWidth(), (int) device.getHeight()));
+			clipPath = device.createPath(device.createRectangle(0, 0, device
+					.getWidth(), device.getHeight()));
 			clipPath.transform(inverse);
 		} catch (NoninvertibleTransformException e) {
 			log.warning("Internal error in GState");
@@ -328,13 +332,13 @@ public class PSGState extends PSComposite {
 	}
 
 	public void clip(Shape p) {
-		clipPath = new GeneralPath(p);
+		clipPath = device.createPath(p);
 		Shape clip = clipPath.createTransformedShape(ctm);
 		device.getGraphics().setClip(clip);
 	}
 
 	public void clipPath() {
-		path = (GeneralPath) clipPath.clone();
+		path = clipPath.clone();
 		path.transform(ctm);
 	}
 
@@ -429,7 +433,7 @@ public class PSGState extends PSComposite {
 	}
 
 	public void flattenPath() {
-		PathIterator iterator = path.getPathIterator(new AffineTransform(),
+		PathIterator iterator = path.getPathIterator(device.createTransform(),
 				flat);
 		newPath();
 		path.append(iterator, true);
@@ -444,14 +448,14 @@ public class PSGState extends PSComposite {
 		return transfer;
 	}
 
-	private static ColorSpace toColorSpace(String name) {
+	private ColorSpace toColorSpace(String name) {
 		if (name.equals(Constants.DEVICE_GRAY)) {
-			return ColorSpace.getInstance(ColorSpace.CS_GRAY);
+			return device.createColorSpace(ColorSpace.CS_GRAY);
 		} else if (name.equals(Constants.DEVICE_RGB)) {
-			return ColorSpace.getInstance(ColorSpace.CS_sRGB);
+			return device.createColorSpace(ColorSpace.CS_sRGB);
 		} else if (name.equals(Constants.DEVICE_CMYK)) {
-			return ColorSpace.getInstance(ColorSpace.CS_sRGB);
-		}
+			return device.createColorSpace(ColorSpace.CS_sRGB);
+		}		
 		return null;
 	}
 
@@ -521,17 +525,17 @@ public class PSGState extends PSComposite {
 			switch (params.length) {
 			case 1:
 				float d = ((PSNumber)params[0]).getFloat();
-				c = new Color(d, d, d);
+				c = device.createColor(d, d, d);
 				break;
 			case 3:
 				float r = ((PSNumber)params[0]).getFloat();
 				float g = ((PSNumber)params[0]).getFloat();
 				float b = ((PSNumber)params[0]).getFloat();
-				c = new Color(r, g, b);
+				c = device.createColor(r, g, b);
 				break;
 			default:
 				log.warning("Number of params not handled " + params.length);
-				c = Color.BLACK;
+				c = device.createColor(0.0f, 0.0f, 0.0f);	// BLACK
 				break;
 			}
 			paint = ((FixedTexturePaint) paint).inColor(c);
@@ -542,7 +546,7 @@ public class PSGState extends PSComposite {
 	public void setColor(float[] color) {
 		float[] rgb = toRGB(color, colorSpaceName);
 		if (rgb != null) {
-			device.getGraphics().setPaint(new Color(rgb[0], rgb[1], rgb[2]));
+			device.getGraphics().setPaint(device.createColor(rgb[0], rgb[1], rgb[2]));
 		} else {
 			log.warning("Unknown colorspace: " + colorSpaceName);
 		}
@@ -634,7 +638,7 @@ public class PSGState extends PSComposite {
 		return underColorRemoval;
 	}
 
-	public void setBoundingBox(Rectangle2D bb) {
+	public void setBoundingBox(Rectangle bb) {
 		if (boundingBox != null) {
 			boundingBox.add(bb);
 		} else {
@@ -642,7 +646,7 @@ public class PSGState extends PSComposite {
 		}
 	}
 
-	public Rectangle2D boundingBox() {
+	public Rectangle boundingBox() {
 		return boundingBox;
 	}
 

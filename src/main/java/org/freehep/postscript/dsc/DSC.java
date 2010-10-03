@@ -437,8 +437,7 @@ public class DSC {
 				for (int i = 0; i < tokens.length; i++) {
 					p[i] = Integer.parseInt(tokens[i]);
 				}
-				return new java.awt.Rectangle(p[0], p[1], p[2] - p[0], p[3]
-						- p[1]);
+				return p;
 			} catch (NumberFormatException e) {
 				log.logp(Level.WARNING, getClass().getName(), "parse", e.getMessage(), e);
 				return null;

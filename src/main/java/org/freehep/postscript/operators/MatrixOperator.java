@@ -1,10 +1,8 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.operators;
 
-import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
-
+import org.freehep.postscript.NoninvertibleTransformException;
+import org.freehep.postscript.Point;
 import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSArray;
@@ -43,7 +41,7 @@ class InitMatrix extends MatrixOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		os.gstate().setTransform(new AffineTransform());
+		os.gstate().setTransform(os.gstate().device().createTransform());
 
 		return true;
 	}
@@ -89,7 +87,7 @@ class CurrentMatrix extends MatrixOperator {
 		if (a.size() < 6) {
 			error(os, new RangeCheck());
 		} else {
-			AffineTransform ctm = os.gstate().getTransform();
+			org.freehep.postscript.Transform ctm = os.gstate().getTransform();
 			double[] m = new double[6];
 			ctm.getMatrix(m);
 			a.set(m);
@@ -107,7 +105,7 @@ class SetMatrix extends MatrixOperator {
 	@Override
 	public boolean execute(OperandStack os) {
 		PSPackedArray a = os.popPackedArray();
-		AffineTransform ctm = new AffineTransform(a.toDoubles());
+		org.freehep.postscript.Transform ctm = os.gstate().device().createTransform(a.toDoubles());
 		os.gstate().setTransform(ctm);
 
 		return true;
@@ -220,7 +218,7 @@ class Concat extends MatrixOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		AffineTransform m = new AffineTransform(os.popPackedArray().toDoubles());
+		org.freehep.postscript.Transform m = os.gstate().device().createTransform(os.popPackedArray().toDoubles());
 		os.gstate().transform(m);
 		return true;
 	}
@@ -238,8 +236,8 @@ class ConcatMatrix extends MatrixOperator {
 		PSPackedArray m2 = os.popPackedArray();
 		PSPackedArray m1 = os.popPackedArray();
 
-		AffineTransform t = new AffineTransform(m1.toDoubles());
-		t.concatenate(new AffineTransform(m2.toDoubles()));
+		org.freehep.postscript.Transform t = os.gstate().device().createTransform(m1.toDoubles());
+		t.concatenate(os.gstate().device().createTransform(m2.toDoubles()));
 		double[] d = new double[6];
 		t.getMatrix(d);
 		m3.set(d);
@@ -255,7 +253,7 @@ class Transform extends MatrixOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		AffineTransform transform;
+		org.freehep.postscript.Transform transform;
 		double dx, dy;
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			dy = os.popNumber().getDouble();
@@ -266,12 +264,12 @@ class Transform extends MatrixOperator {
 			double[] m = os.popPackedArray().toDoubles();
 			dy = os.popNumber().getDouble();
 			dx = os.popNumber().getDouble();
-			transform = new AffineTransform(m);
+			transform = os.gstate().device().createTransform(m);
 		} else {
 			error(os, new TypeCheck());
 			return true;
 		}
-		Point2D d = transform.transform(new Point2D.Double(dx, dy), null);
+		Point d = transform.transform(os.gstate().device().createPoint(dx, dy), null);
 		os.push(d.getX());
 		os.push(d.getY());
 		return true;
@@ -285,7 +283,7 @@ class DTransform extends MatrixOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		AffineTransform transform;
+		org.freehep.postscript.Transform transform;
 		double dx, dy;
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			dy = os.popNumber().getDouble();
@@ -296,12 +294,12 @@ class DTransform extends MatrixOperator {
 			double[] m = os.popPackedArray().toDoubles();
 			dy = os.popNumber().getDouble();
 			dx = os.popNumber().getDouble();
-			transform = new AffineTransform(m);
+			transform = os.gstate().device().createTransform(m);
 		} else {
 			error(os, new TypeCheck());
 			return true;
 		}
-		Point2D d = transform.deltaTransform(new Point2D.Double(dx, dy), null);
+		Point d = transform.deltaTransform(os.gstate().device().createPoint(dx, dy), null);
 		os.push(d.getX());
 		os.push(d.getY());
 		return true;
@@ -315,7 +313,7 @@ class ITransform extends MatrixOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		AffineTransform transform;
+		org.freehep.postscript.Transform transform;
 		double dx, dy;
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			dy = os.popNumber().getDouble();
@@ -326,13 +324,13 @@ class ITransform extends MatrixOperator {
 			double[] m = os.popPackedArray().toDoubles();
 			dy = os.popNumber().getDouble();
 			dx = os.popNumber().getDouble();
-			transform = new AffineTransform(m);
+			transform = os.gstate().device().createTransform(m);
 		} else {
 			error(os, new TypeCheck());
 			return true;
 		}
 		try {
-			Point2D d = transform.inverseTransform(new Point2D.Double(dx, dy),
+			Point d = transform.inverseTransform(os.gstate().device().createPoint(dx, dy),
 					null);
 			os.push(d.getX());
 			os.push(d.getY());
@@ -350,7 +348,7 @@ class IDTransform extends MatrixOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		AffineTransform transform;
+		org.freehep.postscript.Transform transform;
 		double dx, dy;
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			dy = os.popNumber().getDouble();
@@ -361,15 +359,15 @@ class IDTransform extends MatrixOperator {
 			double[] m = os.popPackedArray().toDoubles();
 			dy = os.popNumber().getDouble();
 			dx = os.popNumber().getDouble();
-			transform = new AffineTransform(m);
+			transform = os.gstate().device().createTransform(m);
 		} else {
 			error(os, new TypeCheck());
 			return true;
 		}
 		try {
-			AffineTransform inverse = transform.createInverse();
-			Point2D d = inverse
-					.deltaTransform(new Point2D.Double(dx, dy), null);
+			org.freehep.postscript.Transform inverse = transform.createInverse();
+			Point d = inverse
+					.deltaTransform(os.gstate().device().createPoint(dx, dy), null);
 			os.push(d.getX());
 			os.push(d.getY());
 		} catch (NoninvertibleTransformException e) {
@@ -390,8 +388,8 @@ class InvertMatrix extends MatrixOperator {
 		PSPackedArray m1 = os.popPackedArray();
 
 		try {
-			AffineTransform transform = new AffineTransform(m1.toDoubles());
-			AffineTransform inverse = transform.createInverse();
+			org.freehep.postscript.Transform transform = os.gstate().device().createTransform(m1.toDoubles());
+			org.freehep.postscript.Transform inverse = transform.createInverse();
 
 			double[] d = new double[6];
 			inverse.getMatrix(d);

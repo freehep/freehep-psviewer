@@ -1,10 +1,12 @@
-// Copyright 2006-2009, FreeHEP.
+// Copyright 2006-2010, FreeHEP.
 package org.freehep.postscript.viewer;
 
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import org.freehep.postscript.Font;
+import org.freehep.postscript.GraphicsEnvironment;
+import org.freehep.postscript.types.PSDevice;
 
 /**
  * This class keeps a reference to all physical fonts. Fonts can be looked up by
@@ -18,31 +20,33 @@ public class FontCache {
 
 	private SortedMap<String, FontEntry> fonts;
 
-	public FontCache() {
+	public FontCache(PSDevice device) {
 		this.fonts = new TreeMap<String, FontEntry>();
 
-		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
+		GraphicsEnvironment graphicsEnvironment = device
 				.getLocalGraphicsEnvironment();
 		Font[] font = graphicsEnvironment.getAllFonts();
-		for (int i = 0; i < font.length; i++) {		
+		for (int i = 0; i < font.length; i++) {
 			replace(font[i].getPSName(), new FontEntry(font[i]));
 		}
 
 		// add the standard fonts
-		put("Monospaced.plain", new Font("Monospaced", Font.PLAIN, 12));
-		put("Monospaced.bold", new Font("Monospaced", Font.BOLD, 12));
-		put("Monospaced.italic", new Font("Monospaced", Font.ITALIC, 12));
-		put("Monospaced.bolditalic", new Font("Monospaced", Font.BOLD
-				+ Font.ITALIC, 12));
-		put("SansSerif.plain", new Font("SansSerif", Font.PLAIN, 12));
-		put("SansSerif.bold", new Font("SansSerif", Font.BOLD, 12));
-		put("SansSerif.italic", new Font("SansSerif", Font.ITALIC, 12));
-		put("SansSerif.bolditalic", new Font("SansSerif", Font.BOLD
-				+ Font.ITALIC, 12));
-		put("Serif.plain", new Font("Serif", Font.PLAIN, 12));
-		put("Serif.bold", new Font("Serif", Font.BOLD, 12));
-		put("Serif.italic", new Font("Serif", Font.ITALIC, 12));
-		put("Serif.bolditalic", new Font("Serif", Font.BOLD + Font.ITALIC, 12));
+		put("Monospaced.plain", device.createFont("Monospaced", Font.PLAIN, 12));
+		put("Monospaced.bold", device.createFont("Monospaced", Font.BOLD, 12));
+		put("Monospaced.italic",
+				device.createFont("Monospaced", Font.ITALIC, 12));
+		put("Monospaced.bolditalic",
+				device.createFont("Monospaced", Font.BOLD + Font.ITALIC, 12));
+		put("SansSerif.plain", device.createFont("SansSerif", Font.PLAIN, 12));
+		put("SansSerif.bold", device.createFont("SansSerif", Font.BOLD, 12));
+		put("SansSerif.italic", device.createFont("SansSerif", Font.ITALIC, 12));
+		put("SansSerif.bolditalic",
+				device.createFont("SansSerif", Font.BOLD + Font.ITALIC, 12));
+		put("Serif.plain", device.createFont("Serif", Font.PLAIN, 12));
+		put("Serif.bold", device.createFont("Serif", Font.BOLD, 12));
+		put("Serif.italic", device.createFont("Serif", Font.ITALIC, 12));
+		put("Serif.bolditalic",
+				device.createFont("Serif", Font.BOLD + Font.ITALIC, 12));
 	}
 
 	public final Font get(String name) {

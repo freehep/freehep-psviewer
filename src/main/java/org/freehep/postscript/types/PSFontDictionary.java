@@ -1,12 +1,12 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
-import java.awt.Font;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphMetrics;
-import java.awt.font.GlyphVector;
-import java.awt.geom.AffineTransform;
 import java.util.Map;
+
+import org.freehep.postscript.FontRenderContext;
+import org.freehep.postscript.GlyphMetrics;
+import org.freehep.postscript.GlyphVector;
+import org.freehep.postscript.Transform;
 
 /**
  * Quasi Type 1 Font mapping Java Fonts to PostScript ones. This object is never
@@ -22,19 +22,19 @@ public class PSFontDictionary extends PSDictionary {
 		super(table);
 	}
 	
-	public PSFontDictionary(Font font, PSArray encoding) {
+	public PSFontDictionary(PSDevice device, org.freehep.postscript.Font javaFont, PSArray encoding) {
 		super();
 		setName("fontdictionary");
 		// System.out.println("Creating Type1 font from: "+font+" using table: "+encodingTable+" and transform "+font.getTransform());
 
 		// FIXME: should be in the private dictionary
-		put("javafont", new PSJavaFont(font));
+		put("javafont", new PSJavaFont(javaFont));
 
 		// Generic Font Entries
 		put("FontType", 1);
 		put("FontMatrix", new PSArray(
 				new float[] { 1.0f, 0f, 0f, 1.0f, 0f, 0f }));
-		put("FontName", new PSName(font.getPSName()));
+		put("FontName", new PSName(javaFont.getPSName()));
 		// FIXME: fake
 		put("FontBBox", new PSArray(new float[] { 0f, 0f, 0f, 0f }));
 
@@ -43,16 +43,16 @@ public class PSFontDictionary extends PSDictionary {
 		put("Private", new PSDictionary());
 
 		// turn font upside down
-		AffineTransform at = font.getTransform();
-		AffineTransform upsideDown = new AffineTransform(1.0, 0, 0, -1.0, 0, 0);
+		Transform at = javaFont.getTransform();
+		Transform upsideDown = device.createTransform(1.0, 0, 0, -1.0, 0, 0);
 		at.concatenate(upsideDown);
-		font = font.deriveFont(at);
+		javaFont = javaFont.deriveFont(at);
 
 		put("Encoding", encoding);	
 		
 		// FIXME: should go somewhere settable?
 		boolean antiAliasing = true;
-		FontRenderContext fontRenderContext = new FontRenderContext(null,
+		FontRenderContext fontRenderContext = device.createFontRenderContext(null,
 				antiAliasing, true);
 
 		PSDictionary charStrings = new PSDictionary();
@@ -68,9 +68,9 @@ public class PSFontDictionary extends PSDictionary {
 			uc[0] = name.equals(".notdef") ? box : UnicodeShortGlyphList.get(name);
 			
 			// System.out.println(cc+" "+name+" "+uc[0]);
-			GlyphVector gv = font.createGlyphVector(fontRenderContext, uc);
+			GlyphVector gv = javaFont.createGlyphVector(fontRenderContext, uc);
 			GlyphMetrics m = gv.getGlyphMetrics(0);
-			PSGlyph glyph = new PSJavaGlyph(gv);
+			PSGlyph glyph = new PSJavaGlyph(device, gv);
 			encoding.set(cc, name);
 			charStrings.put(name, glyph);
 			metrics.put(name, m.getAdvance());

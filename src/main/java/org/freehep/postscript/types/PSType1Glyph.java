@@ -1,4 +1,4 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
 /**
@@ -12,7 +12,8 @@ package org.freehep.postscript.types;
 public class PSType1Glyph extends PSGlyph {
 	private PSPackedArray proc;
 
-	public PSType1Glyph(PSPackedArray proc, double wx, double lsb) {
+	public PSType1Glyph(PSDevice device, PSPackedArray proc, double wx, double lsb) {
+		super(device);
 		this.proc = proc;
 		setWx(wx);
 		setLLx(lsb);

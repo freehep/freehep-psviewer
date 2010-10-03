@@ -2,9 +2,6 @@
 package org.freehep.postscript.processor;
 
 import java.applet.Applet;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,6 +9,8 @@ import java.util.logging.Logger;
 import javax.swing.JApplet;
 import javax.swing.JPanel;
 
+import org.freehep.postscript.Dimension;
+import org.freehep.postscript.GraphicsContext;
 import org.freehep.postscript.device.PanelDevice;
 import org.freehep.postscript.device.VirtualDevice;
 import org.freehep.postscript.dsc.DSC;
@@ -85,13 +84,13 @@ public class Processor implements DebuggerListener {
 		this.currentPageNo = 0;
 	}
 
-	public Processor(Graphics2D graphics, Dimension dimension, boolean secure) {
+	public Processor(GraphicsContext graphics, Dimension dimension, boolean secure) {
 		this.device = new VirtualDevice(graphics, dimension);
 		this.secure = secure;
 		this.currentPageNo = 0;
 	}
 
-	public Processor(Graphics2D graphics, Dimension dimension) {
+	public Processor(GraphicsContext graphics, Dimension dimension) {
 		this(graphics, dimension, false);
 	}
 
@@ -144,13 +143,13 @@ public class Processor implements DebuggerListener {
 	public void setScale(double sx, double sy) {
 		this.sx = sx;
 		this.sy = sy;
-		device.setTransform(new AffineTransform(sx, 0, 0, sy, tx, ty));
+		device.setTransform(device.createTransform(sx, 0, 0, sy, tx, ty));
 	}
 
 	public void setTranslation(double tx, double ty) {
 		this.tx = tx;
 		this.ty = ty;
-		device.setTransform(new AffineTransform(sx, 0, 0, sy, tx, ty));
+		device.setTransform(device.createTransform(sx, 0, 0, sy, tx, ty));
 	}
 
 	public DictionaryStack dictStack() {

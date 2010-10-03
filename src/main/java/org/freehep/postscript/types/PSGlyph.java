@@ -1,8 +1,7 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
-import java.awt.geom.Rectangle2D;
-
+import org.freehep.postscript.Rectangle;
 import org.freehep.postscript.stacks.OperandStack;
 
 /**
@@ -13,9 +12,11 @@ import org.freehep.postscript.stacks.OperandStack;
  */
 public class PSGlyph extends PSSimple {
     private double wx, wy, llx, lly, urx, ury;
+    private PSDevice device;
 
-	public PSGlyph() {
+	public PSGlyph(PSDevice device) {
 		super("glyph", true);
+		this.device = device;
 	}
 
 	@Override
@@ -33,8 +34,8 @@ public class PSGlyph extends PSSimple {
 		return getWx();
 	}
 
-	public Rectangle2D getBounds2D() {
-		return new Rectangle2D.Double(llx, lly, urx - llx, ury - lly);
+	public Rectangle getBounds2D() {
+		return device.createRectangle(llx, lly, urx - llx, ury - lly);
 	}
 
 	public double getLSB() {

@@ -1,8 +1,7 @@
 // Copyright FreeHEP 2009-2010
 package org.freehep.postscript.types;
 
-import java.awt.Graphics;
-
+import org.freehep.postscript.GraphicsContext;
 import org.freehep.postscript.viewer.RefreshListener;
 
 /**
@@ -16,5 +15,5 @@ public interface PSContainer {
 	 */
 	void addRefreshListener(RefreshListener refreshListener);
 
-	Graphics getOffscreenGraphics();
+	GraphicsContext getGraphicsContext();
 }

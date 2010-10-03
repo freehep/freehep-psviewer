@@ -1,9 +1,9 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
-import java.awt.font.GlyphMetrics;
-import java.awt.font.GlyphVector;
-import java.awt.geom.Rectangle2D;
+import org.freehep.postscript.GlyphMetrics;
+import org.freehep.postscript.GlyphVector;
+import org.freehep.postscript.Rectangle;
 
 /**
  * Object is only for storage and lookup in Dictionaries and Arrays, not to be
@@ -16,11 +16,12 @@ import java.awt.geom.Rectangle2D;
 public class PSJavaGlyph extends PSGlyph {
 	private GlyphVector gv;
 
-	public PSJavaGlyph(GlyphVector gv) {
+	public PSJavaGlyph(PSDevice device, GlyphVector gv) {
+		super(device);
 		this.gv = gv;
 		GlyphMetrics gm = gv.getGlyphMetrics(0);
 		setWx(gm.getAdvance());
-		Rectangle2D r = gm.getBounds2D();
+		Rectangle r = gm.getBounds();
 		setLLx(r.getMinX());
 		setLLy(r.getMinY());
 		setURx(r.getMaxX());

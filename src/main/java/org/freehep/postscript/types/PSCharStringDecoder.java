@@ -35,7 +35,7 @@ public class PSCharStringDecoder {
 		this.dict = dict;
 	}
 
-	public PSGlyph decode(PSString charString) throws IOException {
+	public PSGlyph decode(PSDevice device, PSString charString) throws IOException {
 
 		decryption = new EEXECDecryption(charString.getInputStream(),
 				EEXECConstants.CHARSTRING_R, EEXECConstants.N);
@@ -138,7 +138,7 @@ public class PSCharStringDecoder {
 		array = new PSPackedArray(obj);
 		array.setExecutable();
 
-		return new PSType1Glyph(array, widthX, sbX);
+		return new PSType1Glyph(device, array, widthX, sbX);
 	}
 
 	private int readNumber(int v) throws IOException {

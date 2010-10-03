@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.freehep.postscript.GraphicsContext;
+import org.freehep.postscript.awt.AWTGraphicsContext;
 import org.freehep.postscript.processor.Processor;
 import org.freehep.postscript.types.PSContainer;
 
@@ -133,6 +135,11 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 			showStatus(e.getMessage());
 		}
 		repaint();
+	}
+	
+	@Override
+	public GraphicsContext getGraphicsContext() {
+		return new AWTGraphicsContext(getOffscreenGraphics());
 	}
 
 	@Override

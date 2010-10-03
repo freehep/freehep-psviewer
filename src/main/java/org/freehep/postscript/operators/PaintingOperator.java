@@ -1,19 +1,19 @@
 // Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.operators;
 
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import org.freehep.postscript.Image;
+import org.freehep.postscript.Path;
+import org.freehep.postscript.Rectangle;
 import org.freehep.postscript.errors.IOError;
 import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.errors.Undefined;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSBoolean;
 import org.freehep.postscript.types.PSDataSource;
+import org.freehep.postscript.types.PSDevice;
 import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSGState;
 import org.freehep.postscript.types.PSInteger;
@@ -74,7 +74,7 @@ class EOFill extends PaintingOperator {
 	@Override
 	public boolean execute(OperandStack os) {
 		// FREEHEP-156: add special case for degenerate paths
-		os.gstate().path().setWindingRule(Path2D.WIND_EVEN_ODD);
+		os.gstate().path().setWindingRule(Path.WIND_EVEN_ODD);
 		os.gstate().fill();
 		os.gstate().newPath();
 		return true;
@@ -87,13 +87,13 @@ class RectStroke extends PaintingOperator {
 	}
 
 	private static void stroke(OperandStack os, double x, double y, double w,
-			double h, AffineTransform m) {
-		Rectangle2D r = new Rectangle2D.Double(x, y, w, h);
+			double h, org.freehep.postscript.Transform m) {
+		Rectangle r = os.gstate().device().createRectangle(x, y, w, h);
 		os.gstate().stroke(r, m);
 	}
 
 	private static void stroke(OperandStack os, PSPackedArray a,
-			AffineTransform m) {
+			org.freehep.postscript.Transform m) {
 		for (int i = 0; i < a.size() / 4; i++) {
 			double x = ((PSNumber) a.get(i * 4)).getDouble();
 			double y = ((PSNumber) a.get(i * 4 + 1)).getDouble();
@@ -114,16 +114,16 @@ class RectStroke extends PaintingOperator {
 			stroke(os, x, y, w, h, null);
 		} else if (os.checkType(PSNumber.class, PSNumber.class, PSNumber.class,
 				PSNumber.class, PSPackedArray.class)) {
-			AffineTransform m = new AffineTransform(os.popPackedArray()
-					.toDoubles());
+			org.freehep.postscript.Transform m = os.gstate().device()
+					.createTransform(os.popPackedArray().toDoubles());
 			double h = os.popNumber().getDouble();
 			double w = os.popNumber().getDouble();
 			double y = os.popNumber().getDouble();
 			double x = os.popNumber().getDouble();
 			stroke(os, x, y, w, h, m);
 		} else if (os.checkType(PSPackedArray.class, PSPackedArray.class)) {
-			AffineTransform m = new AffineTransform(os.popPackedArray()
-					.toDoubles());
+			org.freehep.postscript.Transform m = os.gstate().device()
+					.createTransform(os.popPackedArray().toDoubles());
 			PSPackedArray a = os.popPackedArray();
 			stroke(os, a, m);
 		} else if (os.checkType(PSPackedArray.class)) {
@@ -150,7 +150,7 @@ class RectFill extends PaintingOperator {
 			double w = os.popNumber().getDouble();
 			double y = os.popNumber().getDouble();
 			double x = os.popNumber().getDouble();
-			Rectangle2D r = new Rectangle2D.Double(x, y, w, h);
+			Rectangle r = os.gstate().device().createRectangle(x, y, w, h);
 			os.gstate().fill(r);
 		} else if (os.checkType(PSPackedArray.class)) {
 			PSPackedArray a = os.popPackedArray();
@@ -159,7 +159,7 @@ class RectFill extends PaintingOperator {
 				double y = ((PSNumber) a.get(i * 4 + 1)).getDouble();
 				double w = ((PSNumber) a.get(i * 4 + 2)).getDouble();
 				double h = ((PSNumber) a.get(i * 4 + 3)).getDouble();
-				Rectangle2D r = new Rectangle2D.Double(x, y, w, h);
+				Rectangle r = os.gstate().device().createRectangle(x, y, w, h);
 				os.gstate().fill(r);
 			}
 		} else {
@@ -172,9 +172,9 @@ class RectFill extends PaintingOperator {
 
 class UStroke extends PaintingOperator {
 	private boolean done;
-	private AffineTransform matrix;
+	private org.freehep.postscript.Transform matrix;
 
-	private UStroke(boolean d, AffineTransform m) {
+	private UStroke(boolean d, org.freehep.postscript.Transform m) {
 		done = d;
 		matrix = m;
 	}
@@ -191,11 +191,11 @@ class UStroke extends PaintingOperator {
 			}
 
 			final int matrixSize = 6;
-			AffineTransform m = null;
+			org.freehep.postscript.Transform m = null;
 			PSPackedArray proc = os.popPackedArray();
 			if (proc.size() == matrixSize) {
 				try {
-					m = new AffineTransform(proc.toDoubles());
+					m = os.gstate().device().createTransform(proc.toDoubles());
 					if (!os.checkType(PSPackedArray.class)) {
 						error(os, new TypeCheck());
 						return true;
@@ -306,7 +306,7 @@ class UEOFill extends PaintingOperator {
 
 		// upath was executed, end, eofill and grestore
 		os.dictStack().pop();
-		os.gstate().path().setWindingRule(Path2D.WIND_EVEN_ODD);
+		os.gstate().path().setWindingRule(Path.WIND_EVEN_ODD);
 		os.gstate().fill();
 		os.grestore();
 		return true;
@@ -331,7 +331,7 @@ class ImageOperator extends PaintingOperator {
 	private boolean imageMask;
 	private int width;
 	private int height;
-	private AffineTransform matrix;
+	private org.freehep.postscript.Transform matrix;
 	private PSPackedArray[] proc;
 	private PSDataSource[] source;
 	private boolean multi;
@@ -340,7 +340,7 @@ class ImageOperator extends PaintingOperator {
 	protected boolean interpolate;
 
 	private final int dataSize = 8;
-	private BufferedImage image;
+	private Image image;
 	private int pixelBitStride;
 	private int scanlineStride;
 	private int components;
@@ -352,8 +352,8 @@ class ImageOperator extends PaintingOperator {
 	protected ImageOperator() {
 	}
 
-	protected ImageOperator(boolean mask, int w, int h, int b, PSPackedArray m,
-			PSObject[] ds, PSPackedArray d, boolean i) {
+	protected ImageOperator(PSDevice device, boolean mask, int w, int h, int b,
+			PSPackedArray m, PSObject[] ds, PSPackedArray d, boolean i) {
 
 		imageMask = mask;
 		width = w;
@@ -369,7 +369,7 @@ class ImageOperator extends PaintingOperator {
 		default:
 			throw new IllegalArgumentException();
 		}
-		matrix = new AffineTransform(m.toDoubles());
+		matrix = device.createTransform(m.toDoubles());
 
 		multi = (ds.length > 1);
 		proc = new PSPackedArray[ds.length];
@@ -391,7 +391,7 @@ class ImageOperator extends PaintingOperator {
 		color = new float[components];
 		interpolate = i;
 
-		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		image = device.createImage(width, height, Image.TYPE_INT_ARGB);
 		pixelBitStride = bitsPerComponent * components;
 		scanlineStride = (int) Math.ceil(width * pixelBitStride / dataSize);
 		popString = false;
@@ -441,8 +441,8 @@ class ImageOperator extends PaintingOperator {
 					PSBoolean inter = (PSBoolean) dict.get("Interpolate");
 					boolean i = (inter != null) ? inter.getValue() : false;
 
-					ImageOperator imageOperator = new ImageOperator(mask, w, h,
-							b, m, ds, d, i);
+					ImageOperator imageOperator = new ImageOperator(os.gstate()
+							.device(), mask, w, h, b, m, ds, d, i);
 					os.execStack().pop();
 					os.execStack().push(imageOperator);
 					return false;
@@ -482,7 +482,7 @@ class ImageOperator extends PaintingOperator {
 			int w = os.popInteger().getValue();
 
 			try {
-				ImageOperator imageOperator = new ImageOperator(mask, w, h, b,
+				ImageOperator imageOperator = new ImageOperator(os.gstate().device(), mask, w, h, b,
 						m, ds, d, false);
 				os.execStack().pop();
 				os.execStack().push(imageOperator);
@@ -601,7 +601,7 @@ class ImageOperator extends PaintingOperator {
 					pixels[1] = (int) (rgb[1] * 255);
 					pixels[2] = (int) (rgb[2] * 255);
 					pixels[3] = (int) (alpha * 255);
-					image.getRaster().setPixel(x, y, pixels);
+					image.setPixel(x, y, pixels);
 					c = 0;
 					x++;
 				}
@@ -687,7 +687,7 @@ class ColorImage extends ImageOperator {
 		int w = os.popInteger().getValue();
 
 		try {
-			ImageOperator ci = new ImageOperator(false, w, h, b, m, ds, d,
+			ImageOperator ci = new ImageOperator(os.gstate().device(), false, w, h, b, m, ds, d,
 					false);
 			os.execStack().pop();
 			os.execStack().push(ci);

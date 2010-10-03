@@ -1,57 +1,48 @@
-// Copyright 2004-2009, FreeHEP.
+// Copyright 2004-2010, FreeHEP.
 package org.freehep.postscript.device;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-
+import org.freehep.postscript.Dimension;
+import org.freehep.postscript.GraphicsContext;
+import org.freehep.postscript.Transform;
 import org.freehep.postscript.types.PSDevice;
 
 /*
  * @author Mark Donszelmann
  */
-public class VirtualDevice extends PSDevice {
-	private Graphics2D graphics;
+public abstract class VirtualDevice extends PSDevice {
+	private GraphicsContext graphics;
 	private Dimension dimension;
-	private AffineTransform device = new AffineTransform();
+	private Transform device;
 
-	public VirtualDevice(Graphics2D graphics, Dimension dimension) {
+	public VirtualDevice(GraphicsContext graphics, Dimension dimension) {
 		this.graphics = graphics;
 		this.dimension = dimension;
+		this.device = createTransform();
 		fireComponentRefreshed();
 	}
 
 	@Override
 	public double getWidth() {
-		return dimension.width;
+		return dimension.getWidth();
 	}
 
 	@Override
 	public double getHeight() {
-		return dimension.height;
+		return dimension.getHeight();
 	}
 
 	@Override
-	public AffineTransform getDeviceTransform() {
+	public Transform getDeviceTransform() {
 		return device;
 	}
 
 	@Override
-	public Graphics getDeviceGraphics() {
+	public GraphicsContext getDeviceGraphics() {
 		return graphics;
 	}
 
 	@Override
 	public void refresh() {
 		// ignored
-	}
-
-	/* (non-Javadoc)
-	 * @see org.freehep.postscript.PSDevice#createImageDevice(int, int)
-	 */
-	@Override
-	public ImageDevice createImageDevice(int width, int height) {
-		return new ImageDevice(width, height);
 	}
 }

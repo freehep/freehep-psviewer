@@ -1,18 +1,19 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.operators;
 
-import java.awt.Font;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import org.freehep.postscript.Font;
+import org.freehep.postscript.Point;
 import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.stacks.DictionaryStack;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSArray;
 import org.freehep.postscript.types.PSCharStringDecoder;
 import org.freehep.postscript.types.PSComposite;
+import org.freehep.postscript.types.PSDevice;
 import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSFontDictionary;
 import org.freehep.postscript.types.PSFontID;
@@ -38,21 +39,21 @@ public abstract class FontOperator extends AbstractOperator {
 
 	protected static FontCache fontCache;
 
-	static {
-		fontCache = new FontCache();
+	private void createFontCache(PSDevice device) {
+		fontCache = new FontCache(device);
 
 		// add standard 14 entries (PDF like)
 		// QUESTION: should we point to Lucida Fonts!
 		fontCache.put("Courier", fontCache.get("Monospaced.plain"));
 		fontCache.put("Courier-Bold", fontCache.get("Monospaced.bold"));
 		fontCache.put("Courier-Oblique", fontCache.get("Monospaced.italic"));
-		fontCache.put("Courier-BoldOblique", fontCache
-				.get("Monospaced.bolditalic"));
+		fontCache.put("Courier-BoldOblique",
+				fontCache.get("Monospaced.bolditalic"));
 		fontCache.put("Helvetica", fontCache.get("SansSerif.plain"));
 		fontCache.put("Helvetica-Bold", fontCache.get("SansSerif.bold"));
 		fontCache.put("Helvetica-Oblique", fontCache.get("SansSerif.italic"));
-		fontCache.put("Helvetica-BoldOblique", fontCache
-				.get("SansSerif.bolditalic"));
+		fontCache.put("Helvetica-BoldOblique",
+				fontCache.get("SansSerif.bolditalic"));
 		fontCache.put("Times-Roman", fontCache.get("Serif.plain"));
 		fontCache.put("Times-Bold", fontCache.get("Serif.bold"));
 		fontCache.put("Times-Italic", fontCache.get("Serif.italic"));
@@ -96,7 +97,7 @@ public abstract class FontOperator extends AbstractOperator {
 				SetCacheDevice2.class, SetCharWidth.class });
 	}
 
-	protected PSDictionary findFont(DictionaryStack dictStack, PSName key) {
+	protected PSDictionary findFont(PSDevice device, DictionaryStack dictStack, PSName key) {
 		PSDictionary fontDirectory = dictStack.fontDirectory();
 		PSDictionary font = (PSDictionary) fontDirectory.get(key);
 		if (font == null) {
@@ -112,10 +113,15 @@ public abstract class FontOperator extends AbstractOperator {
 				encodingName = DictionaryStack.zapfDingbatsEncoding.getValue();
 				fontName = "SansSerif.plain";
 			}
+			
+			if (fontCache == null) {
+				createFontCache(device);
+			}
 
-			PSArray encoding = dictStack.systemDictionary().getArray(encodingName);
+			PSArray encoding = dictStack.systemDictionary().getArray(
+					encodingName);
 			Font javaFont = fontCache.get(fontName);
-			font = new PSFontDictionary(javaFont, encoding);
+			font = new PSFontDictionary(device, javaFont, encoding);
 		}
 		return font;
 	}
@@ -129,7 +135,7 @@ public abstract class FontOperator extends AbstractOperator {
 		fontDirectory.put(key, font);
 	}
 
-	protected PSDictionary makeFont(PSDictionary font, double[] matrix) {
+	protected PSDictionary makeFont(PSDevice device, PSDictionary font, double[] matrix) {
 		PSJavaFont psfont = (PSJavaFont) font.get("javafont");
 		if (psfont == null) {
 			// when does this happen ?
@@ -142,11 +148,11 @@ public abstract class FontOperator extends AbstractOperator {
 			return fontCopy;
 		} else {
 			Font javaFont = psfont.getFont();
-			AffineTransform at = new AffineTransform(matrix);
+			org.freehep.postscript.Transform at = device.createTransform(matrix);
 			at.concatenate(javaFont.getTransform());
 			javaFont = javaFont.deriveFont(at);
 
-			return new PSFontDictionary(javaFont, font.getArray("Encoding"));
+			return new PSFontDictionary(device, javaFont, font.getArray("Encoding"));
 		}
 	}
 
@@ -156,7 +162,7 @@ public abstract class FontOperator extends AbstractOperator {
 		os.gstate().setFont(font);
 	}
 
-	protected PSGlyph getCachedGlyph(PSDictionary font, PSName name) {
+	protected PSGlyph getCachedGlyph(PSDevice device, PSDictionary font, PSName name) {
 		PSDictionary cache = font.getDictionary("_CachedGlyphs");
 		if (cache == null) {
 			cache = new PSDictionary();
@@ -164,7 +170,7 @@ public abstract class FontOperator extends AbstractOperator {
 		}
 		PSGlyph glyph = (PSGlyph) cache.get(name);
 		if (glyph == null) {
-			glyph = new PSGlyph();
+			glyph = new PSGlyph(device);
 			cache.put(name, glyph);
 		}
 		font.put("_CurrentGlyph", glyph);
@@ -197,7 +203,7 @@ public abstract class FontOperator extends AbstractOperator {
 			}
 		}
 
-		currentGlyph = getCachedGlyph(font, name);
+		currentGlyph = getCachedGlyph(os.gstate().device(), font, name);
 
 		switch (type) {
 		case 0: // Composed fonts
@@ -332,7 +338,7 @@ public abstract class FontOperator extends AbstractOperator {
 				PSCharStringDecoder decoder = new PSCharStringDecoder(os
 						.dictStack().systemDictionary());
 				try {
-					PSGlyph glyph = decoder.decode((PSString) obj);
+					PSGlyph glyph = decoder.decode(os.gstate().device(), (PSString) obj);
 					charstrings.put(name, glyph);
 					show(os, gs, glyph);
 				} catch (IOException e) {
@@ -378,8 +384,8 @@ public abstract class FontOperator extends AbstractOperator {
 			// FIXME: no idea why the 0.5 factor is here
 			// seems like the lsb given by Java is not
 			// really accurate, especially with derived (small) fonts
-			gs.show(((PSJavaGlyph) g).getGlyph(), (float) (currentGlyph
-					.getLSB() * 0.5), 0);
+			gs.show(((PSJavaGlyph) g).getGlyph(),
+					(float) (currentGlyph.getLSB() * 0.5), 0);
 		} else {
 			// Embedded type1 font procedure
 			os.execStack().push(new GRestore());
@@ -480,7 +486,7 @@ class FindFont extends FontOperator {
 	@Override
 	public boolean execute(OperandStack os) {
 		PSName name = os.popName();
-		PSDictionary font = findFont(os.dictStack(), name);
+		PSDictionary font = findFont(os.gstate().device(), os.dictStack(), name);
 		if (font == null) {
 			error(os, new InvalidFont());
 		} else {
@@ -501,7 +507,7 @@ class ScaleFont extends FontOperator {
 		double scale = os.popNumber().getDouble();
 		PSDictionary font = os.popDictionary();
 
-		font = makeFont(font, new double[] { scale, 0, 0, scale, 0, 0 });
+		font = makeFont(os.gstate().device(), font, new double[] { scale, 0, 0, scale, 0, 0 });
 		os.push(font);
 		return true;
 	}
@@ -516,7 +522,7 @@ class MakeFont extends FontOperator {
 	public boolean execute(OperandStack os) {
 		PSPackedArray matrix = os.popPackedArray();
 		PSDictionary font = os.popDictionary();
-		os.push(makeFont(font, matrix.toDoubles()));
+		os.push(makeFont(os.gstate().device(), font, matrix.toDoubles()));
 		return true;
 	}
 }
@@ -571,7 +577,7 @@ class SelectFont extends FontOperator {
 			return true;
 		}
 
-		PSDictionary font = findFont(os.dictStack(), key);
+		PSDictionary font = findFont(os.gstate().device(), os.dictStack(), key);
 		if (font == null) {
 			error(os, new InvalidFont());
 			return true;
@@ -581,7 +587,7 @@ class SelectFont extends FontOperator {
 
 		// FIXME: should be a copy
 		// font = makeFont((PSDictionary)font.copy(), matrix.toDoubles());
-		font = makeFont(font, matrix.toDoubles());
+		font = makeFont(os.gstate().device(), font, matrix.toDoubles());
 
 		setFont(os, font);
 
@@ -611,7 +617,7 @@ class Show extends FontOperator {
 				error(os, new TypeCheck());
 				return true;
 			}
-			Point2D point = gs.position();
+			Point point = gs.position();
 			if (point == null) {
 				error(os, new NoCurrentPoint());
 				return true;
@@ -622,8 +628,8 @@ class Show extends FontOperator {
 			String t = os.popString().getValue();
 
 			double[] cfm = gs.font().getPackedArray("FontMatrix").toDoubles();
-			AffineTransform at = new AffineTransform(cfm[0], cfm[1], cfm[2],
-					cfm[3], x0, y0);
+			org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+					cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 			double xs = at.getScaleX();
 			double ys = at.getScaleY();
 
@@ -643,11 +649,13 @@ class Show extends FontOperator {
 		index++;
 
 		if (index >= text.length()) {
-			Point2D t = gs.position();
+			Point t = gs.position();
 			os.grestore();
-			Point2D p = os.gstate().position();
-			os.gstate().path().moveTo((float) (p.getX() - (t.getX() * sx)),
-					(float) (p.getY() - (t.getY() * sy)));
+			Point p = os.gstate().position();
+			os.gstate()
+					.path()
+					.moveTo((float) (p.getX() - (t.getX() * sx)),
+							(float) (p.getY() - (t.getY() * sy)));
 			return true;
 		}
 		int ch = text.charAt(index);
@@ -681,7 +689,7 @@ class AShow extends FontOperator {
 				return true;
 			}
 
-			Point2D point = gs.position();
+			Point point = gs.position();
 			if (point == null) {
 				error(os, new NoCurrentPoint());
 				return true;
@@ -697,8 +705,8 @@ class AShow extends FontOperator {
 			os.gsave();
 
 			double[] cfm = gs.font().getPackedArray("FontMatrix").toDoubles();
-			AffineTransform at = new AffineTransform(cfm[0], cfm[1], cfm[2],
-					cfm[3], x0, y0);
+			org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+					cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 			gs.transform(at);
 
 			return false;
@@ -749,7 +757,7 @@ class WidthShow extends FontOperator {
 				return true;
 			}
 
-			Point2D point = gs.position();
+			Point point = gs.position();
 			if (point == null) {
 				error(os, new NoCurrentPoint());
 				return true;
@@ -767,8 +775,8 @@ class WidthShow extends FontOperator {
 			os.gsave();
 
 			double[] cfm = gs.font().getPackedArray("FontMatrix").toDoubles();
-			AffineTransform at = new AffineTransform(cfm[0], cfm[1], cfm[2],
-					cfm[3], x0, y0);
+			org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+					cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 			gs.transform(at);
 
 			return false;
@@ -828,7 +836,7 @@ class AWidthShow extends FontOperator {
 				return true;
 			}
 
-			Point2D point = gs.position();
+			Point point = gs.position();
 			if (point == null) {
 				error(os, new NoCurrentPoint());
 				return true;
@@ -848,8 +856,8 @@ class AWidthShow extends FontOperator {
 			os.gsave();
 
 			double[] cfm = gs.font().getPackedArray("FontMatrix").toDoubles();
-			AffineTransform at = new AffineTransform(cfm[0], cfm[1], cfm[2],
-					cfm[3], x0, y0);
+			org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+					cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 			gs.transform(at);
 
 			return false;
@@ -898,7 +906,7 @@ class XShow extends FontOperator {
 
 		if (text == null) {
 			if (os.checkType(PSString.class, PSPackedArray.class)) {
-				Point2D point = gs.position();
+				Point point = gs.position();
 				if (point == null) {
 					error(os, new NoCurrentPoint());
 					return true;
@@ -920,8 +928,8 @@ class XShow extends FontOperator {
 
 				double[] cfm = gs.font().getPackedArray("FontMatrix")
 						.toDoubles();
-				AffineTransform at = new AffineTransform(cfm[0], cfm[1],
-						cfm[2], cfm[3], x0, y0);
+				org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+						cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 				gs.transform(at);
 
 				return false;
@@ -972,7 +980,7 @@ class XYShow extends FontOperator {
 
 		if (text == null) {
 			if (os.checkType(PSString.class, PSPackedArray.class)) {
-				Point2D point = gs.position();
+				Point point = gs.position();
 				if (point == null) {
 					error(os, new NoCurrentPoint());
 					return true;
@@ -994,8 +1002,8 @@ class XYShow extends FontOperator {
 
 				double[] cfm = gs.font().getPackedArray("FontMatrix")
 						.toDoubles();
-				AffineTransform at = new AffineTransform(cfm[0], cfm[1],
-						cfm[2], cfm[3], x0, y0);
+				org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+						cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 				gs.transform(at);
 
 				return false;
@@ -1045,7 +1053,7 @@ class YShow extends FontOperator {
 
 		if (text == null) {
 			if (os.checkType(PSString.class, PSPackedArray.class)) {
-				Point2D point = gs.position();
+				Point point = gs.position();
 				if (point == null) {
 					error(os, new NoCurrentPoint());
 					return true;
@@ -1067,8 +1075,8 @@ class YShow extends FontOperator {
 
 				double[] cfm = gs.font().getPackedArray("FontMatrix")
 						.toDoubles();
-				AffineTransform at = new AffineTransform(cfm[0], cfm[1],
-						cfm[2], cfm[3], x0, y0);
+				org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+						cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 				gs.transform(at);
 
 				return false;
@@ -1106,7 +1114,7 @@ class GlyphShow extends FontOperator {
 	public boolean execute(OperandStack os) {
 		if (os.checkType(PSName.class)) {
 			PSName name = os.popName();
-			Point2D point = os.gstate().position();
+			Point point = os.gstate().position();
 			if (point == null) {
 				error(os, new NoCurrentPoint());
 				return true;
@@ -1184,7 +1192,7 @@ class KShow extends FontOperator {
 				return true;
 			}
 
-			Point2D point = gs.position();
+			Point point = gs.position();
 			if (point == null) {
 				error(os, new NoCurrentPoint());
 				return true;
@@ -1199,8 +1207,8 @@ class KShow extends FontOperator {
 			os.gsave();
 
 			double[] cfm = gs.font().getPackedArray("FontMatrix").toDoubles();
-			AffineTransform at = new AffineTransform(cfm[0], cfm[1], cfm[2],
-					cfm[3], x0, y0);
+			org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+					cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 			gs.transform(at);
 
 			return false;

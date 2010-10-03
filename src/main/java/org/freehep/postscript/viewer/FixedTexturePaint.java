@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.freehep.postscript.Paint;
 import org.freehep.postscript.stacks.OperandStack;
 
 /**
@@ -41,7 +42,7 @@ public class FixedTexturePaint extends TexturePaint {
 	@Override
 	public PaintContext createContext(ColorModel cm, Rectangle deviceBounds,
 			Rectangle2D userBounds, AffineTransform xform, RenderingHints hints) {
-		AffineTransform mirror;
+		org.freehep.postscript.Transform mirror;
 		try {
 			// calculate Mirror: x = M*ctm --> M = x*ctm-1
 			mirror = os.gstate().getTransform();

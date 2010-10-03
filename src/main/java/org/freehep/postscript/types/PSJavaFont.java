@@ -1,8 +1,7 @@
-// Copyright 2001, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
-import java.awt.Font;
-
+import org.freehep.postscript.Font;
 import org.freehep.postscript.stacks.OperandStack;
 
 /**
@@ -32,7 +31,7 @@ public class PSJavaFont extends PSSimple {
 		return "javafont";
 	}
 
-	public Font getFont() {
+	public org.freehep.postscript.Font getFont() {
 		return font;
 	}
 

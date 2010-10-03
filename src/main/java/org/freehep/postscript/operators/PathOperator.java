@@ -1,19 +1,16 @@
-// Copyright 2001-2009, FreeHEP.
+// Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.operators;
 
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Arc2D;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Path2D;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import org.freehep.postscript.NoninvertibleTransformException;
+import org.freehep.postscript.Path;
+import org.freehep.postscript.PathIterator;
+import org.freehep.postscript.Point;
+import org.freehep.postscript.Rectangle;
+import org.freehep.postscript.Shape;
 import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.errors.Undefined;
 import org.freehep.postscript.processor.LoopingContext;
@@ -69,7 +66,7 @@ class CurrentPoint extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D point = os.gstate().position();
+		Point point = os.gstate().position();
 		if (point == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -101,7 +98,7 @@ class RMoveTo extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D point = os.gstate().position();
+		Point point = os.gstate().position();
 		if (point == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -121,7 +118,7 @@ class LineTo extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D point = os.gstate().position();
+		Point point = os.gstate().position();
 		if (point == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -140,7 +137,7 @@ class RLineTo extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D point = os.gstate().position();
+		Point point = os.gstate().position();
 		if (point == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -171,8 +168,8 @@ class Arc extends PathOperator {
 			a2 += FULL_CIRCLE;
 		}
 
-		Arc2D arc = new Arc2D.Double();
-		arc.setArcByCenter(x, y, r, -a1, -(a2 - a1), Arc2D.OPEN);
+		org.freehep.postscript.Arc arc = os.gstate().device().createArc();
+		arc.setArcByCenter(x, y, r, -a1, -(a2 - a1), org.freehep.postscript.Arc.OPEN);
 		os.gstate().path().append(arc, true);
 
 		return true;
@@ -197,9 +194,9 @@ class ArcN extends PathOperator {
 			a2 -= FULL_CIRCLE;
 		}
 
-		Arc2D arc = new Arc2D.Double();
+		org.freehep.postscript.Arc arc = os.gstate().device().createArc();
 
-		arc.setArcByCenter(x, y, r, -a1, -(a2 - a1), Arc2D.OPEN);
+		arc.setArcByCenter(x, y, r, -a1, -(a2 - a1), org.freehep.postscript.Arc.OPEN);
 		os.gstate().path().append(arc, true);
 
 		return true;
@@ -214,7 +211,7 @@ class ArcT extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D p0 = os.gstate().position();
+		Point p0 = os.gstate().position();
 		if (p0 == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -224,9 +221,9 @@ class ArcT extends PathOperator {
 			double y1 = os.popNumber().getDouble();
 			double x1 = os.popNumber().getDouble();
 
-			Arc2D arc = new Arc2D.Double(Arc2D.OPEN);
-			arc.setArcByTangent(p0, new Point2D.Double(x1, y1),
-					new Point2D.Double(x2, y2), r);
+			org.freehep.postscript.Arc arc = os.gstate().device().createArc(org.freehep.postscript.Arc.OPEN);
+			arc.setArcByTangent(p0, os.gstate().device().createPoint(x1, y1),
+					os.gstate().device().createPoint(x2, y2), r);
 			os.gstate().path().append(arc, true);
 		}
 		return true;
@@ -241,7 +238,7 @@ class ArcTo extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D p0 = os.gstate().position();
+		Point p0 = os.gstate().position();
 		if (p0 == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -251,14 +248,14 @@ class ArcTo extends PathOperator {
 			double y1 = os.popNumber().getDouble();
 			double x1 = os.popNumber().getDouble();
 
-			Arc2D arc = new Arc2D.Double(Arc2D.OPEN);
-			arc.setArcByTangent(p0, new Point2D.Double(x1, y1),
-					new Point2D.Double(x2, y2), r);
+			org.freehep.postscript.Arc arc = os.gstate().device().createArc(org.freehep.postscript.Arc.OPEN);
+			arc.setArcByTangent(p0, os.gstate().device().createPoint(x1, y1),
+					os.gstate().device().createPoint(x2, y2), r);
 			os.gstate().path().append(arc, true);
-			Point2D p1t = arc.getStartPoint();
+			Point p1t = arc.getStartPoint();
 			os.push(p1t.getX());
 			os.push(p1t.getY());
-			Point2D p2t = arc.getEndPoint();
+			Point p2t = arc.getEndPoint();
 			os.push(p2t.getX());
 			os.push(p2t.getY());
 		}
@@ -274,7 +271,7 @@ class CurveTo extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D p0 = os.gstate().position();
+		Point p0 = os.gstate().position();
 		if (p0 == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -299,7 +296,7 @@ class RCurveTo extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D p0 = os.gstate().position();
+		Point p0 = os.gstate().position();
 		if (p0 == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -339,7 +336,7 @@ class ReversePath extends PathOperator {
 	private float coord[] = new float[PATH_SIZE];
 	private Stack<Object> stack;
 
-	private void createSubPath(GeneralPath reverse) {
+	private void createSubPath(Path reverse) {
 		while (!stack.empty()) {
 			String s = (String) stack.pop();
 			if (s.equals("moveto")) {
@@ -365,9 +362,9 @@ class ReversePath extends PathOperator {
 	@Override
 	public boolean execute(OperandStack os) {
 		stack = new Stack<Object>();
-		GeneralPath path = (GeneralPath) os.gstate().path().clone();
-		PathIterator iterator = path.getPathIterator(new AffineTransform());
-		GeneralPath reverse = os.gstate().newPath();
+		Path path = os.gstate().path().clone();
+		PathIterator iterator = path.getPathIterator();
+		Path reverse = os.gstate().newPath();
 
 		while (!iterator.isDone()) {
 			switch (iterator.currentSegment(coord)) {
@@ -420,9 +417,9 @@ class StrokePath extends PathOperator {
 
 class UStrokePath extends PathOperator {
 	private boolean done;
-	private AffineTransform matrix;
+	private org.freehep.postscript.Transform matrix;
 
-	private UStrokePath(boolean d, AffineTransform m) {
+	private UStrokePath(boolean d, org.freehep.postscript.Transform m) {
 		done = d;
 		matrix = m;
 	}
@@ -438,11 +435,11 @@ class UStrokePath extends PathOperator {
 				return true;
 			}
 
-			AffineTransform m = null;
+			org.freehep.postscript.Transform m = null;
 			PSPackedArray proc = os.popPackedArray();
 			if (proc.size() == MATRIX_SIZE) {
 				try {
-					m = new AffineTransform(proc.toDoubles());
+					m = os.gstate().device().createTransform(proc.toDoubles());
 					if (!os.checkType(PSPackedArray.class)) {
 						error(os, new TypeCheck());
 						return true;
@@ -468,7 +465,7 @@ class UStrokePath extends PathOperator {
 		// upath was executed, end, strokepath
 		os.dictStack().pop();
 		if (matrix != null) {
-			AffineTransform ctm = os.gstate().getTransform();
+			org.freehep.postscript.Transform ctm = os.gstate().getTransform();
 			os.gstate().transform(matrix);
 			os.gstate().strokePath();
 			os.gstate().setTransform(ctm);
@@ -494,7 +491,7 @@ class CharPath extends PathOperator {
 
 		float x = 0.0f;
 		float y = 0.0f;
-		Point2D point = gs.position();
+		Point point = gs.position();
 		if (point != null) {
 			x = (float) point.getX();
 			y = (float) point.getY();
@@ -573,8 +570,7 @@ class SetBBox extends PathOperator {
 		double urx = ((PSNumber) os.pop()).getDouble();
 		double lly = ((PSNumber) os.pop()).getDouble();
 		double llx = ((PSNumber) os.pop()).getDouble();
-		os.gstate().setBoundingBox(
-				new Rectangle2D.Double(llx, lly, urx - llx, ury - lly));
+		os.gstate().setBoundingBox(os.gstate().device().createRectangle(llx, lly, urx - llx, ury - lly));
 		return true;
 	}
 }
@@ -583,12 +579,12 @@ class PathBBox extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D p0 = os.gstate().position();
+		Point p0 = os.gstate().position();
 		if (p0 == null) {
 			error(os, new NoCurrentPoint());
 		} else {
-			Rectangle2D bb = (os.gstate().boundingBox() != null) ? os.gstate()
-					.boundingBox() : os.gstate().path().getBounds2D();
+			Rectangle bb = (os.gstate().boundingBox() != null) ? os.gstate()
+					.boundingBox() : os.gstate().path().getBounds();
 			os.push(bb.getMinX());
 			os.push(bb.getMinY());
 			os.push(bb.getMaxX());
@@ -615,7 +611,7 @@ class PathForAll extends PathOperator implements LoopingContext {
 		lineProc = line;
 		curveProc = curve;
 		closeProc = close;
-		iterator = path.getPathIterator(new AffineTransform());
+		iterator = path.getPathIterator();
 		coord = new double[PATH_SIZE];
 	}
 
@@ -694,7 +690,7 @@ class UPath extends PathOperator {
 	public boolean execute(OperandStack os) {
 		boolean ucache = os.popBoolean().getValue();
 
-		AffineTransform inverse;
+		org.freehep.postscript.Transform inverse;
 		try {
 			inverse = os.gstate().getTransform().createInverse();
 		} catch (NoninvertibleTransformException e) {
@@ -709,7 +705,7 @@ class UPath extends PathOperator {
 			path.add(new PSName("ucache", true));
 		}
 
-		Rectangle2D bb = os.gstate().path().getBounds2D();
+		Rectangle bb = os.gstate().path().getBounds();
 		path.add(new PSReal(bb.getMinX()));
 		path.add(new PSReal(bb.getMinY()));
 		path.add(new PSReal(bb.getMaxX()));
@@ -782,8 +778,8 @@ class EOClip extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		GeneralPath eoPath = new GeneralPath(os.gstate().path());
-		eoPath.setWindingRule(Path2D.WIND_EVEN_ODD);
+		Path eoPath = os.gstate().path().clone();
+		eoPath.setWindingRule(Path.WIND_EVEN_ODD);
 		os.gstate().clip(eoPath);
 		return true;
 	}
@@ -802,18 +798,18 @@ class RectClip extends PathOperator {
 			double w = os.popNumber().getDouble();
 			double y = os.popNumber().getDouble();
 			double x = os.popNumber().getDouble();
-			Rectangle2D r = new Rectangle2D.Double(x, y, w, h);
+			Rectangle r = os.gstate().device().createRectangle(x, y, w, h);
 			os.gstate().clip(r);
 			os.gstate().newPath();
 		} else if (os.checkType(PSPackedArray.class)) {
 			PSPackedArray a = os.popPackedArray();
-			GeneralPath p = new GeneralPath();
+			Path p = os.gstate().device().createPath();
 			for (int i = 0; i < a.size() / 4; i++) {
 				double x = ((PSNumber) a.get(i * 4)).getDouble();
 				double y = ((PSNumber) a.get(i * 4 + 1)).getDouble();
 				double w = ((PSNumber) a.get(i * 4 + 2)).getDouble();
 				double h = ((PSNumber) a.get(i * 4 + 3)).getDouble();
-				Rectangle2D r = new Rectangle2D.Double(x, y, w, h);
+				Rectangle r = os.gstate().device().createRectangle(x, y, w, h);
 				p.append(r, false);
 			}
 			os.gstate().clip(p);
@@ -846,7 +842,7 @@ class HLineTo extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D point = os.gstate().position();
+		Point point = os.gstate().position();
 		if (point == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -865,7 +861,7 @@ class VLineTo extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D point = os.gstate().position();
+		Point point = os.gstate().position();
 		if (point == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -884,7 +880,7 @@ class HMoveTo extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D point = os.gstate().position();
+		Point point = os.gstate().position();
 		if (point == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -903,7 +899,7 @@ class VMoveTo extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D point = os.gstate().position();
+		Point point = os.gstate().position();
 		if (point == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -923,7 +919,7 @@ class RRCurveTo extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D p0 = os.gstate().position();
+		Point p0 = os.gstate().position();
 		if (p0 == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -951,7 +947,7 @@ class HVCurveTo extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D p0 = os.gstate().position();
+		Point p0 = os.gstate().position();
 		if (p0 == null) {
 			error(os, new NoCurrentPoint());
 		} else {
@@ -979,7 +975,7 @@ class VHCurveTo extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Point2D p0 = os.gstate().position();
+		Point p0 = os.gstate().position();
 		if (p0 == null) {
 			error(os, new NoCurrentPoint());
 		} else {

@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
+import org.freehep.postscript.awt.AWTPanelDevice;
 import org.freehep.postscript.processor.Processor;
 import org.freehep.postscript.types.PSDebugger;
 import org.freehep.postscript.types.PSInputFile;
@@ -121,7 +122,7 @@ public final class PSViewer {
 			frame.setSize(800, 700);
 			frame.setVisible(true);
 
-			Processor processor = new Processor(panel);
+			Processor processor = new Processor(new AWTPanelDevice(panel), false);
 			new PSViewer(processor, name, page.getValue().intValue(), scale
 					.getValue().doubleValue(), scale.getValue().doubleValue(),
 					tx.getValue().doubleValue(), ty.getValue().doubleValue(), buffer.getValue().intValue(),

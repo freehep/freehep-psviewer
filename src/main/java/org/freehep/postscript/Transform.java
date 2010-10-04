@@ -37,5 +37,6 @@ public interface Transform {
 
 	void setToScale(double sx, double sy);
 
+	void preConcatenate(Transform xform);
 
 }

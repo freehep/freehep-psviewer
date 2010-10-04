@@ -14,4 +14,8 @@ public interface Image {
 	// use getRaster().setPixel;
 	void setPixel(int x, int y, int[] pixels);
 
+	void getDataElements(int i, int y, int width, int j, int[] pixels);
+
+	void setDataElements(int i, int y, int width, int j, int[] pixels);
+
 }

@@ -1,18 +1,10 @@
 // Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.processor;
 
-import java.applet.Applet;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JApplet;
-import javax.swing.JPanel;
-
-import org.freehep.postscript.Dimension;
-import org.freehep.postscript.GraphicsContext;
-import org.freehep.postscript.device.PanelDevice;
-import org.freehep.postscript.device.VirtualDevice;
 import org.freehep.postscript.dsc.DSC;
 import org.freehep.postscript.errors.BreakException;
 import org.freehep.postscript.errors.PostScriptError;
@@ -54,7 +46,8 @@ public class Processor implements DebuggerListener {
 	private OperandStack operandStack;
 	private GStateStack gstateStack;
 	private long currentPageNo;
-
+// TODO remove
+	/*
 	public Processor(JPanel panel) {
 		this(new PanelDevice(panel), false);
 	}
@@ -66,7 +59,7 @@ public class Processor implements DebuggerListener {
 	public Processor(JApplet applet) {
 		this(new PanelDevice(applet), false);
 	}
-
+*/
 	public Processor(PSDevice device, boolean secure) {
 		this.device = device;
 		device.addComponentRefreshListener(new RefreshListener() {
@@ -84,6 +77,8 @@ public class Processor implements DebuggerListener {
 		this.currentPageNo = 0;
 	}
 
+// TODO re-add, but why
+/*
 	public Processor(GraphicsContext graphics, Dimension dimension, boolean secure) {
 		this.device = new VirtualDevice(graphics, dimension);
 		this.secure = secure;
@@ -93,7 +88,7 @@ public class Processor implements DebuggerListener {
 	public Processor(GraphicsContext graphics, Dimension dimension) {
 		this(graphics, dimension, false);
 	}
-
+*/
 	public void reset() throws IOException {
 		if (device.getGraphics() == null) {
 			return;

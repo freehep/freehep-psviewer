@@ -105,7 +105,7 @@ class MakePattern extends FormOperator {
 				Rectangle box = os.gstate().device().createRectangle(offset.getX(),
 						offset.getY(), biWidth, biHeight);
 				Paint p = new FixedTexturePaint(os, ctm, bi, box);
-
+				
 				os.execStack().pop();
 				os.execStack().push(new MakePattern(d, p));
 				os.execStack().push(proc);

@@ -12,4 +12,14 @@ public interface ColorSpace {
 
 	int getType();
 
+	float[] fromCIEXYZ(float[] colorvalue);
+
+	float[] fromRGB(float[] rgbvalue);
+
+	float[] toCIEXYZ(float[] colorvalue);
+
+	String getName(int index);
+
+	boolean isCS_sRGB();
+
 }

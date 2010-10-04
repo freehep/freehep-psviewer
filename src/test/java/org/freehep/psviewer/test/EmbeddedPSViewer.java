@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.freehep.postscript.awt.AWTPanelDevice;
 import org.freehep.postscript.processor.Processor;
 import org.freehep.postscript.types.PSInputFile;
 import org.freehep.postscript.viewer.PSPanel;
@@ -37,9 +38,9 @@ public class EmbeddedPSViewer {
         frame.setVisible(true);
         
         // Create processors and associate to panels and input files
-        Processor processor1 = new Processor(ps1);
+        Processor processor1 = new Processor(new AWTPanelDevice(ps1), false);
         processor1.setData(new PSInputFile(args[0]));
-        Processor processor2 = new Processor(ps2);
+        Processor processor2 = new Processor(new AWTPanelDevice(ps2), false);
         processor2.setData(new PSInputFile(args[1]));
         
         // Process

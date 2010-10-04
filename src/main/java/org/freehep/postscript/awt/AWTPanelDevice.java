@@ -5,19 +5,23 @@ import java.awt.geom.AffineTransform;
 
 import org.freehep.postscript.Arc;
 import org.freehep.postscript.Color;
+import org.freehep.postscript.ColorModel;
 import org.freehep.postscript.ColorSpace;
 import org.freehep.postscript.Font;
 import org.freehep.postscript.FontRenderContext;
 import org.freehep.postscript.GraphicsEnvironment;
 import org.freehep.postscript.Image;
+import org.freehep.postscript.PaintContext;
 import org.freehep.postscript.Path;
 import org.freehep.postscript.Point;
 import org.freehep.postscript.Rectangle;
+import org.freehep.postscript.RenderingHints;
 import org.freehep.postscript.Shape;
 import org.freehep.postscript.Stroke;
 import org.freehep.postscript.Transform;
 import org.freehep.postscript.device.ImageDevice;
 import org.freehep.postscript.device.PanelDevice;
+import org.freehep.postscript.viewer.FixedTexturePaint;
 
 public class AWTPanelDevice extends PanelDevice {
 
@@ -124,6 +128,20 @@ public class AWTPanelDevice extends PanelDevice {
 	@Override
 	public FontRenderContext createFontRenderContext(Object object,
 			boolean antiAliasing, boolean b) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PaintContext createContext(ColorModel cm, Rectangle deviceBounds,
+			Rectangle userBounds, Transform at, RenderingHints hints) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public FixedTexturePaint createTexturePaint(Image changeColor,
+			Rectangle anchor) {
 		// TODO Auto-generated method stub
 		return null;
 	}

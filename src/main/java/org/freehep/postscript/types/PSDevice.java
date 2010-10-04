@@ -7,9 +7,12 @@ import java.util.List;
 
 import org.freehep.postscript.Device;
 import org.freehep.postscript.GraphicsContext;
+import org.freehep.postscript.Image;
+import org.freehep.postscript.Rectangle;
 import org.freehep.postscript.Transform;
 import org.freehep.postscript.dsc.DSCEvent;
 import org.freehep.postscript.dsc.DSCEventListener;
+import org.freehep.postscript.viewer.FixedTexturePaint;
 import org.freehep.postscript.viewer.RefreshListener;
 
 /*
@@ -117,4 +120,5 @@ public abstract class PSDevice implements Device, DSCEventListener {
 		valid = false;
 	}
 
+	public abstract FixedTexturePaint createTexturePaint(Image changeColor, Rectangle anchor);
 }

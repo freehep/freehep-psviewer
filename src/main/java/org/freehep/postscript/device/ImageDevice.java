@@ -13,7 +13,7 @@ import org.freehep.postscript.types.PSDevice;
  */
 public abstract class ImageDevice extends PSDevice {
 	private Image image;
-	private Container container;
+	protected Container container;
 	private Transform deviceTranform;
 	
 	private ImageDevice() {

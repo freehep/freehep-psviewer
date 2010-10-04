@@ -1,22 +1,19 @@
 // Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.viewer;
 
-import java.awt.Color;
-import java.awt.PaintContext;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.TexturePaint;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.freehep.postscript.Color;
+import org.freehep.postscript.ColorModel;
+import org.freehep.postscript.Image;
+import org.freehep.postscript.NoninvertibleTransformException;
 import org.freehep.postscript.Paint;
+import org.freehep.postscript.PaintContext;
+import org.freehep.postscript.Rectangle;
+import org.freehep.postscript.RenderingHints;
+import org.freehep.postscript.Transform;
 import org.freehep.postscript.stacks.OperandStack;
 
 /**
@@ -24,25 +21,29 @@ import org.freehep.postscript.stacks.OperandStack;
  * 
  * @author Mark Donszelmann
  */
-public class FixedTexturePaint extends TexturePaint {
+public class FixedTexturePaint implements Paint {
 	private Logger log = Logger.getLogger("org.freehep.postscript");
 
 	private OperandStack os;
-	private AffineTransform matrix;
-	private Map<Color, TexturePaint> byColor = new HashMap<Color, TexturePaint>(
+	private Image texture;
+	private Rectangle anchor;
+	private Transform matrix;
+	private Map<Color, FixedTexturePaint> byColor = new HashMap<Color, FixedTexturePaint>(
 			2);
 
-	public FixedTexturePaint(OperandStack os, AffineTransform m,
-			BufferedImage texture, Rectangle2D anchor) {
-		super(texture, anchor);
+
+	public FixedTexturePaint(OperandStack os, Transform m,
+			Image texture, Rectangle anchor) {
+		this.texture = texture;
+		this.anchor = anchor;
 		this.os = os;
 		matrix = m;
 	}
 
-	@Override
 	public PaintContext createContext(ColorModel cm, Rectangle deviceBounds,
-			Rectangle2D userBounds, AffineTransform xform, RenderingHints hints) {
+			Rectangle userBounds, Transform xform, RenderingHints hints) {
 		org.freehep.postscript.Transform mirror;
+		
 		try {
 			// calculate Mirror: x = M*ctm --> M = x*ctm-1
 			mirror = os.gstate().getTransform();
@@ -52,43 +53,41 @@ public class FixedTexturePaint extends TexturePaint {
 			log.warning("Pattern problem: could not invert matrix");
 			mirror = xform;
 		}
-		AffineTransform at = new AffineTransform();
+		Transform at = os.gstate().device().createTransform();
 		at.preConcatenate(matrix);
 		at.preConcatenate(mirror);
-		return super.createContext(cm, deviceBounds, userBounds, at, hints);
+		return os.gstate().device().createContext(cm, deviceBounds, userBounds, at, hints);
 	}
 
-	public TexturePaint inColor(Color color) {
-		TexturePaint paint = byColor.get(color);
+	public FixedTexturePaint inColor(Color color) {
+		FixedTexturePaint paint = byColor.get(color);
 		if (paint == null) {
-			paint = new TexturePaint(changeColor(super.getImage(), 0xFF000000,
-					color.getRGB()), getAnchorRect());
+			paint = os.gstate().device().createTexturePaint(changeColor(texture, 0xFF000000,
+					color.getRGB()), anchor);
 			byColor.put(color, paint);
 		}
 		return paint;
 	}
 
-	private BufferedImage changeColor(BufferedImage src, int oldColor,
+	private Image changeColor(Image src, int oldColor,
 			int newColor) {
 		int width = src.getWidth();
 		int height = src.getHeight();
 //		int type = src.getType();
-		WritableRaster srcRaster = src.getRaster();
 
 //		ColorModel dstColorModel = src.getColorModel();
-		BufferedImage dst = new BufferedImage(src.getWidth(), src.getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
-		WritableRaster dstRaster = dst.getRaster();
+		Image dst = os.gstate().device().createImage(src.getWidth(), src.getHeight(),
+				Image.TYPE_INT_ARGB);
 
 		// replace oldcolor with newcolor and make others transparent
 		int[] inPixels = new int[width];
 		for (int y = 0; y < height; y++) {
-			srcRaster.getDataElements(0, y, width, 1, inPixels);
+			src.getDataElements(0, y, width, 1, inPixels);
 			for (int x = 0; x < width; x++) {
 				inPixels[x] = inPixels[x] == oldColor ? newColor
 						: inPixels[x] & 0x00FFFFFF;
 			}
-			dstRaster.setDataElements(0, y, width, 1, inPixels);
+			dst.setDataElements(0, y, width, 1, inPixels);
 		}
 
 		return dst;

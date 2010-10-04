@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.freehep.postscript.GraphicsContext;
 import org.freehep.postscript.awt.AWTGraphicsContext;
+import org.freehep.postscript.awt.AWTPanelDevice;
 import org.freehep.postscript.processor.Processor;
 import org.freehep.postscript.types.PSContainer;
 
@@ -129,7 +130,7 @@ public class PSApplet extends BufferedApplet implements PSContainer {
 				}
 			});
 
-			Processor processor = new Processor(this);
+			Processor processor = new Processor(new AWTPanelDevice(this), false);
 			new PSViewer(processor, url, pageNo, sx, sy, tx, ty, buffer, false);
 		} catch (IOException e) {
 			showStatus(e.getMessage());

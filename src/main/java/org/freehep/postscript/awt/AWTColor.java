@@ -23,4 +23,10 @@ public class AWTColor implements org.freehep.postscript.Color {
 	public java.awt.Color getColor() {
 		return c;
 	}
+
+	@Override
+	public int getRGB() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

@@ -16,20 +16,17 @@ public class AWTFont implements org.freehep.postscript.Font {
 
 	@Override
 	public String getPSName() {
-		// TODO Auto-generated method stub
-		return null;
+		return f.getPSName();
 	}
 
 	@Override
 	public Transform getTransform() {
-		// TODO Auto-generated method stub
-		return null;
+		return new AWTTransform(f.getTransform());
 	}
 
 	@Override
 	public org.freehep.postscript.Font deriveFont(Transform t) {
-		// TODO Auto-generated method stub
-		return null;
+		return new AWTFont(f.deriveFont(((AWTTransform)t).getTransform()));
 	}
 
 	@Override

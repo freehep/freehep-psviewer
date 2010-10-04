@@ -127,5 +127,9 @@ public class AWTTransform implements Transform {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+	@Override
+	public void preConcatenate(Transform xform) {
+		// TODO Auto-generated method stub
+	}	
 }

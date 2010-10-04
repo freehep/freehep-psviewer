@@ -28,4 +28,16 @@ public class AWTImage implements org.freehep.postscript.Image {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void getDataElements(int i, int y, int width, int j, int[] pixels) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setDataElements(int i, int y, int width, int j, int[] pixels) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -50,4 +50,7 @@ public interface Device {
 	FontRenderContext createFontRenderContext(Object object,
 			boolean antiAliasing, boolean b);
 
+    PaintContext createContext(ColorModel cm, Rectangle deviceBounds,
+			Rectangle userBounds, Transform at, RenderingHints hints);
+
 }

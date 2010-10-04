@@ -1,21 +1,22 @@
 // Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
-import java.awt.color.ColorSpace;
 import java.util.logging.Logger;
+
+import org.freehep.postscript.ColorSpace;
 
 /**
  * Pattern colorspace.
  * 
  * @author Mark Donszelmann
  */
-public class Pattern extends ColorSpace {
-	private static final long serialVersionUID = 1L;
+public class Pattern implements ColorSpace {
 	protected Logger log = Logger.getLogger("org.freehep.postscript");
 	private ColorSpace colorSpace;
 
 	public Pattern(ColorSpace colorSpace) {
-		super(TYPE_4CLR, 4);
+//		super(TYPE_4CLR, 4);
+// TODO
 		this.colorSpace = colorSpace;
 	}
 

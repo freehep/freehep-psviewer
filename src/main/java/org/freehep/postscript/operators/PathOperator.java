@@ -5,12 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import org.freehep.postscript.NoninvertibleTransformException;
-import org.freehep.postscript.Path;
-import org.freehep.postscript.PathIterator;
-import org.freehep.postscript.Point;
-import org.freehep.postscript.Rectangle;
-import org.freehep.postscript.Shape;
 import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.errors.Undefined;
 import org.freehep.postscript.processor.LoopingContext;
@@ -25,6 +19,12 @@ import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSReal;
 import org.freehep.postscript.types.PSSimple;
 import org.freehep.postscript.types.PSString;
+import org.freehep.vectorgraphics.NoninvertibleTransformException;
+import org.freehep.vectorgraphics.Path;
+import org.freehep.vectorgraphics.PathIterator;
+import org.freehep.vectorgraphics.Point;
+import org.freehep.vectorgraphics.Rectangle;
+import org.freehep.vectorgraphics.Shape;
 
 /**
  * Path Construction Operators for PostScript Processor
@@ -168,8 +168,8 @@ class Arc extends PathOperator {
 			a2 += FULL_CIRCLE;
 		}
 
-		org.freehep.postscript.Arc arc = os.gstate().device().createArc();
-		arc.setArcByCenter(x, y, r, -a1, -(a2 - a1), org.freehep.postscript.Arc.OPEN);
+		org.freehep.vectorgraphics.Arc arc = os.gstate().device().createArc();
+		arc.setArcByCenter(x, y, r, -a1, -(a2 - a1), org.freehep.vectorgraphics.Arc.OPEN);
 		os.gstate().path().append(arc, true);
 
 		return true;
@@ -194,9 +194,9 @@ class ArcN extends PathOperator {
 			a2 -= FULL_CIRCLE;
 		}
 
-		org.freehep.postscript.Arc arc = os.gstate().device().createArc();
+		org.freehep.vectorgraphics.Arc arc = os.gstate().device().createArc();
 
-		arc.setArcByCenter(x, y, r, -a1, -(a2 - a1), org.freehep.postscript.Arc.OPEN);
+		arc.setArcByCenter(x, y, r, -a1, -(a2 - a1), org.freehep.vectorgraphics.Arc.OPEN);
 		os.gstate().path().append(arc, true);
 
 		return true;
@@ -221,7 +221,7 @@ class ArcT extends PathOperator {
 			double y1 = os.popNumber().getDouble();
 			double x1 = os.popNumber().getDouble();
 
-			org.freehep.postscript.Arc arc = os.gstate().device().createArc(org.freehep.postscript.Arc.OPEN);
+			org.freehep.vectorgraphics.Arc arc = os.gstate().device().createArc(org.freehep.vectorgraphics.Arc.OPEN);
 			arc.setArcByTangent(p0, os.gstate().device().createPoint(x1, y1),
 					os.gstate().device().createPoint(x2, y2), r);
 			os.gstate().path().append(arc, true);
@@ -248,7 +248,7 @@ class ArcTo extends PathOperator {
 			double y1 = os.popNumber().getDouble();
 			double x1 = os.popNumber().getDouble();
 
-			org.freehep.postscript.Arc arc = os.gstate().device().createArc(org.freehep.postscript.Arc.OPEN);
+			org.freehep.vectorgraphics.Arc arc = os.gstate().device().createArc(org.freehep.vectorgraphics.Arc.OPEN);
 			arc.setArcByTangent(p0, os.gstate().device().createPoint(x1, y1),
 					os.gstate().device().createPoint(x2, y2), r);
 			os.gstate().path().append(arc, true);
@@ -362,7 +362,7 @@ class ReversePath extends PathOperator {
 	@Override
 	public boolean execute(OperandStack os) {
 		stack = new Stack<Object>();
-		Path path = os.gstate().path().clone();
+		Path path = os.gstate().path().copy();
 		PathIterator iterator = path.getPathIterator();
 		Path reverse = os.gstate().newPath();
 
@@ -417,9 +417,9 @@ class StrokePath extends PathOperator {
 
 class UStrokePath extends PathOperator {
 	private boolean done;
-	private org.freehep.postscript.Transform matrix;
+	private org.freehep.vectorgraphics.Transform matrix;
 
-	private UStrokePath(boolean d, org.freehep.postscript.Transform m) {
+	private UStrokePath(boolean d, org.freehep.vectorgraphics.Transform m) {
 		done = d;
 		matrix = m;
 	}
@@ -435,7 +435,7 @@ class UStrokePath extends PathOperator {
 				return true;
 			}
 
-			org.freehep.postscript.Transform m = null;
+			org.freehep.vectorgraphics.Transform m = null;
 			PSPackedArray proc = os.popPackedArray();
 			if (proc.size() == MATRIX_SIZE) {
 				try {
@@ -465,7 +465,7 @@ class UStrokePath extends PathOperator {
 		// upath was executed, end, strokepath
 		os.dictStack().pop();
 		if (matrix != null) {
-			org.freehep.postscript.Transform ctm = os.gstate().getTransform();
+			org.freehep.vectorgraphics.Transform ctm = os.gstate().getTransform();
 			os.gstate().transform(matrix);
 			os.gstate().strokePath();
 			os.gstate().setTransform(ctm);
@@ -632,7 +632,7 @@ class PathForAll extends PathOperator implements LoopingContext {
 			PSPackedArray curve = os.popPackedArray();
 			PSPackedArray line = os.popPackedArray();
 			PSPackedArray move = os.popPackedArray();
-			Shape shape = (Shape) os.gstate().path().clone();
+			Shape shape = (Shape) os.gstate().path().copy();
 
 			os.execStack().pop();
 			os.execStack()
@@ -690,7 +690,7 @@ class UPath extends PathOperator {
 	public boolean execute(OperandStack os) {
 		boolean ucache = os.popBoolean().getValue();
 
-		org.freehep.postscript.Transform inverse;
+		org.freehep.vectorgraphics.Transform inverse;
 		try {
 			inverse = os.gstate().getTransform().createInverse();
 		} catch (NoninvertibleTransformException e) {
@@ -778,7 +778,7 @@ class EOClip extends PathOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		Path eoPath = os.gstate().path().clone();
+		Path eoPath = os.gstate().path().copy();
 		eoPath.setWindingRule(Path.WIND_EVEN_ODD);
 		os.gstate().clip(eoPath);
 		return true;

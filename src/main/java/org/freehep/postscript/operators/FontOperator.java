@@ -5,8 +5,6 @@ import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import org.freehep.postscript.Font;
-import org.freehep.postscript.Point;
 import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.stacks.DictionaryStack;
 import org.freehep.postscript.stacks.OperandStack;
@@ -29,6 +27,8 @@ import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSString;
 import org.freehep.postscript.types.PSType1Glyph;
 import org.freehep.postscript.viewer.FontCache;
+import org.freehep.vectorgraphics.Font;
+import org.freehep.vectorgraphics.Point;
 
 /**
  * Font Operators for PostScript Processor
@@ -148,7 +148,7 @@ public abstract class FontOperator extends AbstractOperator {
 			return fontCopy;
 		} else {
 			Font javaFont = psfont.getFont();
-			org.freehep.postscript.Transform at = device.createTransform(matrix);
+			org.freehep.vectorgraphics.Transform at = device.createTransform(matrix);
 			at.concatenate(javaFont.getTransform());
 			javaFont = javaFont.deriveFont(at);
 
@@ -628,7 +628,7 @@ class Show extends FontOperator {
 			String t = os.popString().getValue();
 
 			double[] cfm = gs.font().getPackedArray("FontMatrix").toDoubles();
-			org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+			org.freehep.vectorgraphics.Transform at = os.gstate().device().createTransform(
 					cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 			double xs = at.getScaleX();
 			double ys = at.getScaleY();
@@ -705,7 +705,7 @@ class AShow extends FontOperator {
 			os.gsave();
 
 			double[] cfm = gs.font().getPackedArray("FontMatrix").toDoubles();
-			org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+			org.freehep.vectorgraphics.Transform at = os.gstate().device().createTransform(
 					cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 			gs.transform(at);
 
@@ -775,7 +775,7 @@ class WidthShow extends FontOperator {
 			os.gsave();
 
 			double[] cfm = gs.font().getPackedArray("FontMatrix").toDoubles();
-			org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+			org.freehep.vectorgraphics.Transform at = os.gstate().device().createTransform(
 					cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 			gs.transform(at);
 
@@ -856,7 +856,7 @@ class AWidthShow extends FontOperator {
 			os.gsave();
 
 			double[] cfm = gs.font().getPackedArray("FontMatrix").toDoubles();
-			org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+			org.freehep.vectorgraphics.Transform at = os.gstate().device().createTransform(
 					cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 			gs.transform(at);
 
@@ -928,7 +928,7 @@ class XShow extends FontOperator {
 
 				double[] cfm = gs.font().getPackedArray("FontMatrix")
 						.toDoubles();
-				org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+				org.freehep.vectorgraphics.Transform at = os.gstate().device().createTransform(
 						cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 				gs.transform(at);
 
@@ -1002,7 +1002,7 @@ class XYShow extends FontOperator {
 
 				double[] cfm = gs.font().getPackedArray("FontMatrix")
 						.toDoubles();
-				org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+				org.freehep.vectorgraphics.Transform at = os.gstate().device().createTransform(
 						cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 				gs.transform(at);
 
@@ -1075,7 +1075,7 @@ class YShow extends FontOperator {
 
 				double[] cfm = gs.font().getPackedArray("FontMatrix")
 						.toDoubles();
-				org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+				org.freehep.vectorgraphics.Transform at = os.gstate().device().createTransform(
 						cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 				gs.transform(at);
 
@@ -1207,7 +1207,7 @@ class KShow extends FontOperator {
 			os.gsave();
 
 			double[] cfm = gs.font().getPackedArray("FontMatrix").toDoubles();
-			org.freehep.postscript.Transform at = os.gstate().device().createTransform(
+			org.freehep.vectorgraphics.Transform at = os.gstate().device().createTransform(
 					cfm[0], cfm[1], cfm[2], cfm[3], x0, y0);
 			gs.transform(at);
 

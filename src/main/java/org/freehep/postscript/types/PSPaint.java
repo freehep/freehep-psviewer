@@ -1,8 +1,8 @@
 // Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
-import org.freehep.postscript.Paint;
 import org.freehep.postscript.stacks.OperandStack;
+import org.freehep.vectorgraphics.Paint;
 
 /**
  * Objects for PostScript Processor, as defined in 3.3 Data Types and Objects

@@ -1,25 +1,25 @@
 // Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
-import org.freehep.postscript.Color;
-import org.freehep.postscript.ColorSpace;
-import org.freehep.postscript.GlyphVector;
-import org.freehep.postscript.GraphicsContext;
-import org.freehep.postscript.Image;
-import org.freehep.postscript.NoninvertibleTransformException;
-import org.freehep.postscript.Paint;
-import org.freehep.postscript.Path;
-import org.freehep.postscript.PathIterator;
-import org.freehep.postscript.Point;
-import org.freehep.postscript.Rectangle;
-import org.freehep.postscript.RenderingHints;
-import org.freehep.postscript.Shape;
-import org.freehep.postscript.Stroke;
-import org.freehep.postscript.Transform;
 import org.freehep.postscript.device.ImageDevice;
 import org.freehep.postscript.stacks.DictionaryStack;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.viewer.FixedTexturePaint;
+import org.freehep.vectorgraphics.Color;
+import org.freehep.vectorgraphics.ColorSpace;
+import org.freehep.vectorgraphics.GlyphVector;
+import org.freehep.vectorgraphics.GraphicsContext;
+import org.freehep.vectorgraphics.Image;
+import org.freehep.vectorgraphics.NoninvertibleTransformException;
+import org.freehep.vectorgraphics.Paint;
+import org.freehep.vectorgraphics.Path;
+import org.freehep.vectorgraphics.PathIterator;
+import org.freehep.vectorgraphics.Point;
+import org.freehep.vectorgraphics.Rectangle;
+import org.freehep.vectorgraphics.RenderingHints;
+import org.freehep.vectorgraphics.Shape;
+import org.freehep.vectorgraphics.Stroke;
+import org.freehep.vectorgraphics.Transform;
 
 /**
  * Graphics State Object for PostScript Processor, as defined in 4.2 Graphics
@@ -58,8 +58,8 @@ public class PSGState extends PSComposite {
 		super("gstate", true);
 		this.device = device;
 
-		font = new PSFontDictionary(device, device.getGraphics().getFont(), dictStack
-				.systemDictionary().getArray(
+		font = new PSFontDictionary(device, device.getGraphics().getFont(),
+				dictStack.systemDictionary().getArray(
 						DictionaryStack.standardEncoding.getValue()));
 		flat = 0.5; // FIXME: is device dependent
 		transfer = new PSPackedArray(new PSObject[0]);
@@ -87,7 +87,7 @@ public class PSGState extends PSComposite {
 		dashPhase = 0.0f;
 		setStroke();
 	}
-	
+
 	public PSDevice device() {
 		return device;
 	}
@@ -111,10 +111,9 @@ public class PSGState extends PSComposite {
 
 	public void copyInto(PSGState copy) {
 		copy.device = device;
-		copy.ctm = (Transform) ctm.copy();
-		copy.path = (Path) path.clone();
-		copy.clipPath = (clipPath == null) ? null : (Path) clipPath
-				.clone();
+		copy.ctm = ctm.copy();
+		copy.path = path.copy();
+		copy.clipPath = (clipPath == null) ? null : clipPath.copy();
 		copy.lineWidth = lineWidth;
 		copy.cap = cap;
 		copy.join = join;
@@ -265,7 +264,7 @@ public class PSGState extends PSComposite {
 		Transform at = device.createTransform();
 		at.setToRotation(-angle);
 		path.transform(at);
-		ctm.rotate(angle);		
+		ctm.rotate(angle);
 	}
 
 	public void scale(double sx, double sy) {
@@ -323,8 +322,8 @@ public class PSGState extends PSComposite {
 		try {
 			Transform inverse = ctm.createInverse();
 
-			clipPath = device.createPath(device.createRectangle(0, 0, device
-					.getWidth(), device.getHeight()));
+			clipPath = device.createPath(device.createRectangle(0, 0,
+					device.getWidth(), device.getHeight()));
 			clipPath.transform(inverse);
 		} catch (NoninvertibleTransformException e) {
 			log.warning("Internal error in GState");
@@ -338,7 +337,7 @@ public class PSGState extends PSComposite {
 	}
 
 	public void clipPath() {
-		path = clipPath.clone();
+		path = clipPath.copy();
 		path.transform(ctm);
 	}
 
@@ -455,7 +454,7 @@ public class PSGState extends PSComposite {
 			return device.createColorSpace(ColorSpace.CS_sRGB);
 		} else if (name.equals(Constants.DEVICE_CMYK)) {
 			return device.createColorSpace(ColorSpace.CS_sRGB);
-		}		
+		}
 		return null;
 	}
 
@@ -524,18 +523,18 @@ public class PSGState extends PSComposite {
 			Color c;
 			switch (params.length) {
 			case 1:
-				float d = ((PSNumber)params[0]).getFloat();
+				float d = ((PSNumber) params[0]).getFloat();
 				c = device.createColor(d, d, d);
 				break;
 			case 3:
-				float r = ((PSNumber)params[0]).getFloat();
-				float g = ((PSNumber)params[0]).getFloat();
-				float b = ((PSNumber)params[0]).getFloat();
+				float r = ((PSNumber) params[0]).getFloat();
+				float g = ((PSNumber) params[0]).getFloat();
+				float b = ((PSNumber) params[0]).getFloat();
 				c = device.createColor(r, g, b);
 				break;
 			default:
 				log.warning("Number of params not handled " + params.length);
-				c = device.createColor(0.0f, 0.0f, 0.0f);	// BLACK
+				c = device.createColor(0.0f, 0.0f, 0.0f); // BLACK
 				break;
 			}
 			paint = ((FixedTexturePaint) paint).inColor(c);
@@ -546,7 +545,8 @@ public class PSGState extends PSComposite {
 	public void setColor(float[] color) {
 		float[] rgb = toRGB(color, colorSpaceName);
 		if (rgb != null) {
-			device.getGraphics().setPaint(device.createColor(rgb[0], rgb[1], rgb[2]));
+			device.getGraphics().setPaint(
+					device.createColor(rgb[0], rgb[1], rgb[2]));
 		} else {
 			log.warning("Unknown colorspace: " + colorSpaceName);
 		}

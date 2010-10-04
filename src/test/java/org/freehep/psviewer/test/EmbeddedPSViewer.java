@@ -6,10 +6,10 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.freehep.postscript.awt.AWTPanelDevice;
 import org.freehep.postscript.processor.Processor;
 import org.freehep.postscript.types.PSInputFile;
 import org.freehep.postscript.viewer.PSPanel;
+import org.freehep.vectorgraphics.awt.AWTPanelDevice;
 
 /**
  * @author Mark Donszelmann (Mark.Donszelmann@gmail.com)

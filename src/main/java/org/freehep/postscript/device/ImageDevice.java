@@ -1,11 +1,11 @@
 // FreeHEP 2009-2010
 package org.freehep.postscript.device;
 
-import org.freehep.postscript.Container;
-import org.freehep.postscript.GraphicsContext;
-import org.freehep.postscript.Image;
-import org.freehep.postscript.Transform;
 import org.freehep.postscript.types.PSDevice;
+import org.freehep.vectorgraphics.Container;
+import org.freehep.vectorgraphics.GraphicsContext;
+import org.freehep.vectorgraphics.Image;
+import org.freehep.vectorgraphics.Transform;
 
 /**
  *

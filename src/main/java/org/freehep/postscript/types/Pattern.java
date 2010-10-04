@@ -3,7 +3,7 @@ package org.freehep.postscript.types;
 
 import java.util.logging.Logger;
 
-import org.freehep.postscript.ColorSpace;
+import org.freehep.vectorgraphics.ColorSpace;
 
 /**
  * Pattern colorspace.

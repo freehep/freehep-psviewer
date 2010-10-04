@@ -1,8 +1,8 @@
 // Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
-import org.freehep.postscript.Font;
 import org.freehep.postscript.stacks.OperandStack;
+import org.freehep.vectorgraphics.Font;
 
 /**
  * Object is only for storage and lookup in Dictionaries and Arrays, not to be
@@ -31,7 +31,7 @@ public class PSJavaFont extends PSSimple {
 		return "javafont";
 	}
 
-	public org.freehep.postscript.Font getFont() {
+	public org.freehep.vectorgraphics.Font getFont() {
 		return font;
 	}
 

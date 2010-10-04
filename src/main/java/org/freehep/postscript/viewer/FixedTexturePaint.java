@@ -5,16 +5,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.freehep.postscript.Color;
-import org.freehep.postscript.ColorModel;
-import org.freehep.postscript.Image;
-import org.freehep.postscript.NoninvertibleTransformException;
-import org.freehep.postscript.Paint;
-import org.freehep.postscript.PaintContext;
-import org.freehep.postscript.Rectangle;
-import org.freehep.postscript.RenderingHints;
-import org.freehep.postscript.Transform;
 import org.freehep.postscript.stacks.OperandStack;
+import org.freehep.vectorgraphics.Color;
+import org.freehep.vectorgraphics.ColorModel;
+import org.freehep.vectorgraphics.Image;
+import org.freehep.vectorgraphics.NoninvertibleTransformException;
+import org.freehep.vectorgraphics.Paint;
+import org.freehep.vectorgraphics.PaintContext;
+import org.freehep.vectorgraphics.Rectangle;
+import org.freehep.vectorgraphics.RenderingHints;
+import org.freehep.vectorgraphics.Transform;
 
 /**
  * Texture Paint for PostScript Processor
@@ -42,7 +42,7 @@ public class FixedTexturePaint implements Paint {
 
 	public PaintContext createContext(ColorModel cm, Rectangle deviceBounds,
 			Rectangle userBounds, Transform xform, RenderingHints hints) {
-		org.freehep.postscript.Transform mirror;
+		org.freehep.vectorgraphics.Transform mirror;
 		
 		try {
 			// calculate Mirror: x = M*ctm --> M = x*ctm-1

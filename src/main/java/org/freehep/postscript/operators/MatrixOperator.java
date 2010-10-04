@@ -1,8 +1,6 @@
 // Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.operators;
 
-import org.freehep.postscript.NoninvertibleTransformException;
-import org.freehep.postscript.Point;
 import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSArray;
@@ -10,6 +8,8 @@ import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSNumber;
 import org.freehep.postscript.types.PSObject;
 import org.freehep.postscript.types.PSPackedArray;
+import org.freehep.vectorgraphics.NoninvertibleTransformException;
+import org.freehep.vectorgraphics.Point;
 
 /**
  * Matrix Operators for PostScript Processor
@@ -87,7 +87,7 @@ class CurrentMatrix extends MatrixOperator {
 		if (a.size() < 6) {
 			error(os, new RangeCheck());
 		} else {
-			org.freehep.postscript.Transform ctm = os.gstate().getTransform();
+			org.freehep.vectorgraphics.Transform ctm = os.gstate().getTransform();
 			double[] m = new double[6];
 			ctm.getMatrix(m);
 			a.set(m);
@@ -105,7 +105,7 @@ class SetMatrix extends MatrixOperator {
 	@Override
 	public boolean execute(OperandStack os) {
 		PSPackedArray a = os.popPackedArray();
-		org.freehep.postscript.Transform ctm = os.gstate().device().createTransform(a.toDoubles());
+		org.freehep.vectorgraphics.Transform ctm = os.gstate().device().createTransform(a.toDoubles());
 		os.gstate().setTransform(ctm);
 
 		return true;
@@ -218,7 +218,7 @@ class Concat extends MatrixOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		org.freehep.postscript.Transform m = os.gstate().device().createTransform(os.popPackedArray().toDoubles());
+		org.freehep.vectorgraphics.Transform m = os.gstate().device().createTransform(os.popPackedArray().toDoubles());
 		os.gstate().transform(m);
 		return true;
 	}
@@ -236,7 +236,7 @@ class ConcatMatrix extends MatrixOperator {
 		PSPackedArray m2 = os.popPackedArray();
 		PSPackedArray m1 = os.popPackedArray();
 
-		org.freehep.postscript.Transform t = os.gstate().device().createTransform(m1.toDoubles());
+		org.freehep.vectorgraphics.Transform t = os.gstate().device().createTransform(m1.toDoubles());
 		t.concatenate(os.gstate().device().createTransform(m2.toDoubles()));
 		double[] d = new double[6];
 		t.getMatrix(d);
@@ -253,7 +253,7 @@ class Transform extends MatrixOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		org.freehep.postscript.Transform transform;
+		org.freehep.vectorgraphics.Transform transform;
 		double dx, dy;
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			dy = os.popNumber().getDouble();
@@ -283,7 +283,7 @@ class DTransform extends MatrixOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		org.freehep.postscript.Transform transform;
+		org.freehep.vectorgraphics.Transform transform;
 		double dx, dy;
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			dy = os.popNumber().getDouble();
@@ -313,7 +313,7 @@ class ITransform extends MatrixOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		org.freehep.postscript.Transform transform;
+		org.freehep.vectorgraphics.Transform transform;
 		double dx, dy;
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			dy = os.popNumber().getDouble();
@@ -348,7 +348,7 @@ class IDTransform extends MatrixOperator {
 
 	@Override
 	public boolean execute(OperandStack os) {
-		org.freehep.postscript.Transform transform;
+		org.freehep.vectorgraphics.Transform transform;
 		double dx, dy;
 		if (os.checkType(PSNumber.class, PSNumber.class)) {
 			dy = os.popNumber().getDouble();
@@ -365,7 +365,7 @@ class IDTransform extends MatrixOperator {
 			return true;
 		}
 		try {
-			org.freehep.postscript.Transform inverse = transform.createInverse();
+			org.freehep.vectorgraphics.Transform inverse = transform.createInverse();
 			Point d = inverse
 					.deltaTransform(os.gstate().device().createPoint(dx, dy), null);
 			os.push(d.getX());
@@ -388,8 +388,8 @@ class InvertMatrix extends MatrixOperator {
 		PSPackedArray m1 = os.popPackedArray();
 
 		try {
-			org.freehep.postscript.Transform transform = os.gstate().device().createTransform(m1.toDoubles());
-			org.freehep.postscript.Transform inverse = transform.createInverse();
+			org.freehep.vectorgraphics.Transform transform = os.gstate().device().createTransform(m1.toDoubles());
+			org.freehep.vectorgraphics.Transform inverse = transform.createInverse();
 
 			double[] d = new double[6];
 			inverse.getMatrix(d);

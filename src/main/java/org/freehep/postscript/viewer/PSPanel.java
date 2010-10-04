@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.freehep.postscript.GraphicsContext;
-import org.freehep.postscript.awt.AWTGraphicsContext;
 import org.freehep.postscript.types.PSContainer;
+import org.freehep.vectorgraphics.GraphicsContext;
+import org.freehep.vectorgraphics.awt.AWTGraphicsContext;
 
 /**
  * PostScript Panel for PostScript Processor,

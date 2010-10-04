@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.freehep.postscript.Device;
-import org.freehep.postscript.GraphicsContext;
-import org.freehep.postscript.Image;
-import org.freehep.postscript.Rectangle;
-import org.freehep.postscript.Transform;
 import org.freehep.postscript.dsc.DSCEvent;
 import org.freehep.postscript.dsc.DSCEventListener;
 import org.freehep.postscript.viewer.FixedTexturePaint;
 import org.freehep.postscript.viewer.RefreshListener;
+import org.freehep.vectorgraphics.Device;
+import org.freehep.vectorgraphics.GraphicsContext;
+import org.freehep.vectorgraphics.Image;
+import org.freehep.vectorgraphics.Rectangle;
+import org.freehep.vectorgraphics.Transform;
 
 /*
  * @author Mark Donszelmann

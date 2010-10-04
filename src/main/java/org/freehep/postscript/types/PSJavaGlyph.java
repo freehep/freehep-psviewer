@@ -1,9 +1,9 @@
 // Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.types;
 
-import org.freehep.postscript.GlyphMetrics;
-import org.freehep.postscript.GlyphVector;
-import org.freehep.postscript.Rectangle;
+import org.freehep.vectorgraphics.GlyphMetrics;
+import org.freehep.vectorgraphics.GlyphVector;
+import org.freehep.vectorgraphics.Rectangle;
 
 /**
  * Object is only for storage and lookup in Dictionaries and Arrays, not to be

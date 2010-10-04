@@ -4,9 +4,9 @@ package org.freehep.postscript.viewer;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.freehep.postscript.Font;
-import org.freehep.postscript.GraphicsEnvironment;
 import org.freehep.postscript.types.PSDevice;
+import org.freehep.vectorgraphics.Font;
+import org.freehep.vectorgraphics.GraphicsEnvironment;
 
 /**
  * This class keeps a reference to all physical fonts. Fonts can be looked up by

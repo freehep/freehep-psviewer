@@ -1,11 +1,6 @@
 // Copyright 2001-2010, FreeHEP.
 package org.freehep.postscript.operators;
 
-import org.freehep.postscript.Image;
-import org.freehep.postscript.NoninvertibleTransformException;
-import org.freehep.postscript.Paint;
-import org.freehep.postscript.Point;
-import org.freehep.postscript.Rectangle;
 import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.stacks.OperandStack;
 import org.freehep.postscript.types.PSDictionary;
@@ -13,6 +8,11 @@ import org.freehep.postscript.types.PSObject;
 import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSPaint;
 import org.freehep.postscript.viewer.FixedTexturePaint;
+import org.freehep.vectorgraphics.Image;
+import org.freehep.vectorgraphics.NoninvertibleTransformException;
+import org.freehep.vectorgraphics.Paint;
+import org.freehep.vectorgraphics.Point;
+import org.freehep.vectorgraphics.Rectangle;
 
 /**
  * Form and Pattern Operators for PostScript Processor
@@ -49,7 +49,7 @@ class MakePattern extends FormOperator {
 				return true;
 			}
 
-			org.freehep.postscript.Transform m = os.gstate().device().createTransform(os
+			org.freehep.vectorgraphics.Transform m = os.gstate().device().createTransform(os
 					.popPackedArray().toDoubles());
 			PSDictionary d = os.popDictionary();
 
@@ -72,7 +72,7 @@ class MakePattern extends FormOperator {
 				os.push(d);
 				os.gsave();
 
-				org.freehep.postscript.Transform inverse = os.gstate().device().createTransform();
+				org.freehep.vectorgraphics.Transform inverse = os.gstate().device().createTransform();
 				try {
 					inverse = m.createInverse();
 				} catch (NoninvertibleTransformException e) {
@@ -91,7 +91,7 @@ class MakePattern extends FormOperator {
 				Image bi = os.gstate()
 						.convertToImage(biWidth, biHeight);
 
-				org.freehep.postscript.Transform ctm = os.gstate().getTransform();
+				org.freehep.vectorgraphics.Transform ctm = os.gstate().getTransform();
 
 				os.gstate().setTransform(m);
 				// FIXME: offset may not be completely correct (HEART2)
@@ -205,7 +205,7 @@ class ExecForm extends FormOperator {
 					return true;
 				}
 
-				org.freehep.postscript.Transform matrix = os.gstate().device().createTransform(form
+				org.freehep.vectorgraphics.Transform matrix = os.gstate().device().createTransform(form
 						.getPackedArray("Matrix").toDoubles());
 				double[] bbox = form.getPackedArray("BBox").toDoubles();
 				PSPackedArray proc = (PSPackedArray) form.getPackedArray(

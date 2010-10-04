@@ -3,10 +3,10 @@ package org.freehep.postscript.types;
 
 import java.util.Map;
 
-import org.freehep.postscript.FontRenderContext;
-import org.freehep.postscript.GlyphMetrics;
-import org.freehep.postscript.GlyphVector;
-import org.freehep.postscript.Transform;
+import org.freehep.vectorgraphics.FontRenderContext;
+import org.freehep.vectorgraphics.GlyphMetrics;
+import org.freehep.vectorgraphics.GlyphVector;
+import org.freehep.vectorgraphics.Transform;
 
 /**
  * Quasi Type 1 Font mapping Java Fonts to PostScript ones. This object is never
@@ -22,7 +22,7 @@ public class PSFontDictionary extends PSDictionary {
 		super(table);
 	}
 	
-	public PSFontDictionary(PSDevice device, org.freehep.postscript.Font javaFont, PSArray encoding) {
+	public PSFontDictionary(PSDevice device, org.freehep.vectorgraphics.Font javaFont, PSArray encoding) {
 		super();
 		setName("fontdictionary");
 		// System.out.println("Creating Type1 font from: "+font+" using table: "+encodingTable+" and transform "+font.getTransform());

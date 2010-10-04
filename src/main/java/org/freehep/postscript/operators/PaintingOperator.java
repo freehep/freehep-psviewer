@@ -4,9 +4,6 @@ package org.freehep.postscript.operators;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import org.freehep.postscript.Image;
-import org.freehep.postscript.Path;
-import org.freehep.postscript.Rectangle;
 import org.freehep.postscript.errors.IOError;
 import org.freehep.postscript.errors.TypeCheck;
 import org.freehep.postscript.errors.Undefined;
@@ -21,6 +18,9 @@ import org.freehep.postscript.types.PSNumber;
 import org.freehep.postscript.types.PSObject;
 import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSString;
+import org.freehep.vectorgraphics.Image;
+import org.freehep.vectorgraphics.Path;
+import org.freehep.vectorgraphics.Rectangle;
 
 /**
  * Painting Operators for PostScript Processor
@@ -87,13 +87,13 @@ class RectStroke extends PaintingOperator {
 	}
 
 	private static void stroke(OperandStack os, double x, double y, double w,
-			double h, org.freehep.postscript.Transform m) {
+			double h, org.freehep.vectorgraphics.Transform m) {
 		Rectangle r = os.gstate().device().createRectangle(x, y, w, h);
 		os.gstate().stroke(r, m);
 	}
 
 	private static void stroke(OperandStack os, PSPackedArray a,
-			org.freehep.postscript.Transform m) {
+			org.freehep.vectorgraphics.Transform m) {
 		for (int i = 0; i < a.size() / 4; i++) {
 			double x = ((PSNumber) a.get(i * 4)).getDouble();
 			double y = ((PSNumber) a.get(i * 4 + 1)).getDouble();
@@ -114,7 +114,7 @@ class RectStroke extends PaintingOperator {
 			stroke(os, x, y, w, h, null);
 		} else if (os.checkType(PSNumber.class, PSNumber.class, PSNumber.class,
 				PSNumber.class, PSPackedArray.class)) {
-			org.freehep.postscript.Transform m = os.gstate().device()
+			org.freehep.vectorgraphics.Transform m = os.gstate().device()
 					.createTransform(os.popPackedArray().toDoubles());
 			double h = os.popNumber().getDouble();
 			double w = os.popNumber().getDouble();
@@ -122,7 +122,7 @@ class RectStroke extends PaintingOperator {
 			double x = os.popNumber().getDouble();
 			stroke(os, x, y, w, h, m);
 		} else if (os.checkType(PSPackedArray.class, PSPackedArray.class)) {
-			org.freehep.postscript.Transform m = os.gstate().device()
+			org.freehep.vectorgraphics.Transform m = os.gstate().device()
 					.createTransform(os.popPackedArray().toDoubles());
 			PSPackedArray a = os.popPackedArray();
 			stroke(os, a, m);
@@ -172,9 +172,9 @@ class RectFill extends PaintingOperator {
 
 class UStroke extends PaintingOperator {
 	private boolean done;
-	private org.freehep.postscript.Transform matrix;
+	private org.freehep.vectorgraphics.Transform matrix;
 
-	private UStroke(boolean d, org.freehep.postscript.Transform m) {
+	private UStroke(boolean d, org.freehep.vectorgraphics.Transform m) {
 		done = d;
 		matrix = m;
 	}
@@ -191,7 +191,7 @@ class UStroke extends PaintingOperator {
 			}
 
 			final int matrixSize = 6;
-			org.freehep.postscript.Transform m = null;
+			org.freehep.vectorgraphics.Transform m = null;
 			PSPackedArray proc = os.popPackedArray();
 			if (proc.size() == matrixSize) {
 				try {
@@ -331,7 +331,7 @@ class ImageOperator extends PaintingOperator {
 	private boolean imageMask;
 	private int width;
 	private int height;
-	private org.freehep.postscript.Transform matrix;
+	private org.freehep.vectorgraphics.Transform matrix;
 	private PSPackedArray[] proc;
 	private PSDataSource[] source;
 	private boolean multi;

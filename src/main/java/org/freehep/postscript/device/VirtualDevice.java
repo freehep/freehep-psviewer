@@ -1,10 +1,10 @@
 // Copyright 2004-2010, FreeHEP.
 package org.freehep.postscript.device;
 
-import org.freehep.postscript.Dimension;
-import org.freehep.postscript.GraphicsContext;
-import org.freehep.postscript.Transform;
 import org.freehep.postscript.types.PSDevice;
+import org.freehep.vectorgraphics.Dimension;
+import org.freehep.vectorgraphics.GraphicsContext;
+import org.freehep.vectorgraphics.Transform;
 
 /*
  * @author Mark Donszelmann

@@ -7,7 +7,6 @@ import org.freehep.postscript.types.PSDictionary;
 import org.freehep.postscript.types.PSObject;
 import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSPaint;
-import org.freehep.postscript.viewer.FixedTexturePaint;
 import org.freehep.vectorgraphics.Image;
 import org.freehep.vectorgraphics.NoninvertibleTransformException;
 import org.freehep.vectorgraphics.Paint;

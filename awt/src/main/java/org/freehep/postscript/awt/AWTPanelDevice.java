@@ -1,11 +1,11 @@
-package org.freehep.vectorgraphics.awt;
+package org.freehep.postscript.awt;
 
 import java.awt.Container;
 import java.awt.geom.AffineTransform;
 
 import org.freehep.postscript.device.ImageDevice;
 import org.freehep.postscript.device.PanelDevice;
-import org.freehep.postscript.viewer.FixedTexturePaint;
+import org.freehep.postscript.operators.FixedTexturePaint;
 import org.freehep.vectorgraphics.Arc;
 import org.freehep.vectorgraphics.Color;
 import org.freehep.vectorgraphics.ColorModel;
@@ -22,6 +22,20 @@ import org.freehep.vectorgraphics.RenderingHints;
 import org.freehep.vectorgraphics.Shape;
 import org.freehep.vectorgraphics.Stroke;
 import org.freehep.vectorgraphics.Transform;
+import org.freehep.vectorgraphics.awt.AWTArc;
+import org.freehep.vectorgraphics.awt.AWTColor;
+import org.freehep.vectorgraphics.awt.AWTColorSpace;
+import org.freehep.vectorgraphics.awt.AWTContainer;
+import org.freehep.vectorgraphics.awt.AWTFont;
+import org.freehep.vectorgraphics.awt.AWTFontRenderContext;
+import org.freehep.vectorgraphics.awt.AWTGraphicsEnvironment;
+import org.freehep.vectorgraphics.awt.AWTImage;
+import org.freehep.vectorgraphics.awt.AWTPaintContext;
+import org.freehep.vectorgraphics.awt.AWTPath;
+import org.freehep.vectorgraphics.awt.AWTPoint;
+import org.freehep.vectorgraphics.awt.AWTRectangle;
+import org.freehep.vectorgraphics.awt.AWTStroke;
+import org.freehep.vectorgraphics.awt.AWTTransform;
 
 public class AWTPanelDevice extends PanelDevice {
 

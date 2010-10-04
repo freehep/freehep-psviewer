@@ -1,7 +1,5 @@
 package org.freehep.vectorgraphics;
 
-import org.freehep.postscript.device.ImageDevice;
-
 public interface Device {
 	Transform getDeviceTransform();
 
@@ -12,8 +10,6 @@ public interface Device {
 	double getHeight();
 
 	void refresh();
-
-	ImageDevice createImageDevice(int width, int height);
 
 	Transform createTransform();
 

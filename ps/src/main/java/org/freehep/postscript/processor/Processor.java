@@ -19,7 +19,6 @@ import org.freehep.postscript.types.PSDevice;
 import org.freehep.postscript.types.PSFile;
 import org.freehep.postscript.types.PSGState;
 import org.freehep.postscript.types.PSObject;
-import org.freehep.postscript.viewer.RefreshListener;
 
 /**
  * PostScript Processor
@@ -62,6 +61,8 @@ public class Processor implements DebuggerListener {
 */
 	public Processor(PSDevice device, boolean secure) {
 		this.device = device;
+// TODO re-add
+/*
 		device.addComponentRefreshListener(new RefreshListener() {
 			public void componentRefreshed() {
 				try {
@@ -73,6 +74,7 @@ public class Processor implements DebuggerListener {
 				}
 			}
 		});
+*/
 		this.secure = secure;
 		this.currentPageNo = 0;
 	}

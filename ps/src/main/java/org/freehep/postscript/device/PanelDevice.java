@@ -3,7 +3,6 @@ package org.freehep.postscript.device;
 
 import org.freehep.postscript.types.PSContainer;
 import org.freehep.postscript.types.PSDevice;
-import org.freehep.postscript.viewer.RefreshListener;
 import org.freehep.vectorgraphics.Container;
 import org.freehep.vectorgraphics.GraphicsContext;
 import org.freehep.vectorgraphics.Transform;
@@ -20,11 +19,13 @@ public abstract class PanelDevice extends PSDevice {
 		this.container = container;
 			
 		// TODO
+/*
 		((PSContainer)container).addRefreshListener(new RefreshListener() {
 			public void componentRefreshed() {
 				fireComponentRefreshed();
 			}
 		});
+*/
 	}
 
 	/* FIXME Does not seem to work, gives 2 images, one up-side-down, while resizing, no image in stand-still

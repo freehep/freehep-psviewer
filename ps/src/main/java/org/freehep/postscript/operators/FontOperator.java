@@ -26,7 +26,6 @@ import org.freehep.postscript.types.PSObject;
 import org.freehep.postscript.types.PSPackedArray;
 import org.freehep.postscript.types.PSString;
 import org.freehep.postscript.types.PSType1Glyph;
-import org.freehep.postscript.viewer.FontCache;
 import org.freehep.vectorgraphics.Font;
 import org.freehep.vectorgraphics.Point;
 

@@ -1,5 +1,5 @@
 // Copyright 2001-2010, FreeHEP.
-package org.freehep.postscript.viewer;
+package org.freehep.postscript.operators;
 
 import java.util.HashMap;
 import java.util.Map;

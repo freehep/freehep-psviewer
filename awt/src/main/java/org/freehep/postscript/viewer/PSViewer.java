@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
+import org.freehep.postscript.awt.AWTPanelDevice;
 import org.freehep.postscript.processor.Processor;
 import org.freehep.postscript.types.PSDebugger;
 import org.freehep.postscript.types.PSInputFile;
@@ -22,7 +23,6 @@ import org.freehep.util.argv.DoubleOption;
 import org.freehep.util.argv.IntOption;
 import org.freehep.util.argv.MissingArgumentException;
 import org.freehep.util.argv.StringParameter;
-import org.freehep.vectorgraphics.awt.AWTPanelDevice;
 
 /**
  * PS Viewer

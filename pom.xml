@@ -1,0 +1,104 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.freehep</groupId>
+	<artifactId>freehep-psviewer</artifactId>
+	<version>2.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>FreeHEP PostScript Viewer</name>
+	<description>Stand-alone, Embeddable and Applet PostScript Viewer
+    </description>
+	<url>http://freehep.github.com/freehep-psviewer</url>
+
+	<organization>
+		<name>FreeHEP</name>
+		<url>http://java.freehep.org</url>
+	</organization>
+	<inceptionYear>2001</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+		<license>
+			<name>LGPL 2</name>
+			<url>http://www.gnu.org/licenses/lgpl-2.1.txt</url>
+			<distribution>repo</distribution>
+			<comments>GNU Lesser General Public License</comments>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>duns</id>
+			<name>Mark Donszelmann</name>
+			<email>Mark.Donszelmann@gmail.com</email>
+			<url>http://duns.github.com</url>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/freehep/freehep-psviewer.git
+    </connection>
+		<developerConnection>scm:git:git@github.com:freehep/freehep-psviewer.git
+    </developerConnection>
+		<url>http://github.com/freehep/freehep-psviewer</url>
+	</scm>
+
+	<issueManagement>
+		<system>jira</system>
+		<url>http://bugs.freehep.org/browse/PSVIEWER</url>
+	</issueManagement>
+
+	<properties>
+		<mavenVersion>2.0.9</mavenVersion>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<gwt.version>2.0.4</gwt.version>
+		<gwt.graphics>/Users/duns/Dropbox/cern/gwt-graphics-0.9.7.jar</gwt.graphics>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>freehep-releases</id>
+			<name>FreeHEP Release Repository</name>
+			<url>http://oss.sonatype.org/service/local/staging/deploy/maven2/
+      </url>
+		</repository>
+		<snapshotRepository>
+			<id>freehep-snapshots</id>
+			<name>FreeHEP Snapshot Repository</name>
+			<url>http://oss.sonatype.org/content/repositories/freehep-snapshots/
+      </url>
+		</snapshotRepository>
+		<!-- temporarily until we have a fixed site -->
+		<site>
+			<id>local</id>
+			<url>file:///Users/duns/freehep/git/freehep-psviewer-site</url>
+		</site>
+	</distributionManagement>
+
+	<build>
+		<defaultGoal>install</defaultGoal>
+	</build>
+
+	<modules>
+		<module>gwt-vectorgraphics</module>
+		<module>ps</module>
+		<module>awt</module>
+		<module>gwt</module>
+	</modules>
+</project>

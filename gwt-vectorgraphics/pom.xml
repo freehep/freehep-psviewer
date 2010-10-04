@@ -4,19 +4,20 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.freehep</groupId>
-	<artifactId>freehep-psviewer</artifactId>
-	<version>2.1-SNAPSHOT</version>
+	<artifactId>gwt-vectorgraphics</artifactId>
+	<version>0.1-SNAPSHOT</version>
 
-	<name>FreeHEP PostScript Viewer</name>
-	<description>Stand-alone, Embeddable and Applet PostScript Viewer
+	<name>FreeHEP GWT VectorGraphics</name>
+	<description>
+		Maps java.awt.Graphics2d onto GWT.
   </description>
-	<url>http://freehep.github.com/freehep-psviewer</url>
+	<url>...</url>
 
 	<organization>
 		<name>FreeHEP</name>
 		<url>http://java.freehep.org</url>
 	</organization>
-	<inceptionYear>2001</inceptionYear>
+	<inceptionYear>2010</inceptionYear>
 
 	<licenses>
 		<license>
@@ -24,12 +25,6 @@
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 			<distribution>repo</distribution>
 			<comments>A business-friendly OSS license</comments>
-		</license>
-		<license>
-			<name>LGPL 2</name>
-			<url>http://www.gnu.org/licenses/lgpl-2.1.txt</url>
-			<distribution>repo</distribution>
-			<comments>GNU Lesser General Public License</comments>
 		</license>
 	</licenses>
 
@@ -106,38 +101,6 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.0</version>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>1.4</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<shadedArtifactAttached>true</shadedArtifactAttached>
-					<shadedClassifierName>standalone</shadedClassifierName>
-					<transformers>
-						<transformer
-							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-							<manifestEntries>
-								<Main-Class>org.freehep.postscript.viewer.PSViewer</Main-Class>
-							</manifestEntries>
-						</transformer>
-					</transformers>
-					<artifactSet>
-						<excludes>
-							<exclude>junit:junit</exclude>
-							<!-- to be removed when GWT moves to its own module -->
-                            <exclude>com.google.gwt:gwt-user</exclude>
-                            <exclude>com.google.gwt:gwt-servlet</exclude>
-						</excludes>
-					</artifactSet>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -159,25 +122,23 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.freehep</groupId>
-			<artifactId>freehep-argv</artifactId>
-			<version>2.1</version>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
-			<groupId>org.freehep</groupId>
-			<artifactId>freehep-psviewer-ps</artifactId>
-			<version>2.1-SNAPSHOT</version>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>${gwt.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.freehep</groupId>
-			<artifactId>gwt-vectorgraphics</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
@@ -192,20 +153,6 @@
 			</activation>
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.1</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
 					<plugin>
 						<inherited>true</inherited>
 						<groupId>org.apache.maven.plugins</groupId>

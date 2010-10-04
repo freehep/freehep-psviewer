@@ -2,9 +2,9 @@
 package org.freehep.postscript.types;
 
 import org.freehep.postscript.device.ImageDevice;
+import org.freehep.postscript.operators.FixedTexturePaint;
 import org.freehep.postscript.stacks.DictionaryStack;
 import org.freehep.postscript.stacks.OperandStack;
-import org.freehep.postscript.viewer.FixedTexturePaint;
 import org.freehep.vectorgraphics.Color;
 import org.freehep.vectorgraphics.ColorSpace;
 import org.freehep.vectorgraphics.GlyphVector;

@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.freehep.postscript.awt.AWTPanelDevice;
 import org.freehep.postscript.processor.Processor;
 import org.freehep.postscript.types.PSContainer;
 import org.freehep.vectorgraphics.GraphicsContext;
 import org.freehep.vectorgraphics.awt.AWTGraphicsContext;
-import org.freehep.vectorgraphics.awt.AWTPanelDevice;
 
 /**
  * PostScript Applet for PostScript Processor,

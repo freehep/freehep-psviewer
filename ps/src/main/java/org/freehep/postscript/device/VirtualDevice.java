@@ -18,7 +18,8 @@ public abstract class VirtualDevice extends PSDevice {
 		this.graphics = graphics;
 		this.dimension = dimension;
 		this.device = createTransform();
-		fireComponentRefreshed();
+// TODO
+//		fireComponentRefreshed();
 	}
 
 	@Override

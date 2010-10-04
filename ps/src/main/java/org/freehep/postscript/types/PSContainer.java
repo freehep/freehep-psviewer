@@ -1,7 +1,6 @@
 // Copyright FreeHEP 2009-2010
 package org.freehep.postscript.types;
 
-import org.freehep.postscript.viewer.RefreshListener;
 import org.freehep.vectorgraphics.GraphicsContext;
 
 /**
@@ -13,7 +12,8 @@ public interface PSContainer {
 	/**
 	 * @param refreshListener
 	 */
-	void addRefreshListener(RefreshListener refreshListener);
+// TODO
+	//	void addRefreshListener(RefreshListener refreshListener);
 
 	GraphicsContext getGraphicsContext();
 }

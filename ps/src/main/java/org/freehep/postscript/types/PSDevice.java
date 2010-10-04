@@ -1,14 +1,9 @@
 // Copyright 2004-2010, FreeHEP.
 package org.freehep.postscript.types;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.freehep.postscript.dsc.DSCEvent;
 import org.freehep.postscript.dsc.DSCEventListener;
-import org.freehep.postscript.viewer.FixedTexturePaint;
-import org.freehep.postscript.viewer.RefreshListener;
+import org.freehep.postscript.operators.FixedTexturePaint;
 import org.freehep.vectorgraphics.Device;
 import org.freehep.vectorgraphics.GraphicsContext;
 import org.freehep.vectorgraphics.Image;
@@ -27,13 +22,16 @@ public abstract class PSDevice implements Device, DSCEventListener {
 	private Transform transform = null;
 	private GraphicsContext graphics;
 
-	private List<RefreshListener> listeners = new ArrayList<RefreshListener>();
+	// TODO
+//	private List<RefreshListener> listeners = new ArrayList<RefreshListener>();
 
 	public PSDevice() {
 		boundingBox = createTransform();
 		transform = createTransform();
 	}
 
+	// TODO
+/*
 	public void addComponentRefreshListener(RefreshListener l) {
 		listeners.add(l);
 	}
@@ -49,7 +47,7 @@ public abstract class PSDevice implements Device, DSCEventListener {
 			i.next().componentRefreshed();
 		}
 	}
-
+*/
 	public void dscCommentFound(DSCEvent event) {
 		if (event.getComment().equals("BoundingBox:")) {
 			int[] bb = (int[]) event.getArgs();

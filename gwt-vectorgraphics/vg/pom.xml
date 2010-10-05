@@ -16,16 +16,36 @@
         Generic vectorgraphics context interfaces.
     </description>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>resources</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 	<reporting>
 		<plugins>
 			<plugin>
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<!-- mvn 3.0 should have some report plugin management -->
+				<version>2.7</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
+				<!-- mvn 3.0 should have some report plugin management -->
+				<version>2.3</version>
 			</plugin>
 		</plugins>
 	</reporting>

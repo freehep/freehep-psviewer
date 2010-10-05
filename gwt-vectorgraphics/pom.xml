@@ -4,13 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.freehep</groupId>
-	<artifactId>gwt-vectorgraphics</artifactId>
+	<artifactId>gwt-vectorgraphics-pom</artifactId>
 	<version>0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
-	<name>FreeHEP GWT VectorGraphics</name>
+	<name>FreeHEP GWT VectorGraphics Project</name>
 	<description>
-		Maps java.awt.Graphics2d onto GWT.
-  </description>
+		Maps a generic vectorgraphics context onto GWT and java.awt.Graphics2d.
+    </description>
 	<url>...</url>
 
 	<organization>
@@ -84,114 +85,66 @@
 		</site>
 	</distributionManagement>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.8.1</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-servlet</artifactId>
+				<version>${gwt.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-user</artifactId>
+				<version>${gwt.version}</version>
+				<scope>provided</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<build>
 		<defaultGoal>install</defaultGoal>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
-					<optimize>true</optimize>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.0</version>
-			</plugin>
-		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3.2</version>
+					<configuration>
+						<source>${maven.compiler.source}</source>
+						<target>${maven.compiler.target}</target>
+						<optimize>true</optimize>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.0</version>
+				</plugin>
+				<plugin>
+					<inherited>true</inherited>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jxr-plugin</artifactId>
+					<version>2.2</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
-	<reporting>
-		<plugins>
-			<plugin>
-				<inherited>true</inherited>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.2</version>
-			</plugin>
-		</plugins>
-	</reporting>
-
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-servlet</artifactId>
-			<version>${gwt.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>${gwt.version}</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
-
-	<profiles>
-		<profile>
-			<id>release-sign-artifacts</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<inherited>true</inherited>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<version>1.0</version>
-						<executions>
-							<execution>
-								<id>attach-sources</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<inherited>true</inherited>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.7</version>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<inherited>true</inherited>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-deploy-plugin</artifactId>
-						<version>2.5</version>
-						<configuration>
-							<updateReleaseInfo>true</updateReleaseInfo>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+	<modules>
+		<module>awt</module>
+		<module>gwt</module>
+		<module>vg</module>
+	</modules>
 </project>

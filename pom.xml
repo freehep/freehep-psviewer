@@ -8,7 +8,7 @@
 	<version>2.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>FreeHEP PostScript Viewer</name>
+	<name>FreeHEP PostScript Viewer Project</name>
 	<description>Stand-alone, Embeddable and Applet PostScript Viewer
     </description>
 	<url>http://freehep.github.com/freehep-psviewer</url>
